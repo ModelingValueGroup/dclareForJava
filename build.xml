@@ -177,29 +177,40 @@
   
   <target name="init.artifacts">
     <property name="artifacts.temp.dir" value="${basedir}/__artifacts_temp"/>
-    <property name="artifact.output.dclareforjava:jar" value="${basedir}/out/artifacts"/>
-    <property name="artifact.output.examples:jar" value="${basedir}/out/artifacts/examples_jar"/>
-    <property name="artifact.output.ext:jar" value="${basedir}/out/artifacts/ext_jar"/>
+    <property name="artifact.output.dclareforjava" value="${basedir}/out/artifacts"/>
+    <property name="artifact.output.dclareforjava-sources" value="${basedir}/out/artifacts"/>
+    <property name="artifact.output.examples" value="${basedir}/out/artifacts"/>
+    <property name="artifact.output.ext" value="${basedir}/out/artifacts"/>
     <mkdir dir="${artifacts.temp.dir}"/>
     <property name="temp.jar.path.dclareForJava.jar" value="${artifacts.temp.dir}/dclareForJava.jar"/>
+    <property name="temp.jar.path.dclareForJava-sources.jar" value="${artifacts.temp.dir}/dclareForJava-sources.jar"/>
     <property name="temp.jar.path.examples.jar" value="${artifacts.temp.dir}/examples.jar"/>
     <property name="temp.jar.path.ext.jar" value="${artifacts.temp.dir}/ext.jar"/>
   </target>
   
-  <target name="artifact.dclareforjava:jar" depends="init.artifacts, compile.module.dclareforjava" description="Build &#39;dclareForJava:jar&#39; artifact">
-    <property name="artifact.temp.output.dclareforjava:jar" value="${artifacts.temp.dir}/dclareForJava_jar"/>
-    <mkdir dir="${artifact.temp.output.dclareforjava:jar}"/>
+  <target name="artifact.dclareforjava" depends="init.artifacts, compile.module.dclareforjava" description="Build &#39;dclareForJava&#39; artifact">
+    <property name="artifact.temp.output.dclareforjava" value="${artifacts.temp.dir}/dclareForJava"/>
+    <mkdir dir="${artifact.temp.output.dclareforjava}"/>
     <jar destfile="${temp.jar.path.dclareForJava.jar}" duplicate="preserve" filesetmanifest="mergewithoutmain">
       <zipfileset dir="${dclareforjava.output.dir}"/>
       <zipfileset src="${path.variable.maven_repository}/org/modelingvalue/dclare/0.0.3/dclare-0.0.3.jar"/>
       <zipfileset src="${path.variable.maven_repository}/org/modelingvalue/immutable-collections/1.0.1/immutable-collections-1.0.1.jar"/>
     </jar>
-    <copy file="${temp.jar.path.dclareForJava.jar}" tofile="${artifact.temp.output.dclareforjava:jar}/dclareForJava.jar"/>
+    <copy file="${temp.jar.path.dclareForJava.jar}" tofile="${artifact.temp.output.dclareforjava}/dclareForJava.jar"/>
   </target>
   
-  <target name="artifact.examples:jar" depends="init.artifacts, compile.module.examples, compile.module.dclareforjava, compile.module.dclareforjava, compile.module.ext, compile.module.ext" description="Build &#39;examples:jar&#39; artifact">
-    <property name="artifact.temp.output.examples:jar" value="${artifacts.temp.dir}/examples_jar"/>
-    <mkdir dir="${artifact.temp.output.examples:jar}"/>
+  <target name="artifact.dclareforjava-sources" depends="init.artifacts" description="Build &#39;dclareForJava-sources&#39; artifact">
+    <property name="artifact.temp.output.dclareforjava-sources" value="${artifacts.temp.dir}/dclareForJava_sources"/>
+    <mkdir dir="${artifact.temp.output.dclareforjava-sources}"/>
+    <jar destfile="${temp.jar.path.dclareForJava-sources.jar}" duplicate="preserve" filesetmanifest="mergewithoutmain">
+      <zipfileset dir="${basedir}/dclareForJava/src"/>
+    </jar>
+    <copy file="${temp.jar.path.dclareForJava-sources.jar}" tofile="${artifact.temp.output.dclareforjava-sources}/dclareForJava-sources.jar"/>
+  </target>
+  
+  <target name="artifact.examples" depends="init.artifacts, compile.module.examples, compile.module.dclareforjava, compile.module.dclareforjava, compile.module.ext, compile.module.ext" description="Build &#39;examples&#39; artifact">
+    <property name="artifact.temp.output.examples" value="${artifacts.temp.dir}/examples"/>
+    <mkdir dir="${artifact.temp.output.examples}"/>
     <jar destfile="${temp.jar.path.examples.jar}" duplicate="preserve" filesetmanifest="mergewithoutmain">
       <zipfileset dir="${examples.testoutput.dir}"/>
       <zipfileset dir="${dclareforjava.output.dir}"/>
@@ -211,33 +222,37 @@
       <zipfileset src="${path.variable.maven_repository}/junit/junit/4.12/junit-4.12.jar"/>
       <zipfileset src="${path.variable.maven_repository}/org/modelingvalue/immutable-collections/1.0.1/immutable-collections-1.0.1.jar"/>
     </jar>
-    <copy file="${temp.jar.path.examples.jar}" tofile="${artifact.temp.output.examples:jar}/examples.jar"/>
+    <copy file="${temp.jar.path.examples.jar}" tofile="${artifact.temp.output.examples}/examples.jar"/>
   </target>
   
-  <target name="artifact.ext:jar" depends="init.artifacts, compile.module.ext, compile.module.dclareforjava" description="Build &#39;ext:jar&#39; artifact">
-    <property name="artifact.temp.output.ext:jar" value="${artifacts.temp.dir}/ext_jar"/>
-    <mkdir dir="${artifact.temp.output.ext:jar}"/>
+  <target name="artifact.ext" depends="init.artifacts, compile.module.ext, compile.module.dclareforjava" description="Build &#39;ext&#39; artifact">
+    <property name="artifact.temp.output.ext" value="${artifacts.temp.dir}/ext"/>
+    <mkdir dir="${artifact.temp.output.ext}"/>
     <jar destfile="${temp.jar.path.ext.jar}" duplicate="preserve" filesetmanifest="mergewithoutmain">
       <zipfileset dir="${ext.output.dir}"/>
       <zipfileset dir="${dclareforjava.output.dir}"/>
       <zipfileset src="${path.variable.maven_repository}/org/modelingvalue/dclare/0.0.3/dclare-0.0.3.jar"/>
       <zipfileset src="${path.variable.maven_repository}/org/modelingvalue/immutable-collections/1.0.1/immutable-collections-1.0.1.jar"/>
     </jar>
-    <copy file="${temp.jar.path.ext.jar}" tofile="${artifact.temp.output.ext:jar}/ext.jar"/>
+    <copy file="${temp.jar.path.ext.jar}" tofile="${artifact.temp.output.ext}/ext.jar"/>
   </target>
   
-  <target name="build.all.artifacts" depends="artifact.dclareforjava:jar, artifact.examples:jar, artifact.ext:jar" description="Build all artifacts">
-    <mkdir dir="${artifact.output.dclareforjava:jar}"/>
-    <copy todir="${artifact.output.dclareforjava:jar}">
-      <fileset dir="${artifact.temp.output.dclareforjava:jar}"/>
+  <target name="build.all.artifacts" depends="artifact.dclareforjava, artifact.dclareforjava-sources, artifact.examples, artifact.ext" description="Build all artifacts">
+    <mkdir dir="${artifact.output.dclareforjava}"/>
+    <copy todir="${artifact.output.dclareforjava}">
+      <fileset dir="${artifact.temp.output.dclareforjava}"/>
     </copy>
-    <mkdir dir="${artifact.output.examples:jar}"/>
-    <copy todir="${artifact.output.examples:jar}">
-      <fileset dir="${artifact.temp.output.examples:jar}"/>
+    <mkdir dir="${artifact.output.dclareforjava-sources}"/>
+    <copy todir="${artifact.output.dclareforjava-sources}">
+      <fileset dir="${artifact.temp.output.dclareforjava-sources}"/>
     </copy>
-    <mkdir dir="${artifact.output.ext:jar}"/>
-    <copy todir="${artifact.output.ext:jar}">
-      <fileset dir="${artifact.temp.output.ext:jar}"/>
+    <mkdir dir="${artifact.output.examples}"/>
+    <copy todir="${artifact.output.examples}">
+      <fileset dir="${artifact.temp.output.examples}"/>
+    </copy>
+    <mkdir dir="${artifact.output.ext}"/>
+    <copy todir="${artifact.output.ext}">
+      <fileset dir="${artifact.temp.output.ext}"/>
     </copy>
     
     <!-- Delete temporary files -->
