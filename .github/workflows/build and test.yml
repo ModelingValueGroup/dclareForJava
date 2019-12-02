@@ -54,43 +54,43 @@ jobs:
         run:  ant
 
       - name: "test"
-        run:  ant test.results.jar.XXXX
+        run:  ant test.results.jar.dclareForJava
 
       - name: "javadoc"
-        run:  ant javadoc.module.XXXX
+        run:  ant javadoc.module.dclareForJava
 
-      - name: "upload XXXX.jar"
+      - name: "upload dclareForJava.jar"
         uses: actions/upload-artifact@v1
         with:
           name: jdclare.jar
-          path: out/artifacts/XXXX.jar
+          path: out/artifacts/dclareForJava.jar
 
-      - name: "upload XXXX-sources.jar"
+      - name: "upload dclareForJava-sources.jar"
         uses: actions/upload-artifact@v1
         with:
-          name: XXXX-sources.jar
-          path: out/artifacts/XXXX-sources.jar
+          name: dclareForJava-sources.jar
+          path: out/artifacts/dclareForJava-sources.jar
 
-      - name: "upload XXXX-javadoc.jar"
+      - name: "upload dclareForJava-javadoc.jar"
         uses: actions/upload-artifact@v1
         with:
-          name: XXXX-javadoc.jar
-          path: out/artifacts/XXXX-javadoc.jar
+          name: dclareForJava-javadoc.jar
+          path: out/artifacts/dclareForJava-javadoc.jar
 
-      - name: "upload XXXX-testresults.jar"
+      - name: "upload dclareForJava-testresults.jar"
         uses: actions/upload-artifact@v1
         with:
-          name: XXXX-testresults.jar
-          path: out/artifacts/XXXX-testresults.jar
+          name: dclareForJava-testresults.jar
+          path: out/artifacts/dclareForJava-testresults.jar
 
       - name: "push changes back to github"
         run:  |
           . <(java -jar buildTools.jar)
           pushBackToGithub "${{ secrets.GITHUB_TOKEN }}" "automation@modelingvalue.com" "adjusted files [by github actions]"
 
-      - name: "upload package XXXX.jar"
+      - name: "upload package dclareForJava.jar"
         uses: ModelingValueGroup/upload-maven-package-action@master
         if: github.ref == 'refs/heads/master'
         with:
-          file: "out/artifacts/XXXX.jar"
+          file: "out/artifacts/dclareForJava.jar"
           token: "${{ secrets.GITHUB_TOKEN }}"
