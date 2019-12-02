@@ -2,9 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/dclareForJava/dclareForJava.iml" filepath="$PROJECT_DIR$/dclareForJava/dclareForJava.iml" />
       <module fileurl="file://$PROJECT_DIR$/examples/examples.iml" filepath="$PROJECT_DIR$/examples/examples.iml" />
       <module fileurl="file://$PROJECT_DIR$/ext/ext.iml" filepath="$PROJECT_DIR$/ext/ext.iml" />
-      <module fileurl="file://$PROJECT_DIR$/jdclare/jdclare.iml" filepath="$PROJECT_DIR$/jdclare/jdclare.iml" />
     </modules>
   </component>
 </project>

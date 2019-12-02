@@ -116,7 +116,7 @@ public interface UniverseExplorer extends Tree, DStruct1<WBUniverse> {
         }
     }
 
-    DTreeNode node(DObject object) {
+    private DTreeNode node(DObject object) {
         return object instanceof DUniverse ? root() : dclare(DObjectTreeNode.class, dclare(DPropertyTreeNode.class, node(object.dParent()), object.dContainmentProperty()), object);
     }
 

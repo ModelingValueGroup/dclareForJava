@@ -17,20 +17,38 @@
   
   <path id="examples.module.production.classpath">
     <path refid="${module.jdk.classpath.examples}"/>
+    <pathelement location="${dclareforjava.output.dir}"/>
+    <pathelement location="${ext.output.dir}"/>
+    <path refid="library.maven:_org.modelingvalue:dclare:0.0.3.classpath"/>
+    <path refid="library.maven:_org.modelingvalue:immutable-collections:1.0.1.classpath"/>
   </path>
   
   <path id="examples.runtime.production.module.classpath">
     <pathelement location="${examples.output.dir}"/>
+    <path refid="dclareforjava.runtime.production.module.classpath"/>
+    <path refid="ext.runtime.production.module.classpath"/>
+    <path refid="library.maven:_org.modelingvalue:dclare:0.0.3.classpath"/>
+    <path refid="library.maven:_org.modelingvalue:immutable-collections:1.0.1.classpath"/>
   </path>
   
   <path id="examples.module.classpath">
     <path refid="${module.jdk.classpath.examples}"/>
     <pathelement location="${examples.output.dir}"/>
+    <pathelement location="${dclareforjava.testoutput.dir}"/>
+    <pathelement location="${dclareforjava.output.dir}"/>
+    <pathelement location="${ext.testoutput.dir}"/>
+    <pathelement location="${ext.output.dir}"/>
+    <path refid="library.maven:_org.modelingvalue:dclare:0.0.3.classpath"/>
+    <path refid="library.maven:_org.modelingvalue:immutable-collections:1.0.1.classpath"/>
   </path>
   
   <path id="examples.runtime.module.classpath">
     <pathelement location="${examples.testoutput.dir}"/>
     <pathelement location="${examples.output.dir}"/>
+    <path refid="dclareforjava.runtime.module.classpath"/>
+    <path refid="ext.runtime.module.classpath"/>
+    <path refid="library.maven:_org.modelingvalue:dclare:0.0.3.classpath"/>
+    <path refid="library.maven:_org.modelingvalue:immutable-collections:1.0.1.classpath"/>
   </path>
   
   
@@ -42,39 +60,39 @@
     <patternset refid="excluded.from.module.examples"/>
   </patternset>
   
-  <path id="examples.module.sourcepath">
+  <path id="examples.module.test.sourcepath">
     <dirset dir="${module.examples.basedir}">
-      <include name="src"/>
-      <include name="res"/>
+      <include name="tst"/>
+      <include name="tstres"/>
     </dirset>
   </path>
   
   
   <target name="compile.module.examples" depends="compile.module.examples.production,compile.module.examples.tests" description="Compile module examples"/>
   
-  <target name="compile.module.examples.production" description="Compile module examples; production classes">
-    <mkdir dir="${examples.output.dir}"/>
-    <javac destdir="${examples.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.examples}/javac">
+  <target name="compile.module.examples.production" depends="compile.module.dclareforjava,compile.module.ext" description="Compile module examples; production classes"/>
+  
+  <target name="compile.module.examples.tests" depends="compile.module.examples.production" description="compile module examples; test classes" unless="skip.tests">
+    <mkdir dir="${examples.testoutput.dir}"/>
+    <javac destdir="${examples.testoutput.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.examples}/javac">
       <compilerarg line="${compiler.args.examples}"/>
       <bootclasspath refid="examples.module.bootclasspath"/>
-      <classpath refid="examples.module.production.classpath"/>
-      <src refid="examples.module.sourcepath"/>
+      <classpath refid="examples.module.classpath"/>
+      <src refid="examples.module.test.sourcepath"/>
       <patternset refid="excluded.from.compilation.examples"/>
     </javac>
     
-    <copy todir="${examples.output.dir}">
-      <fileset dir="${module.examples.basedir}/src">
+    <copy todir="${examples.testoutput.dir}">
+      <fileset dir="${module.examples.basedir}/tst">
         <patternset refid="compiler.resources"/>
         <type type="file"/>
       </fileset>
-      <fileset dir="${module.examples.basedir}/res">
+      <fileset dir="${module.examples.basedir}/tstres">
         <patternset refid="compiler.resources"/>
         <type type="file"/>
       </fileset>
     </copy>
   </target>
-  
-  <target name="compile.module.examples.tests" depends="compile.module.examples.production" description="compile module examples; test classes" unless="skip.tests"/>
   
   <target name="clean.module.examples" description="cleanup module">
     <delete dir="${examples.output.dir}"/>

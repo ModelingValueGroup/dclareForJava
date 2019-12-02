@@ -24,7 +24,7 @@ import static org.modelingvalue.jdclare.PropertyQualifier.*;
 public interface Token extends DObject, DStruct2<Line, Long> {
 
     @Constraints
-    void constraints() {
+    private void constraints() {
         OPPOSITE(Token::previousToken, Token::nextToken);
     }
 

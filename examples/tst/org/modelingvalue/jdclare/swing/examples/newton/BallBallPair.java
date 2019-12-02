@@ -33,7 +33,7 @@ public interface BallBallPair extends DStruct2<Ball, Ball>, CollisionPair {
         return collisionTime(va, vb, pa, pb);
     }
 
-    double collisionTime(DPoint va, DPoint vb, DPoint pa, DPoint pb) {
+    private double collisionTime(DPoint va, DPoint vb, DPoint pa, DPoint pb) {
         if (!va.equals(DPoint.NULL) || !vb.equals(DPoint.NULL)) {
             Table  table = a().table();
             DPoint dv    = va.minus(vb);
@@ -44,8 +44,8 @@ public interface BallBallPair extends DStruct2<Ball, Ball>, CollisionPair {
             double d     = pow(b, 2.0) - 4 * a * (c - 4 * table.ballRadiusPow());
             if (d >= 0) {
                 double sqrt = sqrt(d);
-                double t1 = (-b + sqrt) / (2 * a);
-                double t2 = (-b - sqrt) / (2 * a);
+                double t1   = (-b + sqrt) / (2 * a);
+                double t2   = (-b - sqrt) / (2 * a);
                 return Math.min(t1, t2);
             }
         }
@@ -75,13 +75,13 @@ public interface BallBallPair extends DStruct2<Ball, Ball>, CollisionPair {
         DPoint va    = a().solVelocity();
         DPoint vb    = b().solVelocity();
         if (equals(table.collision())) {
-            DPoint na = b().solPosition().minus(a().solPosition()).normal();
-            DPoint nb = na.mult(-1.0);
+            DPoint na  = b().solPosition().minus(a().solPosition()).normal();
+            DPoint nb  = na.mult(-1.0);
             DPoint vna = na.mult(va.dot(na));
             DPoint vnb = nb.mult(vb.dot(nb));
             DPoint vta = va.minus(vna);
             DPoint vtb = vb.minus(vnb);
-            double f = 1.0 - table.ballsBouncingResistance();
+            double f   = 1.0 - table.ballsBouncingResistance();
             set(this, BallBallPair::aVelocity, vta.plus(vnb).mult(f));
             set(this, BallBallPair::bVelocity, vtb.plus(vna).mult(f));
         } else {
@@ -92,9 +92,9 @@ public interface BallBallPair extends DStruct2<Ball, Ball>, CollisionPair {
 
     @Override
     default double distance() {
-        DPoint pa = a().solPosition();
-        DPoint pb = b().solPosition();
-        int radius = a().radius();
+        DPoint pa     = a().solPosition();
+        DPoint pb     = b().solPosition();
+        int    radius = a().radius();
         return Math.abs(Math.abs(pb.minus(pa).length()) - radius - radius);
     }
 

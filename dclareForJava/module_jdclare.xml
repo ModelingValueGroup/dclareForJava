@@ -8,8 +8,8 @@
   
   <property name="compiler.args.jdclare" value="-encoding UTF-8 -source 11 -target 11 ${compiler.args}"/>
   
-  <property name="jdclare.output.dir" value="${module.jdclare.basedir}/../out/production/jdclare"/>
-  <property name="jdclare.testoutput.dir" value="${module.jdclare.basedir}/../out/test/jdclare"/>
+  <property name="jdclare.output.dir" value="//../out/production/jdclare"/>
+  <property name="jdclare.testoutput.dir" value="//../out/test/jdclare"/>
   
   <path id="jdclare.module.bootclasspath">
     <!-- Paths to be included in compilation bootclasspath -->
@@ -17,20 +17,32 @@
   
   <path id="jdclare.module.production.classpath">
     <path refid="${module.jdk.classpath.jdclare}"/>
+    <path refid="library.maven:_org.modelingvalue:immutable-collections:1.0.1.classpath"/>
+    <path refid="library.maven:_org.modelingvalue:dclare:0.0.3.classpath"/>
   </path>
   
   <path id="jdclare.runtime.production.module.classpath">
     <pathelement location="${jdclare.output.dir}"/>
+    <path refid="library.maven:_org.modelingvalue:immutable-collections:1.0.1.classpath"/>
+    <path refid="library.maven:_org.modelingvalue:dclare:0.0.3.classpath"/>
   </path>
   
   <path id="jdclare.module.classpath">
     <path refid="${module.jdk.classpath.jdclare}"/>
     <pathelement location="${jdclare.output.dir}"/>
+    <path refid="library.maven:_org.modelingvalue:immutable-collections:1.0.1.classpath"/>
+    <path refid="library.maven:_junit:junit:4.12.classpath"/>
+    <path refid="library.maven:_org.hamcrest:hamcrest-core:1.3.classpath"/>
+    <path refid="library.maven:_org.modelingvalue:dclare:0.0.3.classpath"/>
   </path>
   
   <path id="jdclare.runtime.module.classpath">
     <pathelement location="${jdclare.testoutput.dir}"/>
     <pathelement location="${jdclare.output.dir}"/>
+    <path refid="library.maven:_org.modelingvalue:immutable-collections:1.0.1.classpath"/>
+    <path refid="library.maven:_junit:junit:4.12.classpath"/>
+    <path refid="library.maven:_org.hamcrest:hamcrest-core:1.3.classpath"/>
+    <path refid="library.maven:_org.modelingvalue:dclare:0.0.3.classpath"/>
   </path>
   
   
@@ -43,13 +55,13 @@
   </patternset>
   
   <path id="jdclare.module.sourcepath">
-    <dirset dir="${module.jdclare.basedir}">
+    <dirset dir="/">
       <include name="src"/>
     </dirset>
   </path>
   
   <path id="jdclare.module.test.sourcepath">
-    <dirset dir="${module.jdclare.basedir}">
+    <dirset dir="/">
       <include name="tst"/>
     </dirset>
   </path>
@@ -68,7 +80,7 @@
     </javac>
     
     <copy todir="${jdclare.output.dir}">
-      <fileset dir="${module.jdclare.basedir}/src">
+      <fileset dir="//src">
         <patternset refid="compiler.resources"/>
         <type type="file"/>
       </fileset>
@@ -86,7 +98,7 @@
     </javac>
     
     <copy todir="${jdclare.testoutput.dir}">
-      <fileset dir="${module.jdclare.basedir}/tst">
+      <fileset dir="//tst">
         <patternset refid="compiler.resources"/>
         <type type="file"/>
       </fileset>

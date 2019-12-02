@@ -47,7 +47,7 @@ public interface MySyntax extends Grammar, DStruct0 {
         APackage aPackage();
 
         @Constraints
-        void sConstraints() {
+        private void sConstraints() {
             SCOPE(PACKAGE_REF::aPackage, PACKAGE_REF::packageScope);
         }
 

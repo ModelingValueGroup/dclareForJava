@@ -26,7 +26,7 @@ import static org.modelingvalue.jdclare.PropertyQualifier.*;
 public interface TerminalClass<T extends Node> extends NodeClass<T> {
 
     @Constraints
-    void tConstraints() {
+    private void tConstraints() {
         DClare.<TerminalClass<?>, TokenType, TokenType, Set<TerminalClass<?>>> OPPOSITE(TerminalClass::token, TokenType::terminals);
     }
 
@@ -35,7 +35,7 @@ public interface TerminalClass<T extends Node> extends NodeClass<T> {
         return dclare(TokenType.class, grammar(), regex(), literal(), set(TokenType::skipped, false));
     }
 
-    String regex() {
+    private String regex() {
         String literal = literal();
         if (literal != null) {
             return Pattern.quote(literal);
@@ -45,7 +45,7 @@ public interface TerminalClass<T extends Node> extends NodeClass<T> {
         }
     }
 
-    String literal() {
+    private String literal() {
         Literal literal = ann(jClass(), Literal.class);
         return literal != null ? literal.value() : null;
     }

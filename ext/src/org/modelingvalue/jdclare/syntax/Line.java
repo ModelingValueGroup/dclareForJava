@@ -26,7 +26,7 @@ import static org.modelingvalue.jdclare.PropertyQualifier.*;
 public interface Line extends DObject, DStruct2<Text<?, ?>, Long> {
 
     @Constraints
-    void constraints() {
+    private void constraints() {
         OPPOSITE(Line::previous, Line::next);
     }
 
@@ -68,7 +68,7 @@ public interface Line extends DObject, DStruct2<Text<?, ?>, Long> {
         }).toList();
     }
 
-    TokenType type(List<TokenType> tokens, DMatch m) {
+    private TokenType type(List<TokenType> tokens, DMatch m) {
         return m.multiNr() < 0 ? null : tokens.get(m.multiNr());
     }
 

@@ -49,7 +49,7 @@ public interface TextUniverse extends AUniverse {
         return text().root();
     }
 
-    String inititalString() {
+    private String inititalString() {
         return "package jdclare.test;\n" + "\n" + "class ScrumTeam {\n" + "  String name = \"team\";\n" + "  Number experienceFactor = 3;\n" + "  ScrumMaster scrummaster;\n" + "  ScrumTeam me = scrummaster.team;\n" + "}\n" + "\n" + "class ScrumMaster {\n" + "  String name;\n" + "  Number numberOfCertificates = 1;\n" + "  ScrumTeam team;\n" + "  ScrumMaster me = team.scrummaster;\n" + "}";
     }
 

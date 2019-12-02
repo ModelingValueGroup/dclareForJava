@@ -24,7 +24,7 @@ public interface DStructClass<T extends DStruct> extends DClassContainer, DStruc
 
     @SuppressWarnings("rawtypes")
     @Constraints
-    void metaRelations() {
+    private void metaRelations() {
         DClare.<DStructClass, DStructClass, Object, Object> OPPOSITE(DStructClass::allSupers, DStructClass::allSubs);
     }
 

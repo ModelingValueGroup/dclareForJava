@@ -58,7 +58,10 @@ public interface NodeClass<T extends Node> extends DStructClass<T>, NodeType {
     @SuppressWarnings("unchecked")
     @Property(constant)
     default Set<SyntaxProperty<Node, Object>> syntaxProperties() {
-        return properties().filter(SyntaxProperty.class).toSet();
+        Set<DProperty<T, ?>>                    properties = properties();
+        Collection<SyntaxProperty<Node,Object>> filter = (Collection < SyntaxProperty < Node, Object>>)(Object)properties.filter(SyntaxProperty.class);
+        return filter.toSet();
     }
 
 }
+

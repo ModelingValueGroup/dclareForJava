@@ -24,7 +24,7 @@ import static org.modelingvalue.jdclare.PropertyQualifier.*;
 public interface SequenceElementParser extends ElementParser, DStruct3<SequenceParser, Integer, SequenceElement> {
 
     @Constraints
-    void constraints() {
+    private void constraints() {
         OPPOSITE(SequenceElementParser::post, SequenceElementParser::pre);
     }
 
@@ -114,11 +114,11 @@ public interface SequenceElementParser extends ElementParser, DStruct3<SequenceP
         return nodes;
     }
 
-    List<NodeParser> add(int dir, List<NodeParser> nodes, NodeParser node) {
+    private List<NodeParser> add(int dir, List<NodeParser> nodes, NodeParser node) {
         return dir > 0 ? nodes.append(node) : nodes.prepend(node);
     }
 
-    NodeParser next(int dir, NodeParser node, NodeType pattern, SequenceParser upper) {
+    private NodeParser next(int dir, NodeParser node, NodeType pattern, SequenceParser upper) {
         return dir > 0 ? node.nextMatch(pattern, upper) : node.previousMatch(pattern, upper);
     }
 

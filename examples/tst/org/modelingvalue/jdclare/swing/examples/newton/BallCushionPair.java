@@ -27,7 +27,7 @@ public interface BallCushionPair extends DStruct3<Ball, Boolean, Boolean>, Colli
         return collisionTime(ball().solVelocity(), ball().solPosition());
     }
 
-    double collisionTime(DPoint v, DPoint p) {
+    private double collisionTime(DPoint v, DPoint p) {
         if (v.y() != 0.0 || v.x() != 0.0) {
             Table table = ball().table();
             DPoint min = table.cushionMinimum();

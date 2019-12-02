@@ -24,7 +24,7 @@ import static org.modelingvalue.jdclare.PropertyQualifier.*;
 public interface SequenceParser extends NodeParser, DStruct2<NodeParser, SequenceType> {
 
     @Constraints
-    void constraints() {
+    private void constraints() {
         OPPOSITE(SequenceParser::downs, NodeParser::uppers);
         OPPOSITE(SequenceParser::first, NodeParser::firstOppos);
         OPPOSITE(SequenceParser::last, NodeParser::lastOppos);

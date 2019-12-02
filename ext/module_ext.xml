@@ -17,25 +17,37 @@
   
   <path id="ext.module.production.classpath">
     <path refid="${module.jdk.classpath.ext}"/>
-    <pathelement location="${jdclare.output.dir}"/>
+    <pathelement location="${dclareforjava.output.dir}"/>
+    <path refid="library.maven:_org.modelingvalue:immutable-collections:1.0.1.classpath"/>
+    <path refid="library.maven:_org.modelingvalue:dclare:0.0.3.classpath"/>
   </path>
   
   <path id="ext.runtime.production.module.classpath">
     <pathelement location="${ext.output.dir}"/>
-    <path refid="jdclare.runtime.production.module.classpath"/>
+    <path refid="dclareforjava.runtime.production.module.classpath"/>
+    <path refid="library.maven:_org.modelingvalue:immutable-collections:1.0.1.classpath"/>
+    <path refid="library.maven:_org.modelingvalue:dclare:0.0.3.classpath"/>
   </path>
   
   <path id="ext.module.classpath">
     <path refid="${module.jdk.classpath.ext}"/>
     <pathelement location="${ext.output.dir}"/>
-    <pathelement location="${jdclare.testoutput.dir}"/>
-    <pathelement location="${jdclare.output.dir}"/>
+    <pathelement location="${dclareforjava.testoutput.dir}"/>
+    <pathelement location="${dclareforjava.output.dir}"/>
+    <path refid="library.maven:_org.modelingvalue:immutable-collections:1.0.1.classpath"/>
+    <path refid="library.maven:_junit:junit:4.12.classpath"/>
+    <path refid="library.maven:_org.hamcrest:hamcrest-core:1.3.classpath"/>
+    <path refid="library.maven:_org.modelingvalue:dclare:0.0.3.classpath"/>
   </path>
   
   <path id="ext.runtime.module.classpath">
     <pathelement location="${ext.testoutput.dir}"/>
     <pathelement location="${ext.output.dir}"/>
-    <path refid="jdclare.runtime.module.classpath"/>
+    <path refid="dclareforjava.runtime.module.classpath"/>
+    <path refid="library.maven:_org.modelingvalue:immutable-collections:1.0.1.classpath"/>
+    <path refid="library.maven:_junit:junit:4.12.classpath"/>
+    <path refid="library.maven:_org.hamcrest:hamcrest-core:1.3.classpath"/>
+    <path refid="library.maven:_org.modelingvalue:dclare:0.0.3.classpath"/>
   </path>
   
   
@@ -62,7 +74,7 @@
   
   <target name="compile.module.ext" depends="compile.module.ext.production,compile.module.ext.tests" description="Compile module ext"/>
   
-  <target name="compile.module.ext.production" depends="compile.module.jdclare" description="Compile module ext; production classes">
+  <target name="compile.module.ext.production" depends="compile.module.dclareforjava" description="Compile module ext; production classes">
     <mkdir dir="${ext.output.dir}"/>
     <javac destdir="${ext.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.ext}/javac">
       <compilerarg line="${compiler.args.ext}"/>

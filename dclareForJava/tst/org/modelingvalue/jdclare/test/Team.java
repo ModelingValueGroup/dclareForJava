@@ -22,7 +22,7 @@ import static org.modelingvalue.jdclare.PropertyQualifier.*;
 public interface Team extends DUUObject, DNamed {
 
     @Constraints
-    void constraints() {
+    private void constraints() {
         SCOPE(Team::developers, Team::companyEmployees);
         SCOPE(Team::productOwner, Team::companyEmployees);
         SCOPE(Team::scrumMaster, Team::companyEmployees);
