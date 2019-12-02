@@ -1,0 +1,96 @@
+name: build and test
+
+on: [push]
+
+jobs:
+  build-and-test:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: "checkout"
+        uses: actions/checkout@v1
+
+      - name: "attach head"
+        run: git checkout "${GITHUB_REF#refs/heads/}"
+
+      - name: "setup JDK"
+        uses: actions/setup-java@v1
+        with:
+          java-version: 11
+
+      - name: "get generic info"
+        uses: ModelingValueGroup/generic-info@master
+
+      - name: "get buildTools"
+        uses: ModelingValueGroup/buildTools@master
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: "prepare ant"
+        run:  |
+          cat <<EOF >build.properties
+          jdk.home.11=$JAVA_HOME
+          path.variable.maven_repository=$HOME/.m2/repository
+          EOF
+
+      - name: "(re)generate some files"
+        run:  |
+          . <(java -jar buildTools.jar)
+          updateAllPomsFromIntellijDependencies
+          generateAntTestFilesFromIntellij
+          generateAntJavadocFilesFromIntellij
+          cleanupIntellijAntFiles
+          correctEols
+          correctHeaders header
+
+      - name: "download dependencies (as mentioned in pom)"
+        run:  |
+          . <(java -jar buildTools.jar)
+          mkdir -p lib
+          mvn_ ${{ secrets.GITHUB_TOKEN }} dependency:copy-dependencies -DoutputDirectory=lib
+
+      - name: "build"
+        run:  ant
+
+      - name: "test"
+        run:  ant test.results.jar.XXXX
+
+      - name: "javadoc"
+        run:  ant javadoc.module.XXXX
+
+      - name: "upload XXXX.jar"
+        uses: actions/upload-artifact@v1
+        with:
+          name: jdclare.jar
+          path: out/artifacts/XXXX.jar
+
+      - name: "upload XXXX-sources.jar"
+        uses: actions/upload-artifact@v1
+        with:
+          name: XXXX-sources.jar
+          path: out/artifacts/XXXX-sources.jar
+
+      - name: "upload XXXX-javadoc.jar"
+        uses: actions/upload-artifact@v1
+        with:
+          name: XXXX-javadoc.jar
+          path: out/artifacts/XXXX-javadoc.jar
+
+      - name: "upload XXXX-testresults.jar"
+        uses: actions/upload-artifact@v1
+        with:
+          name: XXXX-testresults.jar
+          path: out/artifacts/XXXX-testresults.jar
+
+      - name: "push changes back to github"
+        run:  |
+          . <(java -jar buildTools.jar)
+          pushBackToGithub "${{ secrets.GITHUB_TOKEN }}" "automation@modelingvalue.com" "adjusted files [by github actions]"
+
+      - name: "upload package XXXX.jar"
+        uses: ModelingValueGroup/upload-maven-package-action@master
+        if: github.ref == 'refs/heads/master'
+        with:
+          file: "out/artifacts/XXXX.jar"
+          token: "${{ secrets.GITHUB_TOKEN }}"
