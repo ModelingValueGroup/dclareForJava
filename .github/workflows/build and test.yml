@@ -59,6 +59,9 @@ jobs:
       - name: "javadoc"
         run:  ant javadoc.module.dclareForJava
 
+      - name: "DEBUG"
+        run:  find . -type f
+
       - name: "upload dclareForJava.jar"
         uses: actions/upload-artifact@v1
         with:

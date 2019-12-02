@@ -181,7 +181,7 @@
     <property name="artifact.output.examples:jar" value="${basedir}/out/artifacts/examples_jar"/>
     <property name="artifact.output.ext:jar" value="${basedir}/out/artifacts/ext_jar"/>
     <mkdir dir="${artifacts.temp.dir}"/>
-    <property name="temp.jar.path.jdclare.jar" value="${artifacts.temp.dir}/jdclare.jar"/>
+    <property name="temp.jar.path.dclareForJava.jar" value="${artifacts.temp.dir}/dclareForJava.jar"/>
     <property name="temp.jar.path.examples.jar" value="${artifacts.temp.dir}/examples.jar"/>
     <property name="temp.jar.path.ext.jar" value="${artifacts.temp.dir}/ext.jar"/>
   </target>
@@ -189,12 +189,12 @@
   <target name="artifact.dclareforjava:jar" depends="init.artifacts, compile.module.dclareforjava" description="Build &#39;dclareForJava:jar&#39; artifact">
     <property name="artifact.temp.output.dclareforjava:jar" value="${artifacts.temp.dir}/dclareForJava_jar"/>
     <mkdir dir="${artifact.temp.output.dclareforjava:jar}"/>
-    <jar destfile="${temp.jar.path.jdclare.jar}" duplicate="preserve" filesetmanifest="mergewithoutmain">
+    <jar destfile="${temp.jar.path.dclareForJava.jar}" duplicate="preserve" filesetmanifest="mergewithoutmain">
       <zipfileset dir="${dclareforjava.output.dir}"/>
       <zipfileset src="${path.variable.maven_repository}/org/modelingvalue/dclare/0.0.3/dclare-0.0.3.jar"/>
       <zipfileset src="${path.variable.maven_repository}/org/modelingvalue/immutable-collections/1.0.1/immutable-collections-1.0.1.jar"/>
     </jar>
-    <copy file="${temp.jar.path.jdclare.jar}" tofile="${artifact.temp.output.dclareforjava:jar}/jdclare.jar"/>
+    <copy file="${temp.jar.path.dclareForJava.jar}" tofile="${artifact.temp.output.dclareforjava:jar}/dclareForJava.jar"/>
   </target>
   
   <target name="artifact.examples:jar" depends="init.artifacts, compile.module.examples, compile.module.dclareforjava, compile.module.dclareforjava, compile.module.ext, compile.module.ext" description="Build &#39;examples:jar&#39; artifact">
