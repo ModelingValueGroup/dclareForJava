@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="javadoc.dclareForJava" default="javadoc.module.dclareForJava">
+    <!--==============================================================-->
+    <!-- WARNING: this file will be overwritten by the build scripts! -->
+    <!--==============================================================-->
+    <property name="dclareforjava.javadoc.dir" value="${basedir}/out/artifacts"/>
+    <property name="dclareforjava.javadoc.tmp" value="${dclareforjava.javadoc.dir}/tmp"/>
+    <property name="dclareforjava.javadoc.jar" value="${dclareforjava.javadoc.dir}/dclareForJava-javadoc.jar"/>
+
+    <target name="javadoc.module.dclareForJava">
+        <javadoc sourcepathref="dclareforjava.module.test.sourcepath" destdir="${dclareforjava.javadoc.tmp}" classpathref="dclareforjava.module.classpath"/>
+        <jar destfile="${dclareforjava.javadoc.jar}" filesetmanifest="skip">
+            <zipfileset dir="${dclareforjava.javadoc.tmp}"/>
+        </jar>
+        <delete dir="${dclareforjava.javadoc.tmp}"/>
+    </target>
+</project>
