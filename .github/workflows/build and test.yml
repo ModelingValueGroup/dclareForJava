@@ -40,6 +40,7 @@ jobs:
           updateAllPomsFromIntellijDependencies
           generateAntTestFilesFromIntellij
           generateAntJavadocFilesFromIntellij
+          generateIntellijLibraryFilesFromDependencies
           cleanupIntellijAntFiles
           correctEols
           correctHeaders header
@@ -47,7 +48,8 @@ jobs:
       - name: "download dependencies (as mentioned in pom)"
         run:  |
           . <(java -jar buildTools.jar)
-          sed 's/^/@@@ /' pom.xml
+          sed 's/^/@@pom@@ /' pom.xml
+          for f in .idea/libraries/*; do sed "s/^/@@$f@@ /" $f; done
           mkdir -p lib
           mvn_ ${{ secrets.GITHUB_TOKEN }} dependency:copy-dependencies -DoutputDirectory=lib
 
