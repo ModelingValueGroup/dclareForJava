@@ -1,30 +1,32 @@
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-// (C) Copyright 2018-2019 Modeling Value Group B.V. (http://modelingvalue.org)                                        ~
+// (C) Copyright 2018 Modeling Value Group B.V. (http://modelingvalue.org)                                             ~
 //                                                                                                                     ~
-// Licensed under the GNU Lesser General Public License v3.0 (the 'License'). You may not use this file except in      ~
+// Licensed under the GNU Lesser General Public License v3.0 (the "License"). You may not use this file except in      ~
 // compliance with the License. You may obtain a copy of the License at: https://choosealicense.com/licenses/lgpl-3.0  ~
 // Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on ~
-// an 'AS IS' BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the  ~
+// an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the  ~
 // specific language governing permissions and limitations under the License.                                          ~
 //                                                                                                                     ~
-// Maintainers:                                                                                                        ~
-//     Wim Bast, Tom Brus, Ronald Krijgsheld                                                                           ~
 // Contributors:                                                                                                       ~
-//     Arjan Kok, Carel Bast                                                                                           ~
+//     Wim Bast, Carel Bast, Tom Brus, Arjan Kok, Ronald Krijgsheld                                                    ~
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 package org.modelingvalue.jdclare.syntax.test;
 
-import org.modelingvalue.collections.Set;
-import org.modelingvalue.jdclare.*;
-import org.modelingvalue.jdclare.syntax.*;
-import org.modelingvalue.jdclare.syntax.test.MySyntax.*;
-import org.modelingvalue.jdclare.syntax.test.simple.*;
-
-import java.util.*;
-
 import static org.modelingvalue.jdclare.DClare.*;
 import static org.modelingvalue.jdclare.PropertyQualifier.*;
+
+import java.util.UUID;
+
+import org.modelingvalue.collections.Set;
+import org.modelingvalue.jdclare.DNamed;
+import org.modelingvalue.jdclare.DStruct0;
+import org.modelingvalue.jdclare.Property;
+import org.modelingvalue.jdclare.Rule;
+import org.modelingvalue.jdclare.syntax.Text;
+import org.modelingvalue.jdclare.syntax.test.simple.APackage;
+import org.modelingvalue.jdclare.syntax.test.simple.APackageContainer;
+import org.modelingvalue.jdclare.syntax.test.simple.AUniverse;
 
 public interface TextUniverse extends AUniverse {
 
@@ -55,6 +57,6 @@ public interface TextUniverse extends AUniverse {
         return "package jdclare.test;\n" + "\n" + "class ScrumTeam {\n" + "  String name = \"team\";\n" + "  Number experienceFactor = 3;\n" + "  ScrumMaster scrummaster;\n" + "  ScrumTeam me = scrummaster.team;\n" + "}\n" + "\n" + "class ScrumMaster {\n" + "  String name;\n" + "  Number numberOfCertificates = 1;\n" + "  ScrumTeam team;\n" + "  ScrumMaster me = team.scrummaster;\n" + "}";
     }
 
-    interface MyText extends Text<MySyntax, Unit>, DStruct0 {
+    interface MyText extends Text<MySyntax, MySyntax.Unit>, DStruct0 {
     }
 }

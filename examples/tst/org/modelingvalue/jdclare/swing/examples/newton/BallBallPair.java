@@ -1,25 +1,13 @@
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-// (C) Copyright 2018-2019 Modeling Value Group B.V. (http://modelingvalue.org)                                        ~
-//                                                                                                                     ~
-// Licensed under the GNU Lesser General Public License v3.0 (the 'License'). You may not use this file except in      ~
-// compliance with the License. You may obtain a copy of the License at: https://choosealicense.com/licenses/lgpl-3.0  ~
-// Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on ~
-// an 'AS IS' BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the  ~
-// specific language governing permissions and limitations under the License.                                          ~
-//                                                                                                                     ~
-// Maintainers:                                                                                                        ~
-//     Wim Bast, Tom Brus, Ronald Krijgsheld                                                                           ~
-// Contributors:                                                                                                       ~
-//     Arjan Kok, Carel Bast                                                                                           ~
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
 package org.modelingvalue.jdclare.swing.examples.newton;
-
-import org.modelingvalue.jdclare.*;
-import org.modelingvalue.jdclare.swing.draw2d.*;
 
 import static java.lang.Math.*;
 import static org.modelingvalue.jdclare.DClare.*;
+
+import org.modelingvalue.jdclare.DStruct2;
+import org.modelingvalue.jdclare.Default;
+import org.modelingvalue.jdclare.Property;
+import org.modelingvalue.jdclare.Rule;
+import org.modelingvalue.jdclare.swing.draw2d.DPoint;
 
 public interface BallBallPair extends DStruct2<Ball, Ball>, CollisionPair {
 
@@ -50,17 +38,17 @@ public interface BallBallPair extends DStruct2<Ball, Ball>, CollisionPair {
 
     private double collisionTime(DPoint va, DPoint vb, DPoint pa, DPoint pb) {
         if (!va.equals(DPoint.NULL) || !vb.equals(DPoint.NULL)) {
-            Table  table = a().table();
-            DPoint dv    = va.minus(vb);
-            DPoint dp    = pa.minus(pb);
-            double a     = dv.dot(dv);
-            double b     = 2 * dp.dot(dv);
-            double c     = dp.dot(dp);
-            double d     = pow(b, 2.0) - 4 * a * (c - 4 * table.ballRadiusPow());
+            Table table = a().table();
+            DPoint dv = va.minus(vb);
+            DPoint dp = pa.minus(pb);
+            double a = dv.dot(dv);
+            double b = 2 * dp.dot(dv);
+            double c = dp.dot(dp);
+            double d = pow(b, 2.0) - 4 * a * (c - 4 * table.ballRadiusPow());
             if (d >= 0) {
                 double sqrt = sqrt(d);
-                double t1   = (-b + sqrt) / (2 * a);
-                double t2   = (-b - sqrt) / (2 * a);
+                double t1 = (-b + sqrt) / (2 * a);
+                double t2 = (-b - sqrt) / (2 * a);
                 return Math.min(t1, t2);
             }
         }
@@ -86,17 +74,17 @@ public interface BallBallPair extends DStruct2<Ball, Ball>, CollisionPair {
 
     @Rule
     default void velocity() {
-        Table  table = a().table();
-        DPoint va    = a().solVelocity();
-        DPoint vb    = b().solVelocity();
+        Table table = a().table();
+        DPoint va = a().solVelocity();
+        DPoint vb = b().solVelocity();
         if (equals(table.collision())) {
-            DPoint na  = b().solPosition().minus(a().solPosition()).normal();
-            DPoint nb  = na.mult(-1.0);
+            DPoint na = b().solPosition().minus(a().solPosition()).normal();
+            DPoint nb = na.mult(-1.0);
             DPoint vna = na.mult(va.dot(na));
             DPoint vnb = nb.mult(vb.dot(nb));
             DPoint vta = va.minus(vna);
             DPoint vtb = vb.minus(vnb);
-            double f   = 1.0 - table.ballsBouncingResistance();
+            double f = 1.0 - table.ballsBouncingResistance();
             set(this, BallBallPair::aVelocity, vta.plus(vnb).mult(f));
             set(this, BallBallPair::bVelocity, vtb.plus(vna).mult(f));
         } else {
@@ -107,9 +95,9 @@ public interface BallBallPair extends DStruct2<Ball, Ball>, CollisionPair {
 
     @Override
     default double distance() {
-        DPoint pa     = a().solPosition();
-        DPoint pb     = b().solPosition();
-        int    radius = a().radius();
+        DPoint pa = a().solPosition();
+        DPoint pb = b().solPosition();
+        int radius = a().radius();
         return Math.abs(Math.abs(pb.minus(pa).length()) - radius - radius);
     }
 

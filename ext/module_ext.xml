@@ -18,15 +18,15 @@
   <path id="ext.module.production.classpath">
     <path refid="${module.jdk.classpath.ext}"/>
     <pathelement location="${dclareforjava.output.dir}"/>
-    <path refid="library.maven:_org.modelingvalue:immutable-collections:1.0.1.classpath"/>
-    <path refid="library.maven:_org.modelingvalue:dclare:0.0.3.classpath"/>
+    <path refid="library.maven:_org.modelingvalue:immutable-collections.classpath"/>
+    <path refid="library.maven:_org.modelingvalue:dclare.classpath"/>
   </path>
   
   <path id="ext.runtime.production.module.classpath">
     <pathelement location="${ext.output.dir}"/>
     <path refid="dclareforjava.runtime.production.module.classpath"/>
-    <path refid="library.maven:_org.modelingvalue:immutable-collections:1.0.1.classpath"/>
-    <path refid="library.maven:_org.modelingvalue:dclare:0.0.3.classpath"/>
+    <path refid="library.maven:_org.modelingvalue:immutable-collections.classpath"/>
+    <path refid="library.maven:_org.modelingvalue:dclare.classpath"/>
   </path>
   
   <path id="ext.module.classpath">
@@ -34,20 +34,20 @@
     <pathelement location="${ext.output.dir}"/>
     <pathelement location="${dclareforjava.testoutput.dir}"/>
     <pathelement location="${dclareforjava.output.dir}"/>
-    <path refid="library.maven:_org.modelingvalue:immutable-collections:1.0.1.classpath"/>
-    <path refid="library.maven:_junit:junit:4.12.classpath"/>
-    <path refid="library.maven:_org.hamcrest:hamcrest-core:1.3.classpath"/>
-    <path refid="library.maven:_org.modelingvalue:dclare:0.0.3.classpath"/>
+    <path refid="library.maven:_org.modelingvalue:immutable-collections.classpath"/>
+    <path refid="library.maven:_junit:junit.classpath"/>
+    <path refid="library.maven:_org.hamcrest:hamcrest-core.classpath"/>
+    <path refid="library.maven:_org.modelingvalue:dclare.classpath"/>
   </path>
   
   <path id="ext.runtime.module.classpath">
     <pathelement location="${ext.testoutput.dir}"/>
     <pathelement location="${ext.output.dir}"/>
     <path refid="dclareforjava.runtime.module.classpath"/>
-    <path refid="library.maven:_org.modelingvalue:immutable-collections:1.0.1.classpath"/>
-    <path refid="library.maven:_junit:junit:4.12.classpath"/>
-    <path refid="library.maven:_org.hamcrest:hamcrest-core:1.3.classpath"/>
-    <path refid="library.maven:_org.modelingvalue:dclare:0.0.3.classpath"/>
+    <path refid="library.maven:_org.modelingvalue:immutable-collections.classpath"/>
+    <path refid="library.maven:_junit:junit.classpath"/>
+    <path refid="library.maven:_org.hamcrest:hamcrest-core.classpath"/>
+    <path refid="library.maven:_org.modelingvalue:dclare.classpath"/>
   </path>
   
   
@@ -76,7 +76,7 @@
   
   <target name="compile.module.ext.production" depends="compile.module.dclareforjava" description="Compile module ext; production classes">
     <mkdir dir="${ext.output.dir}"/>
-    <javac includeantruntime="false" destdir="${ext.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.ext}/javac">
+    <javac destdir="${ext.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.ext}/javac">
       <compilerarg line="${compiler.args.ext}"/>
       <bootclasspath refid="ext.module.bootclasspath"/>
       <classpath refid="ext.module.production.classpath"/>
@@ -94,7 +94,7 @@
   
   <target name="compile.module.ext.tests" depends="compile.module.ext.production" description="compile module ext; test classes" unless="skip.tests">
     <mkdir dir="${ext.testoutput.dir}"/>
-    <javac includeantruntime="false" destdir="${ext.testoutput.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.ext}/javac">
+    <javac destdir="${ext.testoutput.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.ext}/javac">
       <compilerarg line="${compiler.args.ext}"/>
       <bootclasspath refid="ext.module.bootclasspath"/>
       <classpath refid="ext.module.classpath"/>

@@ -17,32 +17,32 @@
   
   <path id="dclareforjava.module.production.classpath">
     <path refid="${module.jdk.classpath.dclareforjava}"/>
-    <path refid="library.maven:_org.modelingvalue:immutable-collections:1.0.1.classpath"/>
-    <path refid="library.maven:_org.modelingvalue:dclare:0.0.3.classpath"/>
+    <path refid="library.maven:_org.modelingvalue:immutable-collections.classpath"/>
+    <path refid="library.maven:_org.modelingvalue:dclare.classpath"/>
   </path>
   
   <path id="dclareforjava.runtime.production.module.classpath">
     <pathelement location="${dclareforjava.output.dir}"/>
-    <path refid="library.maven:_org.modelingvalue:immutable-collections:1.0.1.classpath"/>
-    <path refid="library.maven:_org.modelingvalue:dclare:0.0.3.classpath"/>
+    <path refid="library.maven:_org.modelingvalue:immutable-collections.classpath"/>
+    <path refid="library.maven:_org.modelingvalue:dclare.classpath"/>
   </path>
   
   <path id="dclareforjava.module.classpath">
     <path refid="${module.jdk.classpath.dclareforjava}"/>
     <pathelement location="${dclareforjava.output.dir}"/>
-    <path refid="library.maven:_org.modelingvalue:immutable-collections:1.0.1.classpath"/>
-    <path refid="library.maven:_junit:junit:4.12.classpath"/>
-    <path refid="library.maven:_org.hamcrest:hamcrest-core:1.3.classpath"/>
-    <path refid="library.maven:_org.modelingvalue:dclare:0.0.3.classpath"/>
+    <path refid="library.maven:_org.modelingvalue:immutable-collections.classpath"/>
+    <path refid="library.maven:_junit:junit.classpath"/>
+    <path refid="library.maven:_org.hamcrest:hamcrest-core.classpath"/>
+    <path refid="library.maven:_org.modelingvalue:dclare.classpath"/>
   </path>
   
   <path id="dclareforjava.runtime.module.classpath">
     <pathelement location="${dclareforjava.testoutput.dir}"/>
     <pathelement location="${dclareforjava.output.dir}"/>
-    <path refid="library.maven:_org.modelingvalue:immutable-collections:1.0.1.classpath"/>
-    <path refid="library.maven:_junit:junit:4.12.classpath"/>
-    <path refid="library.maven:_org.hamcrest:hamcrest-core:1.3.classpath"/>
-    <path refid="library.maven:_org.modelingvalue:dclare:0.0.3.classpath"/>
+    <path refid="library.maven:_org.modelingvalue:immutable-collections.classpath"/>
+    <path refid="library.maven:_junit:junit.classpath"/>
+    <path refid="library.maven:_org.hamcrest:hamcrest-core.classpath"/>
+    <path refid="library.maven:_org.modelingvalue:dclare.classpath"/>
   </path>
   
   
@@ -71,7 +71,7 @@
   
   <target name="compile.module.dclareforjava.production" description="Compile module dclareForJava; production classes">
     <mkdir dir="${dclareforjava.output.dir}"/>
-    <javac includeantruntime="false" destdir="${dclareforjava.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.dclareforjava}/javac">
+    <javac destdir="${dclareforjava.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.dclareforjava}/javac">
       <compilerarg line="${compiler.args.dclareforjava}"/>
       <bootclasspath refid="dclareforjava.module.bootclasspath"/>
       <classpath refid="dclareforjava.module.production.classpath"/>
@@ -89,7 +89,7 @@
   
   <target name="compile.module.dclareforjava.tests" depends="compile.module.dclareforjava.production" description="compile module dclareForJava; test classes" unless="skip.tests">
     <mkdir dir="${dclareforjava.testoutput.dir}"/>
-    <javac includeantruntime="false" destdir="${dclareforjava.testoutput.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.dclareforjava}/javac">
+    <javac destdir="${dclareforjava.testoutput.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.dclareforjava}/javac">
       <compilerarg line="${compiler.args.dclareforjava}"/>
       <bootclasspath refid="dclareforjava.module.bootclasspath"/>
       <classpath refid="dclareforjava.module.classpath"/>

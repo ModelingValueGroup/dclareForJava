@@ -19,16 +19,16 @@
     <path refid="${module.jdk.classpath.examples}"/>
     <pathelement location="${dclareforjava.output.dir}"/>
     <pathelement location="${ext.output.dir}"/>
-    <path refid="library.maven:_org.modelingvalue:dclare:0.0.3.classpath"/>
-    <path refid="library.maven:_org.modelingvalue:immutable-collections:1.0.1.classpath"/>
+    <path refid="library.maven:_org.modelingvalue:dclare.classpath"/>
+    <path refid="library.maven:_org.modelingvalue:immutable-collections.classpath"/>
   </path>
   
   <path id="examples.runtime.production.module.classpath">
     <pathelement location="${examples.output.dir}"/>
     <path refid="dclareforjava.runtime.production.module.classpath"/>
     <path refid="ext.runtime.production.module.classpath"/>
-    <path refid="library.maven:_org.modelingvalue:dclare:0.0.3.classpath"/>
-    <path refid="library.maven:_org.modelingvalue:immutable-collections:1.0.1.classpath"/>
+    <path refid="library.maven:_org.modelingvalue:dclare.classpath"/>
+    <path refid="library.maven:_org.modelingvalue:immutable-collections.classpath"/>
   </path>
   
   <path id="examples.module.classpath">
@@ -38,8 +38,8 @@
     <pathelement location="${dclareforjava.output.dir}"/>
     <pathelement location="${ext.testoutput.dir}"/>
     <pathelement location="${ext.output.dir}"/>
-    <path refid="library.maven:_org.modelingvalue:dclare:0.0.3.classpath"/>
-    <path refid="library.maven:_org.modelingvalue:immutable-collections:1.0.1.classpath"/>
+    <path refid="library.maven:_org.modelingvalue:dclare.classpath"/>
+    <path refid="library.maven:_org.modelingvalue:immutable-collections.classpath"/>
   </path>
   
   <path id="examples.runtime.module.classpath">
@@ -47,8 +47,8 @@
     <pathelement location="${examples.output.dir}"/>
     <path refid="dclareforjava.runtime.module.classpath"/>
     <path refid="ext.runtime.module.classpath"/>
-    <path refid="library.maven:_org.modelingvalue:dclare:0.0.3.classpath"/>
-    <path refid="library.maven:_org.modelingvalue:immutable-collections:1.0.1.classpath"/>
+    <path refid="library.maven:_org.modelingvalue:dclare.classpath"/>
+    <path refid="library.maven:_org.modelingvalue:immutable-collections.classpath"/>
   </path>
   
   
@@ -74,7 +74,7 @@
   
   <target name="compile.module.examples.tests" depends="compile.module.examples.production" description="compile module examples; test classes" unless="skip.tests">
     <mkdir dir="${examples.testoutput.dir}"/>
-    <javac includeantruntime="false" destdir="${examples.testoutput.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.examples}/javac">
+    <javac destdir="${examples.testoutput.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.examples}/javac">
       <compilerarg line="${compiler.args.examples}"/>
       <bootclasspath refid="examples.module.bootclasspath"/>
       <classpath refid="examples.module.classpath"/>
