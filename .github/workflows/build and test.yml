@@ -47,6 +47,7 @@ jobs:
       - name: "download dependencies (as mentioned in pom)"
         run:  |
           . <(java -jar buildTools.jar)
+          sed 's/^/@@@ /' pom.xml
           mkdir -p lib
           mvn_ ${{ secrets.GITHUB_TOKEN }} dependency:copy-dependencies -DoutputDirectory=lib
 
