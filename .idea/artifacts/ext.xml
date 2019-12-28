@@ -4,8 +4,8 @@
     <root id="archive" name="ext.jar">
       <element id="module-output" name="ext" />
       <element id="module-output" name="dclareForJava" />
-      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/modelingvalue/dclare/0.0.3/dclare-0.0.3.jar" path-in-jar="/" />
-      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/modelingvalue/immutable-collections/1.0.1/immutable-collections-1.0.1.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/modelingvalue/dclare/0.0.4/dclare-0.0.4.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/modelingvalue/immutable-collections/1.0.6/immutable-collections-1.0.6.jar" path-in-jar="/" />
     </root>
   </artifact>
 </component>

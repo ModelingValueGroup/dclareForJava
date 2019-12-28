@@ -190,7 +190,7 @@
     <mkdir dir="${artifact.temp.output.dclareforjava}"/>
     <jar destfile="${temp.jar.path.dclareForJava.jar}" duplicate="preserve" filesetmanifest="mergewithoutmain">
       <zipfileset dir="${dclareforjava.output.dir}"/>
-      <zipfileset src="${path.variable.maven_repository}/org/modelingvalue/dclare/0.0.3/dclare-0.0.3.jar"/>
+      <zipfileset src="${path.variable.maven_repository}/org/modelingvalue/dclare/0.0.4/dclare-0.0.4.jar"/>
       <zipfileset src="${path.variable.maven_repository}/org/modelingvalue/immutable-collections/1.0.1/immutable-collections-1.0.1.jar"/>
     </jar>
     <copy file="${temp.jar.path.dclareForJava.jar}" tofile="${artifact.temp.output.dclareforjava}/dclareForJava.jar"/>
@@ -214,10 +214,10 @@
       <zipfileset dir="${dclareforjava.testoutput.dir}"/>
       <zipfileset dir="${ext.output.dir}"/>
       <zipfileset dir="${ext.testoutput.dir}"/>
-      <zipfileset src="${path.variable.maven_repository}/org/modelingvalue/dclare/0.0.3/dclare-0.0.3.jar"/>
+      <zipfileset src="${path.variable.maven_repository}/org/modelingvalue/dclare/0.0.4/dclare-0.0.4.jar"/>
       <zipfileset src="${path.variable.maven_repository}/org/hamcrest/hamcrest-core/1.3/hamcrest-core-1.3.jar"/>
       <zipfileset src="${path.variable.maven_repository}/junit/junit/4.12/junit-4.12.jar"/>
-      <zipfileset src="${path.variable.maven_repository}/org/modelingvalue/immutable-collections/1.0.1/immutable-collections-1.0.1.jar"/>
+      <zipfileset src="${path.variable.maven_repository}/org/modelingvalue/immutable-collections/1.0.6/immutable-collections-1.0.6.jar"/>
     </jar>
     <copy file="${temp.jar.path.examples.jar}" tofile="${artifact.temp.output.examples}/examples.jar"/>
   </target>
@@ -228,8 +228,8 @@
     <jar destfile="${temp.jar.path.ext.jar}" duplicate="preserve" filesetmanifest="mergewithoutmain">
       <zipfileset dir="${ext.output.dir}"/>
       <zipfileset dir="${dclareforjava.output.dir}"/>
-      <zipfileset src="${path.variable.maven_repository}/org/modelingvalue/dclare/0.0.3/dclare-0.0.3.jar"/>
-      <zipfileset src="${path.variable.maven_repository}/org/modelingvalue/immutable-collections/1.0.1/immutable-collections-1.0.1.jar"/>
+      <zipfileset src="${path.variable.maven_repository}/org/modelingvalue/dclare/0.0.4/dclare-0.0.4.jar"/>
+      <zipfileset src="${path.variable.maven_repository}/org/modelingvalue/immutable-collections/1.0.6/immutable-collections-1.0.6.jar"/>
     </jar>
     <copy file="${temp.jar.path.ext.jar}" tofile="${artifact.temp.output.ext}/ext.jar"/>
   </target>
