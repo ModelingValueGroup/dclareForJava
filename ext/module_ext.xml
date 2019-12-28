@@ -76,7 +76,7 @@
   
   <target name="compile.module.ext.production" depends="compile.module.dclareforjava" description="Compile module ext; production classes">
     <mkdir dir="${ext.output.dir}"/>
-    <javac destdir="${ext.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.ext}/javac">
+    <javac includeantruntime="false" destdir="${ext.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.ext}/javac">
       <compilerarg line="${compiler.args.ext}"/>
       <bootclasspath refid="ext.module.bootclasspath"/>
       <classpath refid="ext.module.production.classpath"/>
@@ -94,7 +94,7 @@
   
   <target name="compile.module.ext.tests" depends="compile.module.ext.production" description="compile module ext; test classes" unless="skip.tests">
     <mkdir dir="${ext.testoutput.dir}"/>
-    <javac destdir="${ext.testoutput.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.ext}/javac">
+    <javac includeantruntime="false" destdir="${ext.testoutput.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.ext}/javac">
       <compilerarg line="${compiler.args.ext}"/>
       <bootclasspath refid="ext.module.bootclasspath"/>
       <classpath refid="ext.module.classpath"/>
