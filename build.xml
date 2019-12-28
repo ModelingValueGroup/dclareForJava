@@ -257,4 +257,4 @@
   </target>
   
   <target name="all" depends="build.modules, build.all.artifacts" description="build all"/>
-</project>
+<import file="${basedir}/dclareForJava/test.xml"/><import file="${basedir}/examples/test.xml"/><import file="${basedir}/ext/test.xml"/><import file="${basedir}/dclareForJava/javadoc.xml"/><import file="${basedir}/examples/javadoc.xml"/><import file="${basedir}/ext/javadoc.xml"/></project>
