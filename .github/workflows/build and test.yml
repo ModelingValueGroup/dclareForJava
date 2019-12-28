@@ -49,7 +49,7 @@ jobs:
         run:  |
           . <(java -jar buildTools.jar)
           sed 's/^/@@pom@@ /' pom.xml
-          (cd .idea/libraries/; for f in *; do sed "s/^/@@$f@@ /" $f; done)
+          (cd .idea/libraries; for f in *; do sed "s/^/@@$f@@ /" $f; done)
           mkdir -p lib
           mvn_ ${{ secrets.GITHUB_TOKEN }} dependency:copy-dependencies -DoutputDirectory=lib
 

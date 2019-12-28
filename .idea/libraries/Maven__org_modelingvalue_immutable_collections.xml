@@ -1,7 +1,7 @@
 <component name="libraryTable">
   <library name="Maven: org.modelingvalue:immutable-collections">
     <CLASSES>
-      <root url="jar://$MAVEN_REPOSITORY$/org/modelingvalue/immutable-collections/1.0.6/immutable-collections-1.0.6.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/modelingvalue/immutable-collections/1.0.6/immutable-collections-1.0.6.jar!/"/>
     </CLASSES>
     <JAVADOC />
     <SOURCES />
