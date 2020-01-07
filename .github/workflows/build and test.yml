@@ -4,14 +4,13 @@ on: [push]
 
 jobs:
   build-and-test:
-
     runs-on: ubuntu-latest
 
     steps:
       - name: "checkout"
         uses: actions/checkout@v1
 
-      - name: "attach head"
+      - name: "attach git head"
         run: git checkout "${GITHUB_REF#refs/heads/}"
 
       - name: "setup JDK"
@@ -37,21 +36,19 @@ jobs:
       - name: "(re)generate some files"
         run:  |
           . <(java -jar buildTools.jar)
-          updateAllPomsFromIntellijDependencies
-          generateAntTestFilesFromIntellij
-          generateAntJavadocFilesFromIntellij
-          generateIntellijLibraryFilesFromDependencies
-          cleanupIntellijAntFiles
+          generateAll
           correctEols
           correctHeaders header
+
+      - name: "push changes back to github"
+        run:  |
+          . <(java -jar buildTools.jar)
+          pushBackToGithub "${{ secrets.GITHUB_TOKEN }}" "automation@modelingvalue.com" "adjusted files [by github actions]"
 
       - name: "download dependencies (as mentioned in pom)"
         run:  |
           . <(java -jar buildTools.jar)
-          sed 's/^/@@pom@@ /' pom.xml
-          (cd .idea/libraries; for f in *; do sed "s/^/@@$f@@ /" $f; done)
-          mkdir -p lib
-          mvn_ ${{ secrets.GITHUB_TOKEN }} dependency:copy-dependencies -DoutputDirectory=lib
+          getAllDependencies ${{ secrets.GITHUB_TOKEN }}
 
       - name: "build"
         run:  ant
@@ -59,42 +56,39 @@ jobs:
       - name: "test"
         run:  ant test.results.jar.dclareForJava
 
-      - name: "javadoc"
+      - name: "generate javadoc"
         run:  ant javadoc.module.dclareForJava
-
-      - name: "DEBUG"
-        run:  find . -type f
-
-      - name: "upload dclareForJava.jar"
-        uses: actions/upload-artifact@v1
-        with:
-          name: jdclare.jar
-          path: out/artifacts/dclareForJava.jar
-
-      - name: "upload dclareForJava-sources.jar"
-        uses: actions/upload-artifact@v1
-        with:
-          name: dclareForJava-sources.jar
-          path: out/artifacts/dclareForJava-sources.jar
-
-      - name: "upload dclareForJava-javadoc.jar"
-        uses: actions/upload-artifact@v1
-        with:
-          name: dclareForJava-javadoc.jar
-          path: out/artifacts/dclareForJava-javadoc.jar
-
-      - name: "upload dclareForJava-testresults.jar"
-        uses: actions/upload-artifact@v1
-        with:
-          name: dclareForJava-testresults.jar
-          path: out/artifacts/dclareForJava-testresults.jar
 
       - name: "push changes back to github"
         run:  |
           . <(java -jar buildTools.jar)
           pushBackToGithub "${{ secrets.GITHUB_TOKEN }}" "automation@modelingvalue.com" "adjusted files [by github actions]"
 
-      - name: "upload package dclareForJava.jar"
+      - name: "publish action-artifact jar"
+        uses: actions/upload-artifact@v1
+        with:
+          name: dclareForJava.jar
+          path: out/artifacts/dclareForJava.jar
+
+      - name: "publish action-artifact sources"
+        uses: actions/upload-artifact@v1
+        with:
+          name: dclareForJava-sources.jar
+          path: out/artifacts/dclareForJava-sources.jar
+
+      - name: "publish action-artifact javadoc"
+        uses: actions/upload-artifact@v1
+        with:
+          name: dclareForJava-javadoc.jar
+          path: out/artifacts/dclareForJava-javadoc.jar
+
+      - name: "publish action-artifact test-results"
+        uses: actions/upload-artifact@v1
+        with:
+          name: dclareForJava-testresults.jar
+          path: out/artifacts/dclareForJava-testresults.jar
+
+      - name: "if master: publish maven-artifacts (jar/pom/sources/javadoc)"
         uses: ModelingValueGroup/upload-maven-package-action@master
         if: github.ref == 'refs/heads/master'
         with:

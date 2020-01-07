@@ -1,9 +1,0 @@
-#======+===================+=======================+===========+======+
-# xxx  |group              |artifact               |version    |ext   |
-#======+===================+=======================+===========+======+
-111     junit               junit                   4.12        jar
-111     org.hamcrest        hamcrest-core           1.3         jar
-100     org.modelingvalue   dclare                  0.0.4       jar
-100     org.modelingvalue   immutable-collections   1.0.6       jar
-#======+===================+=======================+===========+======+
-# xxx = class-jar, source-jar, javadoc-jar
