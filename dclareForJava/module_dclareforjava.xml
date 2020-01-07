@@ -71,7 +71,7 @@
   
   <target name="compile.module.dclareforjava.production" description="Compile module dclareForJava; production classes">
     <mkdir dir="${dclareforjava.output.dir}"/>
-    <javac includeantruntime="false" destdir="${dclareforjava.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.dclareforjava}/javac">
+    <javac destdir="${dclareforjava.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.dclareforjava}/javac">
       <compilerarg line="${compiler.args.dclareforjava}"/>
       <bootclasspath refid="dclareforjava.module.bootclasspath"/>
       <classpath refid="dclareforjava.module.production.classpath"/>
@@ -89,7 +89,7 @@
   
   <target name="compile.module.dclareforjava.tests" depends="compile.module.dclareforjava.production" description="compile module dclareForJava; test classes" unless="skip.tests">
     <mkdir dir="${dclareforjava.testoutput.dir}"/>
-    <javac includeantruntime="false" destdir="${dclareforjava.testoutput.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.dclareforjava}/javac">
+    <javac destdir="${dclareforjava.testoutput.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.dclareforjava}/javac">
       <compilerarg line="${compiler.args.dclareforjava}"/>
       <bootclasspath refid="dclareforjava.module.bootclasspath"/>
       <classpath refid="dclareforjava.module.classpath"/>
