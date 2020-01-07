@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--==============================================================-->
+<!-- WARNING: this file will be overwritten by the build scripts! -->
+<!--          change  project.sh  instead                         -->
+<!--==============================================================-->
 <project name="javadoc.ext" default="javadoc.module.ext">
-    <!--==============================================================-->
-    <!-- WARNING: this file will be overwritten by the build scripts! -->
-    <!--==============================================================-->
     <property name="ext.javadoc.dir" value="${basedir}/out/artifacts"/>
     <property name="ext.javadoc.tmp" value="${ext.javadoc.dir}/tmp"/>
     <property name="ext.javadoc.jar" value="${ext.javadoc.dir}/ext-javadoc.jar"/>

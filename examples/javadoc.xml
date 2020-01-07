@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--==============================================================-->
+<!-- WARNING: this file will be overwritten by the build scripts! -->
+<!--          change  project.sh  instead                         -->
+<!--==============================================================-->
 <project name="javadoc.examples" default="javadoc.module.examples">
-    <!--==============================================================-->
-    <!-- WARNING: this file will be overwritten by the build scripts! -->
-    <!--==============================================================-->
     <property name="examples.javadoc.dir" value="${basedir}/out/artifacts"/>
     <property name="examples.javadoc.tmp" value="${examples.javadoc.dir}/tmp"/>
     <property name="examples.javadoc.jar" value="${examples.javadoc.dir}/examples-javadoc.jar"/>

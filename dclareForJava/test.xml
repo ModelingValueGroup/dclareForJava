@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--==============================================================-->
+<!-- WARNING: this file will be overwritten by the build scripts! -->
+<!--          change  project.sh  instead                         -->
+<!--==============================================================-->
 <project name="test.dclareForJava" default="test.results.jar.dclareForJava">
-  <!--==============================================================-->
-  <!-- WARNING: this file will be overwritten by the build scripts! -->
-  <!--==============================================================-->
   <path id="classpath.test.dclareForJava">
     <path>
       <pathelement location="${path.variable.maven_repository}/junit/junit/4.12/junit-4.12.jar"/>
       <pathelement location="${path.variable.maven_repository}/org/hamcrest/hamcrest-core/1.3/hamcrest-core-1.3.jar"/>
-      <pathelement location="${path.variable.maven_repository}/org/modelingvalue/dclare/0.0.4/dclare-0.0.4.jar"/>
-      <pathelement location="${path.variable.maven_repository}/org/modelingvalue/immutable-collections/1.0.6/immutable-collections-1.0.6.jar"/>
+      <pathelement location="${path.variable.maven_repository}/org/modelingvalue/dclare/0.0.6/dclare-0.0.6.jar"/>
+      <pathelement location="${path.variable.maven_repository}/org/modelingvalue/immutable-collections/1.0.15/immutable-collections-1.0.15.jar"/>
     </path>
     <dirset dir="out/production">
       <include name="*"/>
