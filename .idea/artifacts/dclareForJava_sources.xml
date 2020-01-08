@@ -3,6 +3,8 @@
     <output-path>$PROJECT_DIR$/out/artifacts</output-path>
     <root id="archive" name="dclareForJava-sources.jar">
       <element id="dir-copy" path="$PROJECT_DIR$/dclareForJava/src" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/lib/immutable-collections-sources.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/lib/dclare-sources.jar" path-in-jar="/" />
     </root>
   </artifact>
 </component>

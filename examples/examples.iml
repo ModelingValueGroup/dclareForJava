@@ -10,7 +10,7 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="dclareForJava" />
     <orderEntry type="module" module-name="ext" />
-    <orderEntry type="library" name="Maven: org.modelingvalue:dclare" level="project" />
-    <orderEntry type="library" name="Maven: org.modelingvalue:immutable-collections" level="project" />
+    <orderEntry type="library" name="gen: dclare" level="project" />
+    <orderEntry type="library" name="gen: immutable-collections" level="project" />
   </component>
 </module>
