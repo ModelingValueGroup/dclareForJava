@@ -104,7 +104,7 @@
   </target>
   <target name="testresults.module.dclareforjava" depends="test.module.dclareforjava">
     <mkdir dir="${basedir}/out/artifacts"/>
-    <jar destfile="${basedir}/out/artifacts/dclareforjava-testresults.jar" filesetmanifest="skip">
+    <jar destfile="${basedir}/out/artifacts/dclareForJava-testresults.jar" filesetmanifest="skip">
       <zipfileset file="${basedir}/TEST-*.xml"/>
     </jar>
   </target>
