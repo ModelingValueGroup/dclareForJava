@@ -24,7 +24,7 @@
 #       t = test
 #===================================================================
 artifacts=(
-  "org.modelingvalue   dclareForJava           0.0.6       jar jds"
+  "org.modelingvalue   dclareForJava           0.0.7       jar jds"
 )
 dependencies=(
   "org.modelingvalue   dclare                  0.0.12      jar jds-"

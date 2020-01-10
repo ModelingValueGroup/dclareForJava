@@ -25,10 +25,10 @@ import static org.modelingvalue.jdclare.PropertyQualifier.*;
 
 public interface DClass<T extends DObject> extends DStructClass<T>, MutableClass {
 
-    @SuppressWarnings({"unchecked", "rawtypes"})
+    @SuppressWarnings({"rawtypes"})
     @Property(constant)
     default Set<DRule> allRules() {
-        return allSupers().filter(DClass.class).<DRule> flatMap(s -> s.rules()).toSet();
+        return allSupers().filter(DClass.class). <DRule>flatMap(DClass::rules).toSet();
     }
 
     @Property(constant)
@@ -81,7 +81,7 @@ public interface DClass<T extends DObject> extends DStructClass<T>, MutableClass
     @Override
     @SuppressWarnings({"unchecked", "rawtypes"})
     default Collection<? extends Observer<?>> dObservers() {
-        return (Collection) allRules().map(DRule::observer);
+        return allRules().map(DRule::observer);
     }
 
     @SuppressWarnings("unchecked")
