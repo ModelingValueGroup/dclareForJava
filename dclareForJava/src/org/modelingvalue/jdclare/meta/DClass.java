@@ -15,22 +15,13 @@
 
 package org.modelingvalue.jdclare.meta;
 
+import org.modelingvalue.collections.*;
+import org.modelingvalue.dclare.*;
+import org.modelingvalue.jdclare.*;
+
+import java.lang.reflect.*;
+
 import static org.modelingvalue.jdclare.PropertyQualifier.*;
-
-import java.lang.reflect.Method;
-
-import org.modelingvalue.collections.Collection;
-import org.modelingvalue.collections.ContainingCollection;
-import org.modelingvalue.collections.Entry;
-import org.modelingvalue.collections.Map;
-import org.modelingvalue.collections.Set;
-import org.modelingvalue.dclare.Mutable;
-import org.modelingvalue.dclare.MutableClass;
-import org.modelingvalue.dclare.Observer;
-import org.modelingvalue.dclare.Setable;
-import org.modelingvalue.jdclare.DClare;
-import org.modelingvalue.jdclare.DObject;
-import org.modelingvalue.jdclare.Property;
 
 public interface DClass<T extends DObject> extends DStructClass<T>, MutableClass {
 
@@ -96,7 +87,7 @@ public interface DClass<T extends DObject> extends DStructClass<T>, MutableClass
     @SuppressWarnings("unchecked")
     @Override
     default Collection<? extends Setable<? extends Mutable, ?>> dSetables() {
-        return allProperties().map(DClare::getable).filter(Setable.class);
+        return allProperties().map(DClare::getable).filter(Setable.class).map(s -> (Setable <? extends Mutable, ?>) s);
     }
 
 }
