@@ -9,6 +9,6 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/dclare"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/dclareForJava"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/dclareForJavaExt"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/mutable-collections"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/immutable-collections"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
