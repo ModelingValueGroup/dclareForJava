@@ -53,7 +53,7 @@ public interface DShape extends DVisible {
         if (DClare.dclareUU(SelectionMode.class, DCanvas.SELECTION_MODE).equals(canvas().mode())) {
             InputDeviceData di = canvas().deviceInput();
             if (di.isLeftMouseDown() && !pre(di, InputDeviceData::isLeftMouseDown)) {
-                return hit(di.mousePosition()) ? !pre(this, DShape::selected) : di.isCtrlDown() ? selected() : false;
+                return hit(di.mousePosition()) ? !pre(this, DShape::selected) : di.isCtrlDown() && selected();
             }
         }
         return selected();

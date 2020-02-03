@@ -20,7 +20,6 @@ import org.modelingvalue.jdclare.meta.*;
 import java.io.*;
 import java.lang.invoke.MethodHandles.*;
 
-import static org.modelingvalue.jdclare.PropertyQualifier.constant;
 import static org.modelingvalue.jdclare.PropertyQualifier.*;
 
 @Extend(DStructClass.class)

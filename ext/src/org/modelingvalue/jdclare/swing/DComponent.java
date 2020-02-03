@@ -102,16 +102,14 @@ public interface DComponent extends DContainer {
                 @Override
                 public void keyPressed(KeyEvent evt) {
                     InputDeviceData pre = visible.deviceInput();
-                    int keyCode = evt.getKeyCode();
-                    Set<Integer> keysPressed = pre.pressedKeys().add(keyCode);
+                    Set<Integer> keysPressed = pre.pressedKeys().add(evt.getKeyCode());
                     DClare.set(pre, InputDeviceData::pressedKeys, keysPressed);
                 }
 
                 @Override
                 public void keyReleased(KeyEvent evt) {
                     InputDeviceData pre = visible.deviceInput();
-                    int keyCode = evt.getKeyCode();
-                    Set<Integer> keysPressed = pre.pressedKeys().remove(Integer.valueOf(keyCode));
+                    Set<Integer> keysPressed = pre.pressedKeys().remove(evt.getKeyCode());
                     DClare.set(pre, InputDeviceData::pressedKeys, keysPressed);
                 }
 

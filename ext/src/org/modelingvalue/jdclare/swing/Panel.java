@@ -24,6 +24,7 @@ import java.awt.*;
 
 import static org.modelingvalue.jdclare.PropertyQualifier.*;
 
+@SuppressWarnings("unused")
 @Native(PanelNative.class)
 public interface Panel extends DComponent {
 
@@ -56,12 +57,8 @@ public interface Panel extends DComponent {
         }
 
         public void content(Map<DComponent, Object> pre, Map<DComponent, Object> post) {
-            pre.removeAllKey(post).forEach(ct -> {
-                swing.remove(swing(ct.getKey()));
-            });
-            post.removeAllKey(pre).forEach(ct -> {
-                swing.add(swing(ct.getKey()), ct.getValue());
-            });
+            pre.removeAllKey(post).forEach(ct -> swing.remove(swing(ct.getKey())));
+            post.removeAllKey(pre).forEach(ct -> swing.add(swing(ct.getKey()), ct.getValue()));
             swing.invalidate();
             swing.repaint();
         }

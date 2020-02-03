@@ -45,6 +45,7 @@ public interface Tree extends DComponent {
 
         @Override
         public void init(DObject parent) {
+            //noinspection RedundantCast
             DTreeNodeNative<?> root = (DTreeNodeNative) dNative(visible.root());
             swing = new JTree(root);
             swing.setRootVisible(false);

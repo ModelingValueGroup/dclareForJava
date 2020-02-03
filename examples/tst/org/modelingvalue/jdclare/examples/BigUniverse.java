@@ -21,6 +21,7 @@ import org.modelingvalue.jdclare.*;
 import static org.modelingvalue.jdclare.DClare.*;
 import static org.modelingvalue.jdclare.PropertyQualifier.*;
 
+@SuppressWarnings("unused")
 public interface BigUniverse extends DUniverse {
 
     static void main(String[] args) {

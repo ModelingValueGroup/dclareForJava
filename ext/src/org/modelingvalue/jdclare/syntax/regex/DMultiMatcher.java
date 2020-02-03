@@ -83,12 +83,11 @@ public interface DMultiMatcher extends DStruct2<List<DPattern>, CharSequence> {
                             next = dclare(DMatch.class, m.start(), m.group(), r);
                         }
                         current = m.end();
-                        return true;
                     } else {
                         next = dclare(DMatch.class, current, input.subSequence(current, length).toString(), -1);
                         current = length;
-                        return true;
                     }
+                    return true;
                 }
             }
         }

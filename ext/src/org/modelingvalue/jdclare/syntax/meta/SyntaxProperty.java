@@ -93,12 +93,12 @@ public interface SyntaxProperty<O extends Node, V> extends DMethodProperty<O, V>
             if (prefix.length > 0 || postfix.length > 0) {
                 int                   nr       = 0;
                 List<SequenceElement> elements = List.of();
-                for (int i = 0; i < prefix.length; i++) {
-                    elements = elements.add(dclare(SequenceElement.class, nr++, (NodeClass<?>) DClare.dClass(prefix[i]), true, false, null));
+                for (Class<? extends Node> aClass: prefix) {
+                    elements = elements.add(dclare(SequenceElement.class, nr++, (NodeClass<?>) DClare.dClass(aClass), true, false, null));
                 }
                 elements = elements.add(dclare(SequenceElement.class, nr++, nodeType(), true, false, null));
-                for (int i = 0; i < postfix.length; i++) {
-                    elements = elements.add(dclare(SequenceElement.class, nr++, (NodeClass<?>) DClare.dClass(postfix[i]), true, false, null));
+                for (Class<? extends Node> aClass: postfix) {
+                    elements = elements.add(dclare(SequenceElement.class, nr++, (NodeClass<?>) DClare.dClass(aClass), true, false, null));
                 }
                 return dclare(AnonymousSequenceType.class, syntax(), this, elements);
             }
@@ -114,10 +114,10 @@ public interface SyntaxProperty<O extends Node, V> extends DMethodProperty<O, V>
             if (separators.length > 0) {
                 List<SequenceElement> elements = List.of();
                 int                   nr       = 0;
-                for (int i = 0; i < separators.length; i++) {
-                    elements = elements.add(dclare(SequenceElement.class, nr++, (NodeClass<?>) DClare.dClass(separators[i]), true, false, null));
+                for (Class<? extends Node> separator: separators) {
+                    elements = elements.add(dclare(SequenceElement.class, nr++, (NodeClass<?>) DClare.dClass(separator), true, false, null));
                 }
-                elements = elements.add(dclare(SequenceElement.class, nr++, elementType(), true, false, null));
+                elements = elements.add(dclare(SequenceElement.class, nr, elementType(), true, false, null));
                 return dclare(AnonymousSequenceType.class, syntax(), this, elements);
             }
         }
@@ -175,6 +175,7 @@ public interface SyntaxProperty<O extends Node, V> extends DMethodProperty<O, V>
                     try {
                         list = list.append(Integer.parseInt(name));
                     } catch (NumberFormatException nfe) {
+                        //REVIEW: empty catch???
                     }
                 } else if (cls.isAssignableFrom(boolean.class) || cls.isAssignableFrom(Boolean.class)) {
                     list = list.append(Boolean.parseBoolean(name));
@@ -205,9 +206,9 @@ public interface SyntaxProperty<O extends Node, V> extends DMethodProperty<O, V>
             int nr = nr() * STEP_SIZE;
             if (syntax.separator().length > 0) {
                 elements = elements.add(dclare(SequenceElement.class, nr++, elementType(), mandatory(), false, this));
-                elements = elements.add(dclare(SequenceElement.class, nr++, separatorSequenceType(), false, true, null));
+                elements = elements.add(dclare(SequenceElement.class, nr, separatorSequenceType(), false, true, null));
             } else {
-                elements = elements.add(dclare(SequenceElement.class, nr++, elementType(), mandatory(), many(), this));
+                elements = elements.add(dclare(SequenceElement.class, nr, elementType(), mandatory(), many(), this));
             }
         }
         return elements;

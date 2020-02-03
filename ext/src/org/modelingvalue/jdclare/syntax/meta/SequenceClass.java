@@ -15,10 +15,13 @@
 
 package org.modelingvalue.jdclare.syntax.meta;
 
-import org.modelingvalue.collections.*;
+import org.modelingvalue.collections.List;
+import org.modelingvalue.collections.Set;
 import org.modelingvalue.jdclare.*;
 import org.modelingvalue.jdclare.syntax.Grammar.*;
 import org.modelingvalue.jdclare.syntax.*;
+
+import java.util.*;
 
 import static org.modelingvalue.jdclare.DClare.*;
 
@@ -27,7 +30,7 @@ public interface SequenceClass<T extends Node> extends NodeClass<T>, SequenceTyp
     @SuppressWarnings("resource")
     @Override
     default List<SequenceElement> sequenceElements() {
-        Set<SequenceElement> elements = syntaxProperties().flatMap(p -> p.elements()).toSet();
+        Set<SequenceElement> elements = syntaxProperties().flatMap(SyntaxProperty::elements).toSet();
         int[] nr = new int[1];
         for (Class<? extends Node> cls : DClare.ann(jClass(), Sequence.class).value()) {
             while (elements.anyMatch(e -> e.nr() == nr[0] * SyntaxProperty.STEP_SIZE)) {
@@ -35,7 +38,7 @@ public interface SequenceClass<T extends Node> extends NodeClass<T>, SequenceTyp
             }
             elements = elements.add(dclare(SequenceElement.class, SyntaxProperty.STEP_SIZE * nr[0]++, (NodeClass<?>) DClare.dClass(cls), true, false, null));
         }
-        return elements.sorted((a, b) -> Integer.compare(a.nr(), b.nr())).toList();
+        return elements.sorted(Comparator.comparingInt(SequenceElement::nr)).toList();
     }
 
     @Override

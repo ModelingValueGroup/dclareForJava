@@ -55,6 +55,7 @@ public interface Line extends DObject, DStruct2<Text<?, ?>, Long> {
         return dclare(DMultiMatcher.class, text().grammar().tokenPatterns(), string()).matches().toList();
     }
 
+    @SuppressWarnings("InfiniteRecursion")
     @Property(containment)
     default List<Token> tokens() {
         List<TokenType> tokens = text().grammar().tokens();

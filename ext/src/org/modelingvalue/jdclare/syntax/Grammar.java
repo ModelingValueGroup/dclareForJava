@@ -31,11 +31,11 @@ public interface Grammar extends DObject {
     }
 
     @Extend(NodeClass.class)
-    public interface Node extends DStruct {
+    interface Node extends DStruct {
     }
 
     @Extend(ObjectNodeClass.class)
-    public interface ObjectNode extends DObject, Node, DStruct1<NodeParser> {
+    interface ObjectNode extends DObject, Node, DStruct1<NodeParser> {
         @Property(key = 0)
         NodeParser sParserNode();
 
@@ -46,7 +46,7 @@ public interface Grammar extends DObject {
     }
 
     @Extend(StructNodeClass.class)
-    public interface StructNode extends Node {
+    interface StructNode extends Node {
     }
 
 }

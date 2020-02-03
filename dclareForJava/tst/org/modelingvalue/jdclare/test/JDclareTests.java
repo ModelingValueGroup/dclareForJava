@@ -20,6 +20,7 @@ import org.modelingvalue.collections.Collection;
 import org.modelingvalue.collections.Set;
 import org.modelingvalue.collections.util.*;
 import org.modelingvalue.dclare.*;
+import org.modelingvalue.dclare.ex.*;
 import org.modelingvalue.jdclare.*;
 import org.modelingvalue.jdclare.test.PrioUniverse.*;
 
@@ -103,10 +104,10 @@ public class JDclareTests {
             assertTrue("No Keys", p.size() > 0);
             assertEquals(p.size(), p.keys().size());
             assertEquals(p.big(), p.size() > 24);
-            assertEquals(p.size() * 5 / 12, p.keys().filter(k -> k.black()).size());
+            assertEquals(p.size() * 5 / 12, p.keys().filter(PianoKey::black).size());
             p.keys().forEach(k -> {
                 KeyNative n = dNative(k);
-                assertTrue("No KeyNative", n != null);
+                assertNotNull("No KeyNative", n);
                 assertEquals("Init not 1:", 1, n.inits());
                 assertEquals("Black Native not equal:", k.black(), n.black());
             });
@@ -119,7 +120,7 @@ public class JDclareTests {
         assertEquals("No dStructType:", Set.of(), result.getObjects(DStruct.class).filter(o -> o.dStructClass() == null).toSet());
         assertEquals("No dClass:", Set.of(), result.getObjects(DObject.class).filter(o -> o.dClass() == null).toSet());
         assertEquals("No name:", Set.of(), result.getObjects(DNamed.class).filter(o -> o.name() == null).toSet());
-        assertEquals("Problems:", Set.of(), result.getObjects(DUniverse.class).flatMap(t -> t.dAllProblems()).toSet());
+        assertEquals("Problems:", Set.of(), result.getObjects(DUniverse.class).flatMap(DObject::dAllProblems).toSet());
         assertEquals("ToDo:", Set.of(), result.getObjects(DObject.class).map(o -> Pair.of(o, Collection.concat( //
                 Collection.concat(Direction.forward.depth.get(o), Direction.backward.depth.get(o), Direction.scheduled.depth.get(o)), //
                 Collection.concat(Direction.forward.preDepth.get(o), Direction.backward.preDepth.get(o), Direction.scheduled.preDepth.get(o)), //
@@ -131,9 +132,7 @@ public class JDclareTests {
     public void testReparents() {
         DClare<Reparents> dClare = of(Reparents.class);
         State             result = dClare.run();
-        result.run(() -> {
-            check(result);
-        });
+        result.run(() -> check(result));
         if (DUMP) {
             result.run(() -> {
                 Optional<Reparents> r = result.getObjects(Reparents.class).findAny();
@@ -197,13 +196,11 @@ public class JDclareTests {
     public void testScrum() {
         DClare<Scrum> dClare = of(Scrum.class);
         dClare.start();
-        dClare.put("company", () -> {
-            dClare.universe().initTest(dClare);
-        });
+        dClare.put("company", () -> dClare.universe().initTest(dClare));
         dClare.stop();
         State result = dClare.waitForEnd();
         result.run(() -> {
-            assertFalse("Wim is has no Problems!", result.getObjects(Team.class).flatMap(t -> t.problems()).isEmpty());
+            assertFalse("Wim is has no Problems!", result.getObjects(Team.class).flatMap(Team::problems).isEmpty());
             if (DUMP) {
                 result.getObjects(Team.class).forEach(v -> v.dDump(System.err));
             }
@@ -215,9 +212,7 @@ public class JDclareTests {
         try {
             DClare<Scrum> dClare = of(Scrum.class);
             dClare.start();
-            dClare.put("company", () -> {
-                dClare.universe().initScopeProblem(dClare);
-            });
+            dClare.put("company", () -> dClare.universe().initScopeProblem(dClare));
             dClare.stop();
             dClare.waitForEnd();
             Assert.fail();
@@ -234,7 +229,7 @@ public class JDclareTests {
         return t;
     }
 
-    private void assertThrowable(Throwable cause, Class<? extends Throwable> throwable, String regex) {
+    private void assertThrowable(Throwable cause, @SuppressWarnings("SameParameterValue") Class<? extends Throwable> throwable, String regex) {
         assertEquals(throwable, cause.getClass());
         assertTrue(cause.getMessage() + " != " + regex, cause.getMessage().matches(regex));
     }

@@ -15,18 +15,13 @@
 
 package org.modelingvalue.jdclare.test;
 
+import org.modelingvalue.collections.*;
+import org.modelingvalue.jdclare.*;
+
 import static org.modelingvalue.jdclare.DClare.*;
 import static org.modelingvalue.jdclare.PropertyQualifier.*;
 
-import org.modelingvalue.collections.Set;
-import org.modelingvalue.jdclare.DClare;
-import org.modelingvalue.jdclare.DNamed;
-import org.modelingvalue.jdclare.DObject;
-import org.modelingvalue.jdclare.DStruct2;
-import org.modelingvalue.jdclare.DUniverse;
-import org.modelingvalue.jdclare.Property;
-import org.modelingvalue.jdclare.Rule;
-
+@SuppressWarnings("unused")
 public interface BirdUniverse extends DUniverse {
 
     @Property(containment)
@@ -216,7 +211,7 @@ public interface BirdUniverse extends DUniverse {
         @Rule
         default void setYellowChildrenName() {
             if ("yellow".equals(color())) {
-                set(this, Bird::childrenName, children().flatMap(c -> c.children()).reduce("", (n, b) -> n + b.name(), (a, b) -> a + b));
+                set(this, Bird::childrenName, children().flatMap(Bird::children).reduce("", (n, b) -> n + b.name(), (a, b) -> a + b));
             }
         }
 
@@ -327,6 +322,7 @@ public interface BirdUniverse extends DUniverse {
                 set(child, Bird::wingColor, null);
                 String wingColor = child.wingColor();
                 if (wingColor == null) {
+                    //noinspection ConstantConditions
                     System.err.println(wingColor.length());
                 }
             }
@@ -337,6 +333,7 @@ public interface BirdUniverse extends DUniverse {
             if ("red".equals(color())) {
                 Wing wing = dclare(Wing.class, this, "Left");
                 int span = wing.span();
+                //noinspection divzero
                 set(wing, Wing::span, span / 0);
             }
         }

@@ -22,5 +22,5 @@ public enum PropertyQualifier {
     constant(),
     visible(),
     hidden(),
-    validation();
+    validation()
 }

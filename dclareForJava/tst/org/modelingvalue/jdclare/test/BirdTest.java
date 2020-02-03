@@ -19,6 +19,7 @@ import org.junit.*;
 import org.modelingvalue.collections.Set;
 import org.modelingvalue.collections.util.*;
 import org.modelingvalue.dclare.*;
+import org.modelingvalue.dclare.ex.*;
 import org.modelingvalue.jdclare.*;
 import org.modelingvalue.jdclare.test.BirdUniverse.*;
 
@@ -195,19 +196,20 @@ public class BirdTest {
         assertEquals("Unexpected Birds: " + birds, 1, birds.size());
     }
 
-    // @Test
-    public void tooManyObserversException1() {
-        try {
-            DClare<BirdUniverse> dclare = of(BirdUniverse.class);
-            start(dclare);
-            addBird(dclare, HouseSparrow.class, Pair.of("1", "yellow"));
-            stop(dclare);
-            Assert.fail();
-        } catch (Throwable t) {
-            Throwable cause = getCause(t);
-            assertThrowable(cause, TooManyObserversException.class, "Too many observers (2801) of 1.D_PARENT", x -> ((TooManyObserversException) x).getSimpleMessage());
-        }
-    }
+//REVIEW: DISABLED; takes very long (or does not terminate
+//    @Test
+//    public void tooManyObserversException1() {
+//        try {
+//            DClare<BirdUniverse> dclare = of(BirdUniverse.class);
+//            start(dclare);
+//            addBird(dclare, HouseSparrow.class, Pair.of("1", "yellow"));
+//            stop(dclare);
+//            Assert.fail();
+//        } catch (Throwable t) {
+//            Throwable cause = getCause(t);
+//            assertThrowable(cause, TooManyObserversException.class, "Too many observers (2801) of 1.D_PARENT", x -> ((TooManyObserversException) x).getSimpleMessage());
+//        }
+//    }
 
     @Test
     public void tooManyObserversException2() {

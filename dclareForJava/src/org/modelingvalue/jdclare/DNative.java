@@ -25,10 +25,10 @@ public interface DNative<T extends DObject> {
     default void exit(DObject parent) {
     }
 
-    public class ChangeHandler<O extends DObject, V> {
+    class ChangeHandler<O extends DObject, V> {
 
         public static <D extends DObject, E> ChangeHandler<D, E> of(Method handler) {
-            return new ChangeHandler<D, E>(handler);
+            return new ChangeHandler<>(handler);
         }
 
         private final Method  handler;

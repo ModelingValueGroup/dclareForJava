@@ -15,16 +15,15 @@
 
 package org.modelingvalue.jdclare.swing.examples.newton;
 
-import static org.modelingvalue.jdclare.DClare.*;
-import static org.modelingvalue.jdclare.PropertyQualifier.*;
-
 import org.modelingvalue.collections.List;
 import org.modelingvalue.collections.Set;
-import org.modelingvalue.jdclare.DClock;
-import org.modelingvalue.jdclare.Property;
-import org.modelingvalue.jdclare.Rule;
-import org.modelingvalue.jdclare.swing.draw2d.DCanvas;
-import org.modelingvalue.jdclare.swing.draw2d.DPoint;
+import org.modelingvalue.jdclare.*;
+import org.modelingvalue.jdclare.swing.draw2d.*;
+
+import java.util.*;
+
+import static org.modelingvalue.jdclare.DClare.*;
+import static org.modelingvalue.jdclare.PropertyQualifier.*;
 
 public interface Table extends DCanvas {
 
@@ -90,12 +89,12 @@ public interface Table extends DCanvas {
 
     @Property(containment)
     default Set<CollisionPair> collisionPairs() {
-        return balls().flatMap(b -> b.collisionPairs()).toSet();
+        return balls().flatMap(Ball::collisionPairs).toSet();
     }
 
     @Property
     default boolean moving() {
-        return balls().anyMatch(b -> b.moving());
+        return balls().anyMatch(Ball::moving);
     }
 
     @Property
@@ -107,8 +106,11 @@ public interface Table extends DCanvas {
     default CollisionPair firstCollision() {
         if (moving()) {
             double timeWindow = dUniverse().clock().passSeconds() * 2;
-            return collisionPairs().filter(c -> c.preCollisionTime() > 0.0 && c.preCollisionTime() <= timeWindow).//
-                    sorted((a, b) -> Double.compare(a.preCollisionTime(), b.preCollisionTime())).findFirst().orElse(null);
+            //
+            return collisionPairs()
+                    .filter(c -> c.preCollisionTime() > 0.0 && c.preCollisionTime() <= timeWindow)
+                    .min(Comparator.comparingDouble(CollisionPair::preCollisionTime))
+                    .orElse(null);
         } else {
             return null;
         }
@@ -120,6 +122,7 @@ public interface Table extends DCanvas {
         return firstCollision != null && firstCollision.distance() <= 0.5 ? firstCollision : null;
     }
 
+    @SuppressWarnings("unused")
     @Rule
     default void setCollisionTime() {
         CollisionPair firstCollision = firstCollision();

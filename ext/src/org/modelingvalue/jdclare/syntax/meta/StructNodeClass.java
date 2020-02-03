@@ -31,9 +31,10 @@ public interface StructNodeClass<T extends StructNode> extends NodeClass<T> {
         Object[] key = new Object[keys.size()];
         for (DProperty<T, ?> kp : keys) {
             if (kp instanceof SyntaxProperty) {
+                //noinspection unchecked
                 SyntaxProperty<T, ?> sp = (SyntaxProperty<T, ?>) kp;
                 ElementParser elementParser = nodeParser instanceof TerminalParser ? (TerminalParser) nodeParser : //
-                        (SequenceElementParser) ((SequenceParser) nodeParser).sequenceElementParsers().get(sp.nr() * SyntaxProperty.STEP_SIZE);
+                        ((SequenceParser) nodeParser).sequenceElementParsers().get(sp.nr() * SyntaxProperty.STEP_SIZE);
                 problems[0] = problems[0].addAll(sp.transform(elementParser, v -> key[sp.keyNr()] = v, null));
             }
         }

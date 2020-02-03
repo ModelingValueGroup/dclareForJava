@@ -22,6 +22,7 @@ import org.modelingvalue.jdclare.syntax.regex.*;
 import static org.modelingvalue.jdclare.DClare.*;
 import static org.modelingvalue.jdclare.PropertyQualifier.*;
 
+@SuppressWarnings("unused")
 public interface Tokenizer<S extends Grammar> extends DStruct1<Text<S, ?>>, DObject {
 
     @Property(key = 0)
@@ -32,6 +33,7 @@ public interface Tokenizer<S extends Grammar> extends DStruct1<Text<S, ?>>, DObj
         return text().grammar().newLinePattern().matcher(text().string()).matches(true).toList();
     }
 
+    @SuppressWarnings("InfiniteRecursion")
     @Property(containment)
     default List<Line> lines() {
         return matches().reuse(lines(), (l, m) -> m.value().equals(l.string()), (l, m) -> {

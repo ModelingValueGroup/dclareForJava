@@ -46,6 +46,7 @@ public interface DContainer extends DVisible {
         return DDimension.NULL;
     }
 
+    @SuppressWarnings("unused")
     class DContainerNative<N extends DContainer, T extends Container> extends VisibleNative<N> implements ComponentListener {
 
         protected T swing;
@@ -93,7 +94,6 @@ public interface DContainer extends DVisible {
             return swing;
         }
 
-        @SuppressWarnings("unchecked")
         public static <C extends Container> C swing(DContainer visible) {
             return ((DContainerNative<?, C>) dNative(visible)).swing;
         }

@@ -113,47 +113,41 @@ public interface D2MainWindow extends SplitPane, DStruct1<D2Universe> {
 
         @Property(constant)
         default ClickMode rectangleMode() {
-            return dclareUU(ClickMode.class, e -> {
-                set(e, ClickMode::action, z -> {
-                    InputDeviceData di = z.deviceInput();
-                    DRectangle r = dclareUU(DRectangle.class, set(DShape::position, di.mousePosition()));
-                    set(dclare(MappingData.class, ((DUUObject) r).uuid()).triangle(), DShape::position, di.mousePosition());
-                    appendShape(r);
-                    set(z, DCanvas::mode, selectionMode());
-                });
-            });
+            return dclareUU(ClickMode.class, e -> set(e, ClickMode::action, z -> {
+                InputDeviceData di = z.deviceInput();
+                DRectangle r = dclareUU(DRectangle.class, set(DShape::position, di.mousePosition()));
+                set(dclare(MappingData.class, ((DUUObject) r).uuid()).triangle(), DShape::position, di.mousePosition());
+                appendShape(r);
+                set(z, DCanvas::mode, selectionMode());
+            }));
         }
 
         @Property(constant)
         default ClickMode circleMode() {
-            return dclareUU(ClickMode.class, e -> {
-                set(e, ClickMode::action, c -> {
-                    InputDeviceData di = c.deviceInput();
-                    appendShape(dclareUU(DCircle.class, set(DShape::position, di.mousePosition())));
-                    set(c, DCanvas::mode, selectionMode());
-                });
-            });
+            return dclareUU(ClickMode.class, e -> set(e, ClickMode::action, c -> {
+                InputDeviceData di = c.deviceInput();
+                appendShape(dclareUU(DCircle.class, set(DShape::position, di.mousePosition())));
+                set(c, DCanvas::mode, selectionMode());
+            }));
         }
 
         @Property(constant)
         default LineMode lineMode() {
-            return dclareUU(LineMode.class, e -> {
-                set(e, LineMode::action, (c, sel) -> {
-                    DShape one = sel.get(0);
-                    DShape two = sel.get(1);
-                    prependShape(dclareUU(DLine.class, //
-                            rule(DShape::position, l -> one.centre()), //
-                            rule(DLine::endPoint, l -> two.centre()), //
-                            rule("delete", l -> {
-                                if ((pre(() -> one.dParent()) != null && one.dParent() == null) || //
-                                (pre(() -> two.dParent()) != null && two.dParent() == null)) {
-                                    clear(l);
-                                }
-                            }) //
-                    ));
-                    set(c, DCanvas::mode, selectionMode());
-                });
-            });
+            return dclareUU(LineMode.class, e -> set(e, LineMode::action, (c, sel) -> {
+                DShape one = sel.get(0);
+                DShape two = sel.get(1);
+                prependShape(dclareUU(DLine.class, //
+                        rule(DShape::position, l -> one.centre()), //
+                        rule(DLine::endPoint, l -> two.centre()), //
+                        rule("delete", l -> {
+                            if ((pre(one::dParent) != null && one.dParent() == null) || //
+                            (pre(two::dParent) != null && two.dParent() == null)) {
+                                clear(l);
+                            }
+                        }) //
+                ));
+                set(c, DCanvas::mode, selectionMode());
+            }));
         }
 
         @Property(constant)
@@ -168,18 +162,10 @@ public interface D2MainWindow extends SplitPane, DStruct1<D2Universe> {
                 set(c, DToolbar::preferredSize, dclare(DDimension.class, 40.0, 100.0));
                 set(c, DToolbar::minimumSize, dclare(DDimension.class, 50.0, 100.0));
                 set(c, DToolbar::items, List.of(//
-                        item("Select", "selection.png", (x) -> {
-                            set(canvas(), DCanvas::mode, selectionMode());
-                        }), //
-                        item("Rectangle", "rectangle.png", (x) -> {
-                            set(canvas(), DCanvas::mode, rectangleMode());
-                        }), //
-                        item("Circle", "circle.png", (x) -> {
-                            set(canvas(), DCanvas::mode, circleMode());
-                        }), //
-                        item("Line", "line.png", (x) -> {
-                            set(canvas(), DCanvas::mode, lineMode());
-                        }) //
+                        item("Select", "selection.png", (x) -> set(canvas(), DCanvas::mode, selectionMode())), //
+                        item("Rectangle", "rectangle.png", (x) -> set(canvas(), DCanvas::mode, rectangleMode())), //
+                        item("Circle", "circle.png", (x) -> set(canvas(), DCanvas::mode, circleMode())), //
+                        item("Line", "line.png", (x) -> set(canvas(), DCanvas::mode, lineMode())) //
                 ));
             });
         }

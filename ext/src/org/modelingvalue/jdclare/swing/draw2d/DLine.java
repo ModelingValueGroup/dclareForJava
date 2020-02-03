@@ -21,6 +21,8 @@ import org.modelingvalue.jdclare.swing.draw2d.DLine.*;
 
 import java.awt.*;
 
+import static java.lang.Math.*;
+
 @Native(LineNative.class)
 public interface DLine extends DShape {
 
@@ -34,11 +36,11 @@ public interface DLine extends DShape {
     default boolean hit(DPoint pt) {
         DPoint start = position();
         DPoint end = endPoint();
-        double lowx = start.x() < end.x() ? start.x() : end.x();
-        double highx = start.x() < end.x() ? end.x() : start.x();
+        double lowx = min(start.x(), end.x());
+        double highx = max(start.x(), end.x());
 
-        double lowy = start.y() < end.y() ? start.y() : end.y();
-        double highy = start.y() < end.y() ? end.y() : start.y();
+        double lowy = min(start.y(), end.y());
+        double highy = max(start.y(), end.y());
 
         return pt.x() > lowx && pt.x() < highx && pt.y() > lowy && pt.y() < highy && //
                 end.minus(start).hasEqualAngle(end.minus(pt));
@@ -64,6 +66,7 @@ public interface DLine extends DShape {
             D2D.drawLine(g, lc, (int) pt.x(), (int) pt.y(), (int) end.x(), (int) end.y());
         }
 
+        @SuppressWarnings("unused")
         public void endPoint(DPoint pre, DPoint post) {
             ancestor(DComponentNative.class).swing().repaint();
         }

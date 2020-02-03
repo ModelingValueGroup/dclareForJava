@@ -62,6 +62,7 @@ public interface Text<S extends Grammar, R extends Node> extends DObject {
     @Property(optional)
     default R root() {
         Set<NodeParser> roots = parser().roots();
+        //noinspection OptionalGetWithoutIsPresent
         return roots.size() == 1 ? (R) roots.findAny().get().abstractNode() : null;
     }
 

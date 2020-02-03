@@ -24,6 +24,7 @@ import java.io.*;
 
 import static org.modelingvalue.jdclare.PropertyQualifier.*;
 
+@SuppressWarnings("unused")
 @Extend(DClass.class)
 public interface DObject extends DStruct, Mutable {
 
@@ -56,10 +57,12 @@ public interface DObject extends DStruct, Mutable {
     @Override
     @SuppressWarnings({"unchecked", "rawtypes"})
     default Collection<? extends Observer<?>> dMutableObservers() {
+        //noinspection RedundantCast
         return (Collection) dObjectRules().map(DRule::observer);
     }
 
     @Override
+    //REVIEW: can be removed, only calls super...
     default Setable<Mutable, ?> dContaining() {
         return Mutable.super.dContaining();
     }
@@ -75,11 +78,13 @@ public interface DObject extends DStruct, Mutable {
     }
 
     @Override
+    //REVIEW: can be removed, only calls super...
     default void dActivate() {
         Mutable.super.dActivate();
     }
 
     @Override
+    //REVIEW: can be removed, only calls super...
     default void dDeactivate() {
         Mutable.super.dDeactivate();
     }
@@ -119,7 +124,7 @@ public interface DObject extends DStruct, Mutable {
     @Property(hidden)
     default Set<DProblem> dProblems() {
         return Collection.concat(dClass().allValidations().flatMap(p -> (Collection<DProblem>) p.getCollection(this)), //
-                dProblemsMap().flatMap(e -> e.getValue())).toSet();
+                dProblemsMap().flatMap(Entry::getValue)).toSet();
     }
 
     @Property(hidden)
@@ -136,8 +141,8 @@ public interface DObject extends DStruct, Mutable {
     }
 
     default String dString(String prefix) {
-        StringBuffer sb = new StringBuffer();
-        dDump(NonLockingPrintWriter.of(s -> sb.append(s)), prefix);
+        var sb = new StringBuilder();
+        dDump(NonLockingPrintWriter.of(sb::append), prefix);
         return sb.toString();
     }
 

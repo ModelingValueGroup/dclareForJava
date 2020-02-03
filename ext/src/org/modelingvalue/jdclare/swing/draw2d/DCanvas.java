@@ -32,7 +32,7 @@ import static org.modelingvalue.jdclare.PropertyQualifier.*;
 @Native(DCanvasNative.class)
 public interface DCanvas extends DComponent {
 
-    public UUID SELECTION_MODE = UUID.randomUUID();
+    UUID SELECTION_MODE = UUID.randomUUID();
 
     @Default
     @Property
@@ -45,7 +45,7 @@ public interface DCanvas extends DComponent {
 
     @Property
     default Set<DShape> selected() {
-        return shapes().filter(s -> s.selected()).toSet();
+        return shapes().filter(DShape::selected).toSet();
     }
 
     @Property(containment)

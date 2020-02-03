@@ -52,7 +52,7 @@ public interface DFilled extends DShape {
     default boolean dragging() {
         DCanvas         canvas = canvas();
         InputDeviceData di     = canvas.deviceInput();
-        if (!pre(di, InputDeviceData::isLeftMouseDown) && di.isLeftMouseDown() && pre(() -> dParent()) != null && hit(di.mousePosition())) {
+        if (!pre(di, InputDeviceData::isLeftMouseDown) && di.isLeftMouseDown() && pre(this::dParent) != null && hit(di.mousePosition())) {
             set(this, DFilled::dragStartPosition, position());
             set(this, DFilled::dragStartMousePosition, di.mousePosition());
             return true;
