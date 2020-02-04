@@ -15,20 +15,30 @@
 
 package org.modelingvalue.jdclare.swing;
 
-import org.modelingvalue.collections.Collection;
-import org.modelingvalue.collections.List;
-import org.modelingvalue.jdclare.*;
-import org.modelingvalue.jdclare.swing.DTreeNode.*;
-import org.modelingvalue.jdclare.swing.Tree.*;
-import org.modelingvalue.jdclare.swing.draw2d.*;
-
-import javax.swing.*;
-import javax.swing.tree.*;
-import java.awt.*;
-import java.util.*;
-
 import static org.modelingvalue.jdclare.DClare.*;
 import static org.modelingvalue.jdclare.PropertyQualifier.*;
+
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Graphics;
+import java.util.Enumeration;
+import java.util.Iterator;
+
+import javax.swing.Icon;
+import javax.swing.JTree;
+import javax.swing.tree.DefaultTreeCellRenderer;
+import javax.swing.tree.TreeNode;
+import javax.swing.tree.TreePath;
+
+import org.modelingvalue.collections.Collection;
+import org.modelingvalue.collections.List;
+import org.modelingvalue.jdclare.DObject;
+import org.modelingvalue.jdclare.DStruct2;
+import org.modelingvalue.jdclare.Native;
+import org.modelingvalue.jdclare.Property;
+import org.modelingvalue.jdclare.swing.DTreeNode.DTreeNodeNative;
+import org.modelingvalue.jdclare.swing.Tree.TreeNative;
+import org.modelingvalue.jdclare.swing.draw2d.D2D;
 
 @SuppressWarnings("rawtypes")
 @Native(DTreeNodeNative.class)
@@ -41,7 +51,6 @@ public interface DTreeNode<T> extends DVisible, DStruct2<DTreeNode, T> {
     @Property(key = 1)
     T object();
 
-    @SuppressWarnings("InfiniteRecursion")
     @Property
     default boolean wasExpanded() {
         return wasExpanded() || expanded();
