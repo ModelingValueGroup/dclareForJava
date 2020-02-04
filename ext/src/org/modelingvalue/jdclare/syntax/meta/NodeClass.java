@@ -63,7 +63,7 @@ public interface NodeClass<T extends Node> extends DStructClass<T>, NodeType {
     @SuppressWarnings("unchecked")
     @Property(constant)
     default Set<SyntaxProperty<Node, Object>> syntaxProperties() {
-        //REVIEW: this gives an error in IntelliJ but compiles ok woth javac
+        //REVIEW: this gives an error in IntelliJ but compiles ok with javac
         return properties().filter(SyntaxProperty.class).toSet();
     }
 
