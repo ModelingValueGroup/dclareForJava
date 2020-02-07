@@ -688,15 +688,21 @@ public final class DClare<U extends DUniverse> extends UniverseTransaction {
             if (method.equals(LOOKUP)) {
                 return MethodHandles.privateLookupIn(jClass((DStruct) proxy), MethodHandles.lookup());
             } else if (method.equals(TO_STRING)) {
+                String clarification;
                 try {
                     String asString = ((DStruct) proxy).asString();
                     if (asString != null) {
                         return asString;
                     }
+                    clarification = "returned null]";
+                } catch (VirtualMachineError e) {
+                    // these are so fundamental, we do not want to swallow them
+                    throw e;
                 } catch (Throwable t) {
-                    //REVIEW: empty catch???
+                    // the rest is ignored and we fall back on
+                    clarification = "throwed " + t.getMessage();
                 }
-                return DClare.toString((DStruct) proxy);
+                return DClare.toString((DStruct) proxy) + " [asString() " + clarification + "]";
             } else if (method.equals(HASH_CODE)) {
                 return hashCode;
             } else if (method.equals(GET_KEY)) {

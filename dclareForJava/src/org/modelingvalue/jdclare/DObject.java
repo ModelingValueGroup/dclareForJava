@@ -62,9 +62,8 @@ public interface DObject extends DStruct, Mutable {
     }
 
     @Override
-    //REVIEW: can be removed, only calls super...
     default Setable<Mutable, ?> dContaining() {
-        return Mutable.super.dContaining();
+        return Mutable.super.dContaining(); // do not remove this! it seems unneccesarry but it is not; this has to do with how Proxy handles calls.
     }
 
     @Override
@@ -78,15 +77,13 @@ public interface DObject extends DStruct, Mutable {
     }
 
     @Override
-    //REVIEW: can be removed, only calls super...
     default void dActivate() {
-        Mutable.super.dActivate();
+        Mutable.super.dActivate(); // do not remove this! it seems unneccesarry but it is not; this has to do with how Proxy handles calls.
     }
 
     @Override
-    //REVIEW: can be removed, only calls super...
     default void dDeactivate() {
-        Mutable.super.dDeactivate();
+        Mutable.super.dDeactivate(); // do not remove this! it seems unneccesarry but it is not; this has to do with how Proxy handles calls.
     }
 
     @Override

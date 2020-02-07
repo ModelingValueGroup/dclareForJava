@@ -50,15 +50,13 @@ public interface DUniverse extends DPackageContainer, DStruct0, Universe {
     boolean stop();
 
     @Override
-    //REVIEW: can be removed, only calls super...
     default void init() {
-        Universe.super.init();
+        Universe.super.init(); // do not remove this! it seems unneccesarry but it is not; this has to do with how Proxy handles calls.
     }
 
     @Override
-    //REVIEW: can be removed, only calls super...
     default boolean isInternable() {
-        return Universe.super.isInternable();
+        return Universe.super.isInternable(); // do not remove this! it seems unneccesarry but it is not; this has to do with how Proxy handles calls.
     }
 
 }
