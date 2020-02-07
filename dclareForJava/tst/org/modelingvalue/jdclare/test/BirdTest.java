@@ -196,7 +196,7 @@ public class BirdTest {
         assertEquals("Unexpected Birds: " + birds, 1, birds.size());
     }
 
-//    @Test
+    @Test
     public void tooManyObserversException1() {
         try {
             DClare<BirdUniverse> dclare = of(BirdUniverse.class);
@@ -206,7 +206,7 @@ public class BirdTest {
             Assert.fail();
         } catch (Throwable t) {
             Throwable cause = getCause(t);
-            assertThrowable(cause, TooManyObserversException.class, "Too many observers (2801) of 1.D_PARENT", x -> ((TooManyObserversException) x).getSimpleMessage());
+            assertThrowable(cause, TooManyObserversException.class, "Too many observers (2803) of 1.color", x -> ((TooManyObserversException) x).getSimpleMessage());
         }
     }
 

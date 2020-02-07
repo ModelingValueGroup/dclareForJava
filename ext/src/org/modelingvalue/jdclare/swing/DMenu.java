@@ -15,13 +15,19 @@
 
 package org.modelingvalue.jdclare.swing;
 
-import org.modelingvalue.collections.*;
-import org.modelingvalue.jdclare.*;
-
-import javax.swing.*;
-import java.awt.event.*;
-
 import static org.modelingvalue.jdclare.DClare.*;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.JMenu;
+
+import org.modelingvalue.collections.List;
+import org.modelingvalue.jdclare.DNamed;
+import org.modelingvalue.jdclare.DObject;
+import org.modelingvalue.jdclare.DStruct2;
+import org.modelingvalue.jdclare.Native;
+import org.modelingvalue.jdclare.Property;
 
 @Native(DMenu.DMenuNative.class)
 public interface DMenu extends DComponent, DStruct2<DComponent, String>, DNamed, MenuItem {
@@ -50,8 +56,6 @@ public interface DMenu extends DComponent, DStruct2<DComponent, String>, DNamed,
 
         @Override
         public void actionPerformed(ActionEvent arg0) {
-            // TODO Auto-generated method stub
-
         }
 
         public void menuItems(List<MenuItem> pre, List<MenuItem> post) {
