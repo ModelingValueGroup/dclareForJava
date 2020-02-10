@@ -43,7 +43,7 @@ jobs:
       - name: "download dependencies (as mentioned in pom)"
         run:  |
           . <(java -jar buildTools.jar)
-          getAllDependencies ${{ secrets.GITHUB_TOKEN }}
+          getAllDependencies ${{ secrets.GITHUB_TOKEN }} "${{ secrets.SCALEWAY_ACCESS_KEY }}" "${{ secrets.SCALEWAY_SECRET_KEY }}"
 
       - name: "build"
         run:  ant
@@ -82,6 +82,17 @@ jobs:
         with:
           name: dclareForJava-testresults.jar
           path: out/artifacts/dclareForJava-testresults.jar
+
+      - name: "publish jars on S3"
+        uses: ModelingValueGroup/sync-s3-action@master
+        with:
+          access_key: "${{ secrets.SCALEWAY_ACCESS_KEY }}"
+          secret_key: "${{ secrets.SCALEWAY_SECRET_KEY }}"
+          trigger_token: "${{ secrets.RETRIGGER_TOKEN }}"
+          bucket: "mvg-artifacts"
+          cmd: "put"
+          local_dir: "out/artifacts"
+          s3_dir_branched: "/"
 
       - name: "if master: publish maven-artifacts (jar/pom/sources/javadoc)"
         uses: ModelingValueGroup/upload-maven-package-action@master
