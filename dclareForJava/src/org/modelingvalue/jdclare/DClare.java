@@ -15,177 +15,230 @@
 
 package org.modelingvalue.jdclare;
 
+import static org.modelingvalue.jdclare.PropertyQualifier.*;
+
+import java.lang.annotation.Annotation;
+import java.lang.invoke.MethodHandle;
+import java.lang.invoke.MethodHandles;
+import java.lang.invoke.MethodHandles.Lookup;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Proxy;
+import java.lang.reflect.Type;
+import java.time.Clock;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.Scanner;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.UUID;
+import java.util.function.BiFunction;
+import java.util.function.Consumer;
+import java.util.function.Function;
+import java.util.function.Supplier;
+
 import org.modelingvalue.collections.Collection;
+import org.modelingvalue.collections.ContainingCollection;
+import org.modelingvalue.collections.Entry;
 import org.modelingvalue.collections.List;
 import org.modelingvalue.collections.Map;
+import org.modelingvalue.collections.QualifiedSet;
 import org.modelingvalue.collections.Set;
-import org.modelingvalue.collections.*;
-import org.modelingvalue.collections.util.*;
-import org.modelingvalue.collections.util.ContextThread.*;
-import org.modelingvalue.dclare.*;
-import org.modelingvalue.jdclare.DNative.*;
-import org.modelingvalue.jdclare.meta.*;
-
-import java.lang.annotation.*;
-import java.lang.invoke.*;
-import java.lang.invoke.MethodHandles.*;
-import java.lang.reflect.*;
-import java.time.*;
-import java.util.*;
-import java.util.function.*;
-
-import static org.modelingvalue.jdclare.PropertyQualifier.constant;
+import org.modelingvalue.collections.util.Age;
+import org.modelingvalue.collections.util.Concurrent;
+import org.modelingvalue.collections.util.Context;
+import org.modelingvalue.collections.util.ContextThread;
+import org.modelingvalue.collections.util.ContextThread.ContextPool;
+import org.modelingvalue.collections.util.LambdaReflection;
+import org.modelingvalue.collections.util.Pair;
+import org.modelingvalue.collections.util.QuadConsumer;
+import org.modelingvalue.collections.util.SerializableBiConsumer;
+import org.modelingvalue.collections.util.SerializableBiFunction;
+import org.modelingvalue.collections.util.SerializableConsumer;
+import org.modelingvalue.collections.util.SerializableFunction;
+import org.modelingvalue.collections.util.SerializableRunnable;
+import org.modelingvalue.collections.util.SerializableTriConsumer;
+import org.modelingvalue.collections.util.SerializableTriFunction;
+import org.modelingvalue.collections.util.StringUtil;
+import org.modelingvalue.collections.util.TriConsumer;
+import org.modelingvalue.dclare.Action;
+import org.modelingvalue.dclare.ActionTransaction;
+import org.modelingvalue.dclare.Constant;
+import org.modelingvalue.dclare.Direction;
+import org.modelingvalue.dclare.Getable;
+import org.modelingvalue.dclare.LeafTransaction;
+import org.modelingvalue.dclare.MandatoryObserved;
+import org.modelingvalue.dclare.Mutable;
+import org.modelingvalue.dclare.Observed;
+import org.modelingvalue.dclare.Setable;
+import org.modelingvalue.dclare.State;
+import org.modelingvalue.dclare.Transaction;
+import org.modelingvalue.dclare.Universe;
+import org.modelingvalue.dclare.UniverseTransaction;
+import org.modelingvalue.jdclare.DNative.ChangeHandler;
+import org.modelingvalue.jdclare.meta.DClass;
+import org.modelingvalue.jdclare.meta.DClassContainer;
+import org.modelingvalue.jdclare.meta.DMethodProperty;
+import org.modelingvalue.jdclare.meta.DMethodRule;
+import org.modelingvalue.jdclare.meta.DObjectRule;
+import org.modelingvalue.jdclare.meta.DPackage;
+import org.modelingvalue.jdclare.meta.DPackageContainer;
+import org.modelingvalue.jdclare.meta.DProperty;
+import org.modelingvalue.jdclare.meta.DRule;
+import org.modelingvalue.jdclare.meta.DStructClass;
 
 @SuppressWarnings({"unchecked", "rawtypes", "unused"})
 public final class DClare<U extends DUniverse> extends UniverseTransaction {
 
-    private static final int ANIMATE_DELAY_TIME = Integer.getInteger("ANIMATE_DELAY_TIME", 1);
+    private static final int                                                      ANIMATE_DELAY_TIME = Integer.getInteger("ANIMATE_DELAY_TIME", 1);
 
-    private static final ContextPool THE_POOL = ContextThread.createPool();
+    private static final ContextPool                                              THE_POOL           = ContextThread.createPool();
 
-    private static final String DEFAULT     = "DEFAULT";
-    private static final String CONSTRAINTS = "CONSTRAINTS";
+    private static final String                                                   DEFAULT            = "DEFAULT";
+    private static final String                                                   CONSTRAINTS        = "CONSTRAINTS";
 
-    private static final Set<Class<?>> DSTRUCTS = Set.of(DStruct0.class, DStruct1.class, DStruct2.class, DStruct3.class, DStruct4.class,                                    //
+    private static final Set<Class<?>>                                            DSTRUCTS           = Set.of(DStruct0.class, DStruct1.class, DStruct2.class, DStruct3.class, DStruct4.class,                                                                           //
             DStruct5.class, DStruct6.class, DStruct7.class, DStruct8.class, DStruct9.class, DStruct10.class);
 
-    private static final Method HASH_CODE = method(Object::hashCode);
-    private static final Method EQUALS    = method(Object::equals);
-    private static final Method TO_STRING = method(Object::toString);
+    private static final Method                                                   HASH_CODE          = method(Object::hashCode);
+    private static final Method                                                   EQUALS             = method(Object::equals);
+    private static final Method                                                   TO_STRING          = method(Object::toString);
 
-    public static final Method D_OBJECT_RULES = method(DObject::dObjectRules);
-    public static final Method D_OBJECT_CLASS = DClare.<DObject, DClass>method(DObject::dClass);
+    public static final Method                                                    D_OBJECT_RULES     = method(DObject::dObjectRules);
+    public static final Method                                                    D_OBJECT_CLASS     = DClare.<DObject, DClass> method(DObject::dClass);
 
-    private static final Method PACKAGES = method(DPackageContainer::packages);
-    private static final Method CLASSES  = method(DClassContainer::classes);
+    private static final Method                                                   PACKAGES           = method(DPackageContainer::packages);
+    private static final Method                                                   CLASSES            = method(DClassContainer::classes);
 
-    private static final Method GET_KEY      = method(DStruct::getKey);
-    private static final Method GET_KEY_SIZE = method(DStruct::getKeySize);
-    private static final Method LOOKUP       = method(DStruct::lookup);
+    private static final Method                                                   GET_KEY            = method(DStruct::getKey);
+    private static final Method                                                   GET_KEY_SIZE       = method(DStruct::getKeySize);
+    private static final Method                                                   LOOKUP             = method(DStruct::lookup);
 
-    private static final Method PASSED_SECONDS = method(DClock::passSeconds);
+    private static final Method                                                   PASSED_SECONDS     = method(DClock::passSeconds);
 
-    public static final Setable<DUniverse, Integer> ROOT_RUN_NR = Setable.of("dRootRunNr", 0);
+    public static final Setable<DUniverse, Integer>                               ROOT_RUN_NR        = Setable.of("dRootRunNr", 0);
 
-    public static final Context<State> CLASS_INIT_STATE = Context.of();
+    public static final Context<State>                                            CLASS_INIT_STATE   = Context.of();
 
-    public static final Setable<Method, Method> OPPOSITE = Setable.of("dOpposite", null);
+    public static final Setable<Method, Method>                                   OPPOSITE           = Setable.of("dOpposite", null);
 
-    public static final Setable<Method, Method> SCOPE = Setable.of("dScope", null);
+    public static final Setable<Method, Method>                                   SCOPE              = Setable.of("dScope", null);
 
-    private static final Constant<Class<? extends DStruct>, State> CLASS_INIT = Constant.of("DStructClassInit", c -> {
-        if (c.isInterface()) {
-            return dClare().constraints(c);
-        } else {
-            throw new Error("Non Interface DObject Class '" + c + "'");
-        }
-    });
+    private static final Constant<Class<? extends DStruct>, State>                CLASS_INIT         = Constant.of("DStructClassInit", c -> {
+                                                                                                         if (c.isInterface()) {
+                                                                                                             return dClare().constraints(c);
+                                                                                                         } else {
+                                                                                                             throw new Error("Non Interface DObject Class '" + c + "'");
+                                                                                                         }
+                                                                                                     });
 
-    private static final Constant<Class<? extends DStruct>, DStructClass> CLASS = Constant.<Class<? extends DStruct>, DStructClass>of("DStructClass", (Class<? extends DStruct> c) ->
-                    dclare(extend(c, DStructClass.class), c)
-            , (tx, c, o, d) -> {
-                Class declaringClass = c.getDeclaringClass();
-                if (declaringClass == null) {
-                    Package         pack       = c.getPackage();
-                    DClassContainer constainer = DClare.PACKAGE.get(pack != null ? pack.getName() : "<default>");
-                    DClare.<DClassContainer, Set<DStructClass>>setable(CLASSES).set(constainer, Set::add, d);
-                } else {
-                    dClass(declaringClass);
-                }
-            });
+    private static final Constant<Class<? extends DStruct>, DStructClass>         CLASS              = Constant.<Class<? extends DStruct>, DStructClass> of("DStructClass", (Class<? extends DStruct> c) -> dclare(extend(c, DStructClass.class), c), (tx, c, o, d) -> {
+                                                                                                         Class declaringClass = c.getDeclaringClass();
+                                                                                                         if (declaringClass == null) {
+                                                                                                             Package pack = c.getPackage();
+                                                                                                             DClassContainer constainer = DClare.PACKAGE.get(pack != null ? pack.getName() : "<default>");
+                                                                                                             DClare.<DClassContainer, Set<DStructClass>> setable(CLASSES).set(constainer, Set::add, d);
+                                                                                                         } else {
+                                                                                                             dClass(declaringClass);
+                                                                                                         }
+                                                                                                     });
 
-    private static final Constant<Method, DProperty> PROPERTY = Constant.<Method, DProperty>of("dProperty", (Method m) -> {
-        if (m.getReturnType() != Void.TYPE && !m.isSynthetic() && m.getParameterCount() == 0 &&                                 //
-                (ann(m, Property.class) != null || extend(m, DMethodProperty.class) != DMethodProperty.class)) {
-            return dclare(extend(m, DMethodProperty.class), m);
-        } else {
-            return null;
-        }
-    }, (tx, m, o, p) -> {
-        if (p != null) {
-            dClass((Class) m.getDeclaringClass());
-        }
-    });
+    private static final Constant<Method, DProperty>                              PROPERTY           = Constant.<Method, DProperty> of("dProperty", (Method m) -> {
+                                                                                                         if (m.getReturnType() != Void.TYPE && !m.isSynthetic() && m.getParameterCount() == 0 &&                                                                        //
+                                                                                                         (ann(m, Property.class) != null || extend(m, DMethodProperty.class) != DMethodProperty.class)) {
+                                                                                                             return dclare(extend(m, DMethodProperty.class), m);
+                                                                                                         } else {
+                                                                                                             return null;
+                                                                                                         }
+                                                                                                     }, (tx, m, o, p) -> {
+                                                                                                         if (p != null) {
+                                                                                                             dClass((Class) m.getDeclaringClass());
+                                                                                                         }
+                                                                                                     });
 
-    private static final Constant<Pair<Class, LambdaReflection>, Method> METHOD = Constant.of("dMethod", p -> {
-        Method method = p.b().implMethod();
-        if (method.getDeclaringClass() != p.a()) {
-            try {
-                return p.a().getMethod(method.getName(), method.getParameterTypes());
-            } catch (NoSuchMethodException | SecurityException e) {
-                throw new Error(e);
-            }
-        } else {
-            return method;
-        }
-    });
+    private static final Constant<Pair<Class, LambdaReflection>, Method>          METHOD             = Constant.of("dMethod", p -> {
+                                                                                                         Method method = p.b().implMethod();
+                                                                                                         if (method.getDeclaringClass() != p.a()) {
+                                                                                                             try {
+                                                                                                                 return p.a().getMethod(method.getName(), method.getParameterTypes());
+                                                                                                             } catch (NoSuchMethodException | SecurityException e) {
+                                                                                                                 throw new Error(e);
+                                                                                                             }
+                                                                                                         } else {
+                                                                                                             return method;
+                                                                                                         }
+                                                                                                     });
 
-    private static final Constant<DProperty, Getable> GETABLE = Constant.of("dGetable", p -> {
-        Object                             d     = p.key() ? null : p.defaultValue();
-        boolean                            cc    = p.checkConsistency();
-        DProperty                          oppos = p.opposite();
-        DProperty                          scope = p.scopeProperty();
-        Supplier<Setable<?, ?>>            os    = oppos != null ? () -> DClare.setable(oppos) : null;
-        Supplier<Setable<DObject, Set<?>>> ss    = scope != null ? () -> DClare.setable(scope) : null;
-        return p.key() ? new KeyGetable(p, p.keyNr(), null) : p.constant() ?                                                    //
-                (p.containment() ? Constant.of(p, d, true, p.derived() ? p.deriver() : null, cc) :                                      //
-                        Constant.of(p, d, os, ss, p.derived() ? p.deriver() : null, cc)) :                                                      //
-                (p.mandatory() && (d == null || d instanceof ContainingCollection)) ?                                                   //
-                        (p.containment() ? MandatoryObserved.of(p, d, true, cc) : MandatoryObserved.of(p, d, os, ss, cc)) :                     //
-                        (p.containment() ? Observed.of(p, d, true, cc) : Observed.of(p, d, os, ss, cc));
-    });
+    private static final Constant<DProperty, Getable>                             GETABLE            = Constant.of("dGetable", p -> {
+                                                                                                         Object d = p.key() ? null : p.defaultValue();
+                                                                                                         boolean cc = p.checkConsistency();
+                                                                                                         DProperty oppos = p.opposite();
+                                                                                                         DProperty scope = p.scopeProperty();
+                                                                                                         Supplier<Setable<?, ?>> os = oppos != null ? () -> DClare.setable(oppos) : null;
+                                                                                                         Supplier<Setable<DObject, Set<?>>> ss = scope != null ? () -> DClare.setable(scope) : null;
+                                                                                                         return p.key() ? new KeyGetable(p, p.keyNr(), null) : p.constant() ?                                                                                           //
+                                                                                                         (p.containment() ? Constant.of(p, d, true, p.derived() ? p.deriver() : null, cc) :                                                                             //
+                                                                                                         Constant.of(p, d, os, ss, p.derived() ? p.deriver() : null, cc)) :                                                                                             //
+                                                                                                         (p.mandatory() && (d == null || d instanceof ContainingCollection)) ?                                                                                          //
+                                                                                                         (p.containment() ? MandatoryObserved.of(p, d, true, cc) : MandatoryObserved.of(p, d, os, ss, cc)) :                                                            //
+                                                                                                         (p.containment() ? Observed.of(p, d, true, cc) : Observed.of(p, d, os, ss, cc));
+                                                                                                     });
 
-    public static final Constant<Method, DMethodRule> RULE = Constant.of("dRule", (Method m) -> {
-        if (m.getParameterCount() == 0 && !m.isSynthetic() && (m.isDefault() || Modifier.isPrivate(m.getModifiers())) &&        //
-                (ann(m, Property.class) != null || ann(m, Rule.class) != null ||                                                        //
-                        extend(m, DMethodProperty.class) != DMethodProperty.class || extend(m, DMethodRule.class) != DMethodRule.class) &&      //
-                !m.isAnnotationPresent(Default.class) && !qual(m, constant)) {
-            return dclare(extend(m, DMethodRule.class), m);
-        } else {
-            return null;
-        }
-    });
+    public static final Constant<Method, DMethodRule>                             RULE               = Constant.of("dRule", (Method m) -> {
+                                                                                                         if (m.getParameterCount() == 0 && !m.isSynthetic() && (m.isDefault() || Modifier.isPrivate(m.getModifiers())) &&                                               //
+                                                                                                         (ann(m, Property.class) != null || ann(m, Rule.class) != null ||                                                                                               //
+                                                                                                         extend(m, DMethodProperty.class) != DMethodProperty.class || extend(m, DMethodRule.class) != DMethodRule.class) &&                                             //
+                                                                                                         !m.isAnnotationPresent(Default.class) && !qual(m, constant)) {
+                                                                                                             return dclare(extend(m, DMethodRule.class), m);
+                                                                                                         } else {
+                                                                                                             return null;
+                                                                                                         }
+                                                                                                     });
 
-    private static final Constant<String, DPackage> PACKAGE = Constant.<String, DPackage>of("dPackage", (String n) -> {
-        int i = n.lastIndexOf('.');
-        if (i > 0) {
-            DPackage pp = DClare.PACKAGE.get(n.substring(0, i));
-            return dclare(DPackage.class, pp, n.substring(i + 1));
-        } else {
-            return dclare(DPackage.class, dUniverse(), n);
-        }
-    }, (tx, n, o, p) -> DClare.<DPackageContainer, Set<DPackage>>setable(PACKAGES).set(p.parent(), Set::add, p));
+    private static final Constant<String, DPackage>                               PACKAGE            = Constant.<String, DPackage> of("dPackage", (String n) -> {
+                                                                                                         int i = n.lastIndexOf('.');
+                                                                                                         if (i > 0) {
+                                                                                                             DPackage pp = DClare.PACKAGE.get(n.substring(0, i));
+                                                                                                             return dclare(DPackage.class, pp, n.substring(i + 1));
+                                                                                                         } else {
+                                                                                                             return dclare(DPackage.class, dUniverse(), n);
+                                                                                                         }
+                                                                                                     }, (tx, n, o, p) -> DClare.<DPackageContainer, Set<DPackage>> setable(PACKAGES).set(p.parent(), Set::add, p));
 
-    private static final Constant<Class<? extends DStruct>, Lookup> NATIVE_LOOKUP = Constant.of("nLookup", c -> dStruct((Class<? extends DStruct>) c).lookup());
+    private static final Constant<Class<? extends DStruct>, Lookup>               NATIVE_LOOKUP      = Constant.of("nLookup", c -> dStruct((Class<? extends DStruct>) c).lookup());
 
-    public static final Constant<Method, Handle> HANDLE = Constant.of("nHandle", Handle::new);
+    public static final Constant<Method, Handle>                                  HANDLE             = Constant.of("nHandle", Handle::new);
 
     private static final Constant<Class<? extends DStruct>, Constructor<DNative>> NATIVE_CONSTRUCTOR = Constant.of("dNativeConstructor", c -> {
-        Native               ann    = ann(c, Native.class);
-        Constructor<DNative> constr = null;
-        if (ann != null) {
-            c = cls(c, Native.class);
-            try {
-                constr = (Constructor<DNative>) ann.value().getConstructor(c);
-            } catch (NoSuchMethodException | SecurityException e) {
-                throw new Error(e);
-            }
-        }
-        return constr;
-    });
+                                                                                                         Native ann = ann(c, Native.class);
+                                                                                                         Constructor<DNative> constr = null;
+                                                                                                         if (ann != null) {
+                                                                                                             c = cls(c, Native.class);
+                                                                                                             try {
+                                                                                                                 constr = (Constructor<DNative>) ann.value().getConstructor(c);
+                                                                                                             } catch (NoSuchMethodException | SecurityException e) {
+                                                                                                                 throw new Error(e);
+                                                                                                             }
+                                                                                                         }
+                                                                                                         return constr;
+                                                                                                     });
 
-    private static final Constant<DObject, DNative> NATIVE = Constant.of("dNative", o -> {
-        DNative              dNative           = null;
-        Constructor<DNative> nativeConstructor = NATIVE_CONSTRUCTOR.get(jClass(o));
-        if (nativeConstructor != null) {
-            try {
-                dNative = nativeConstructor.newInstance(o);
-            } catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-                throw new Error(e);
-            }
-        }
-        return dNative;
-    });
+    private static final Constant<DObject, DNative>                               NATIVE             = Constant.of("dNative", o -> {
+                                                                                                         DNative dNative = null;
+                                                                                                         Constructor<DNative> nativeConstructor = NATIVE_CONSTRUCTOR.get(jClass(o));
+                                                                                                         if (nativeConstructor != null) {
+                                                                                                             try {
+                                                                                                                 dNative = nativeConstructor.newInstance(o);
+                                                                                                             } catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+                                                                                                                 throw new Error(e);
+                                                                                                             }
+                                                                                                         }
+                                                                                                         return dNative;
+                                                                                                     });
 
     public static <U extends DUniverse> DClare<U> of(Class<U> universeClass) {
         return new DClare<>(universeClass, true, Clock.systemDefaultZone(), 100);
@@ -203,13 +256,11 @@ public final class DClare<U extends DUniverse> extends UniverseTransaction {
         return new DClare<>(universeClass, checkFatals, Clock.systemDefaultZone(), maxInInQueue);
     }
 
-    @SuppressWarnings("UnusedReturnValue")
     @SafeVarargs
     public static <U extends DUniverse> State run(Class<U> universeClass, Consumer<U>... steps) {
         return start(universeClass, true, steps).waitForEnd();
     }
 
-    @SuppressWarnings("UnusedReturnValue")
     @SafeVarargs
     public static <U extends DUniverse> State runAndStop(Class<U> universeClass, Consumer<U>... steps) {
         DClare<U> root = start(universeClass, true, steps);
@@ -217,7 +268,6 @@ public final class DClare<U extends DUniverse> extends UniverseTransaction {
         return root.waitForEnd();
     }
 
-    @SuppressWarnings("UnusedReturnValue")
     @SafeVarargs
     public static <U extends DUniverse> State runAndRead(Class<U> universeClass, Consumer<U>... steps) {
         DClare<U> root = start(universeClass, true, steps);
@@ -351,16 +401,16 @@ public final class DClare<U extends DUniverse> extends UniverseTransaction {
     }
 
     private static <S extends DStruct> S init(S o, Consumer<S>[] inits) {
-        for (Consumer<S> init: inits) {
+        for (Consumer<S> init : inits) {
             init.accept(o);
         }
         return o;
     }
 
     public static <X extends DObject, Y extends DObject, A, B> void OPPOSITE(SerializableFunction<X, A> from, SerializableFunction<Y, B> to) {
-        State  state      = CLASS_INIT_STATE.get();
+        State state = CLASS_INIT_STATE.get();
         Method fromMethod = method(from);
-        Method toMethod   = method(to);
+        Method toMethod = method(to);
         state = state.set(fromMethod, OPPOSITE, toMethod);
         state = state.set(toMethod, OPPOSITE, fromMethod);
         CLASS_INIT_STATE.set(state);
@@ -371,8 +421,8 @@ public final class DClare<U extends DUniverse> extends UniverseTransaction {
     }
 
     public static <O extends DObject, V> void rule(O dObject, SerializableFunction<O, V> property, Function<O, V> value) {
-        Setable<DObject, Set<DRule>> ors       = setable(D_OBJECT_RULES);
-        DProperty                    dProperty = dProperty(dObject, property);
+        Setable<DObject, Set<DRule>> ors = setable(D_OBJECT_RULES);
+        DProperty dProperty = dProperty(dObject, property);
         ors.set(dObject, Set::add, dclare(DObjectRule.class, dObject, dProperty.name(), //
                 set(DObjectRule::consumer, id((Consumer<O>) o -> dProperty.set(o, value.apply(o)), dObject, dProperty)), //
                 set(DObjectRule::initDirection, Direction.forward)));
@@ -390,7 +440,7 @@ public final class DClare<U extends DUniverse> extends UniverseTransaction {
     }
 
     public static <O extends DObject, V, E> void set(O dObject, SerializableFunction<O, V> property, BiFunction<V, E, V> function, E element) {
-        DClare.<O, V>setable(method(dObject, property)).set(dObject, function, element);
+        DClare.<O, V> setable(method(dObject, property)).set(dObject, function, element);
     }
 
     public static <O extends DStruct, V> V get(O dObject, SerializableFunction<O, V> property) {
@@ -487,7 +537,7 @@ public final class DClare<U extends DUniverse> extends UniverseTransaction {
     }
 
     private State constraints(Class<? extends DStruct> cls) {
-        for (Method method: cls.getDeclaredMethods()) {
+        for (Method method : cls.getDeclaredMethods()) {
             if (method.isAnnotationPresent(Constraints.class)) {
                 CLASS_INIT_STATE.set(emptyState());
                 run(dStruct(cls, CONSTRAINTS), method);
@@ -505,7 +555,7 @@ public final class DClare<U extends DUniverse> extends UniverseTransaction {
     }
 
     public static void unparent(DObject dObject) {
-        DObject   oldParent = dObject.dParent();
+        DObject oldParent = dObject.dParent();
         DProperty cProperty = dObject.dContainmentProperty();
         if (oldParent != null && cProperty != null) {
             cProperty.set(oldParent, DClare::remove, dObject);
@@ -562,8 +612,7 @@ public final class DClare<U extends DUniverse> extends UniverseTransaction {
     }
 
     public static <T extends DStruct, U extends DStruct> T dStruct(Class<T> jClass1, Class<U> jClass2, Object... key) {
-        return (T) Proxy.newProxyInstance(jClass1.getClassLoader(), new Class<?>[]{jClass1,
-                jClass2}, new DStructHandler(key, jClass1));
+        return (T) Proxy.newProxyInstance(jClass1.getClassLoader(), new Class<?>[]{jClass1, jClass2}, new DStructHandler(key, jClass1));
     }
 
     public static <O, V> Getable<O, V> getable(DProperty property) {
@@ -592,9 +641,9 @@ public final class DClare<U extends DUniverse> extends UniverseTransaction {
     }
 
     private static final class IdHandler<F> implements InvocationHandler {
-        private       Object[] key;
-        private       F        f;
-        private final int      hashCode;
+        private Object[]  key;
+        private F         f;
+        private final int hashCode;
 
         private IdHandler(Class<?> intf, F f, Object[] key) {
             this.key = key;
@@ -675,8 +724,8 @@ public final class DClare<U extends DUniverse> extends UniverseTransaction {
 
     public static final class DStructHandler implements InvocationHandler {
 
-        public        Object[] key;
-        private final int      hashCode;
+        public Object[]   key;
+        private final int hashCode;
 
         private DStructHandler(Object[] key, Class<? extends DStruct> intf) {
             this.key = key;
@@ -772,12 +821,12 @@ public final class DClare<U extends DUniverse> extends UniverseTransaction {
     }
 
     public final static class Handle {
-        private final Method       method;
-        public final  MethodHandle handle;
+        private final Method      method;
+        public final MethodHandle handle;
 
         private Handle(Method method) {
             this.method = method;
-            Class   jClass = method.getDeclaringClass();
+            Class jClass = method.getDeclaringClass();
             boolean struct = DStruct.class.isAssignableFrom(jClass);
             if (struct && (method.getModifiers() & Modifier.ABSTRACT) == 0) {
                 try {
@@ -810,7 +859,6 @@ public final class DClare<U extends DUniverse> extends UniverseTransaction {
         return supers(null, cls, (a, c) -> c.isAnnotationPresent(annotation) ? c.getAnnotation(annotation) : a);
     }
 
-    @SuppressWarnings("SameParameterValue")
     private static <T extends Annotation> Class cls(Class<?> cls, Class<T> annotation) {
         return supers(null, cls, (a, c) -> c.isAnnotationPresent(annotation) ? c : a);
     }
@@ -823,7 +871,7 @@ public final class DClare<U extends DUniverse> extends UniverseTransaction {
         return overridden(false, method, (f, m) -> {
             Property p = m.getAnnotation(Property.class);
             if (p != null) {
-                for (PropertyQualifier mq: p.value()) {
+                for (PropertyQualifier mq : p.value()) {
                     if (mq == q) {
                         return true;
                     }
@@ -840,17 +888,16 @@ public final class DClare<U extends DUniverse> extends UniverseTransaction {
         });
     }
 
-    @SuppressWarnings("SameParameterValue")
     private static <T extends Annotation> Method method(Method method, Class<T> annotation) {
         return overridden(null, method, (a, m) -> m.isAnnotationPresent(annotation) ? m : a);
     }
 
     public static <T> Class<? extends T> extend(Method method, Class<T> target) {
         return overridden(target, method, (e, m) -> {
-            for (Annotation ann: m.getAnnotations()) {
+            for (Annotation ann : m.getAnnotations()) {
                 Extend ext = ann.annotationType().getAnnotation(Extend.class);
                 if (ext != null) {
-                    for (Class val: ext.value()) {
+                    for (Class val : ext.value()) {
                         if (e.isAssignableFrom(val)) {
                             e = val;
                         }
@@ -859,7 +906,7 @@ public final class DClare<U extends DUniverse> extends UniverseTransaction {
             }
             Extend ext = m.getAnnotation(Extend.class);
             if (ext != null) {
-                for (Class val: ext.value()) {
+                for (Class val : ext.value()) {
                     if (e.isAssignableFrom(val)) {
                         e = val;
                     }
@@ -869,13 +916,12 @@ public final class DClare<U extends DUniverse> extends UniverseTransaction {
         });
     }
 
-    @SuppressWarnings("SameParameterValue")
     private static <T> Class<? extends T> extend(Class cls, Class<T> target) {
         return supers(target, cls, (e, c) -> {
-            for (Annotation ann: c.getAnnotations()) {
+            for (Annotation ann : c.getAnnotations()) {
                 Extend ext = ann.annotationType().getAnnotation(Extend.class);
                 if (ext != null) {
-                    for (Class val: ext.value()) {
+                    for (Class val : ext.value()) {
                         if (e.isAssignableFrom(val)) {
                             e = val;
                         }
@@ -884,7 +930,7 @@ public final class DClare<U extends DUniverse> extends UniverseTransaction {
             }
             Extend ext = c.getAnnotation(Extend.class);
             if (ext != null) {
-                for (Class val: ext.value()) {
+                for (Class val : ext.value()) {
                     if (e.isAssignableFrom(val)) {
                         e = val;
                     }
@@ -895,7 +941,7 @@ public final class DClare<U extends DUniverse> extends UniverseTransaction {
     }
 
     public static <T> T overridden(T init, Method method, BiFunction<T, Method, T> function) {
-        for (Class sup: method.getDeclaringClass().getInterfaces()) {
+        for (Class sup : method.getDeclaringClass().getInterfaces()) {
             if (DStruct.class.isAssignableFrom(sup)) {
                 try {
                     Method overridden = sup.getMethod(method.getName(), method.getParameterTypes());
@@ -911,7 +957,7 @@ public final class DClare<U extends DUniverse> extends UniverseTransaction {
     }
 
     public static <T> T supers(T init, Class<?> cls, BiFunction<T, Class<?>, T> function) {
-        for (Class sup: cls.getInterfaces()) {
+        for (Class sup : cls.getInterfaces()) {
             if (DStruct.class.isAssignableFrom(cls)) {
                 init = supers(init, sup, function);
             }
@@ -920,8 +966,8 @@ public final class DClare<U extends DUniverse> extends UniverseTransaction {
     }
 
     public static Function deriver(Method method) {
-        Method  defMethod = DClare.method(method, Default.class);
-        boolean concrete  = (method.getModifiers() & Modifier.ABSTRACT) == 0;
+        Method defMethod = DClare.method(method, Default.class);
+        boolean concrete = (method.getModifiers() & Modifier.ABSTRACT) == 0;
         return defMethod != method && concrete ? o -> DClare.run(o, method) : null;
     }
 
@@ -937,13 +983,13 @@ public final class DClare<U extends DUniverse> extends UniverseTransaction {
 
     public static Set<DStructClass> dSupers(Class cls) {
         Set<Class> supers = Set.of(cls.getInterfaces());
-        Class      s      = cls.getSuperclass();
+        Class s = cls.getSuperclass();
         return (s != null ? supers.add(s) : supers).map((Function<Class, DStructClass>) DClare::dClass).notNull().toSet();
     }
 
     public static Set<DStructClass<?>> dInnerClasses(Class cls) {
         Set<DStructClass<?>> inners = Set.of();
-        for (Class inner: cls.getDeclaredClasses()) {
+        for (Class inner : cls.getDeclaredClasses()) {
             DStructClass dClass = dClass(inner);
             if (dClass != null) {
                 inners = inners.add(dClass);
@@ -1012,39 +1058,39 @@ public final class DClare<U extends DUniverse> extends UniverseTransaction {
         return new TriConsumer<>() {
 
             private final Concurrent<Map<Pair<DNative, ChangeHandler>, Pair<Object, Object>>> deferred = Concurrent.of(Map.of());
-            private final Concurrent<Map<Pair<DNative, ChangeHandler>, Pair<Object, Object>>> queue = Concurrent.of(Map.of());
+            private final Concurrent<Map<Pair<DNative, ChangeHandler>, Pair<Object, Object>>> queue    = Concurrent.of(Map.of());
 
             @Override
             public void accept(State pre, State post, Boolean last) {
                 pre.diff(post, //
                         filterClass::isInstance, p -> true).forEachOrdered(e0 -> {
-                    DObject          dObject = (DObject) e0.getKey();
-                    DNative          no      = NATIVE.get(dObject);
-                    Pair<Pair, Pair> diff    = (Pair) e0.getValue().get(Mutable.D_PARENT_CONTAINING);
-                    if (diff != null) {
-                        if (diff.a() == null) {
-                            no.init((DObject) diff.b().a());
-                            dObject.dClass().allProperties().forEachOrdered(p -> {
-                                ChangeHandler nch = p.nativeChangeHandler();
-                                if (nch != null) {
-                                    change(no, nch, Pair.of(p.defaultValue(), p.get(dObject)));
+                            DObject dObject = (DObject) e0.getKey();
+                            DNative no = NATIVE.get(dObject);
+                            Pair<Pair, Pair> diff = (Pair) e0.getValue().get(Mutable.D_PARENT_CONTAINING);
+                            if (diff != null) {
+                                if (diff.a() == null) {
+                                    no.init((DObject) diff.b().a());
+                                    dObject.dClass().allProperties().forEachOrdered(p -> {
+                                        ChangeHandler nch = p.nativeChangeHandler();
+                                        if (nch != null) {
+                                            change(no, nch, Pair.of(p.defaultValue(), p.get(dObject)));
+                                        }
+                                    });
+                                } else if (diff.b() == null) {
+                                    no.exit((DObject) diff.a().a());
                                 }
-                            });
-                        } else if (diff.b() == null) {
-                            no.exit((DObject) diff.a().a());
-                        }
-                    } else if (Mutable.D_PARENT_CONTAINING.get(dObject) != null) {
-                        e0.getValue().forEachOrdered(e1 -> {
-                            if (e1.getKey().id() instanceof DProperty) {
-                                DProperty<DStruct, Object> p   = (DProperty) e1.getKey().id();
-                                ChangeHandler              nch = p.nativeChangeHandler();
-                                if (nch != null) {
-                                    change(no, nch, e1.getValue());
-                                }
+                            } else if (Mutable.D_PARENT_CONTAINING.get(dObject) != null) {
+                                e0.getValue().forEachOrdered(e1 -> {
+                                    if (e1.getKey().id() instanceof DProperty) {
+                                        DProperty<DStruct, Object> p = (DProperty) e1.getKey().id();
+                                        ChangeHandler nch = p.nativeChangeHandler();
+                                        if (nch != null) {
+                                            change(no, nch, e1.getValue());
+                                        }
+                                    }
+                                });
                             }
                         });
-                    }
-                });
                 run(queue);
                 if (last) {
                     run(deferred);
@@ -1064,7 +1110,7 @@ public final class DClare<U extends DUniverse> extends UniverseTransaction {
             }
 
             private void run(Concurrent<Map<Pair<DNative, ChangeHandler>, Pair<Object, Object>>> todo) {
-                for (Entry<Pair<DNative, ChangeHandler>, Pair<Object, Object>> e: todo.result()) {
+                for (Entry<Pair<DNative, ChangeHandler>, Pair<Object, Object>> e : todo.result()) {
                     e.getKey().b().handle(e.getKey().a(), e.getValue().a(), e.getValue().b());
                 }
                 todo.init(Map.of());
@@ -1079,17 +1125,17 @@ public final class DClare<U extends DUniverse> extends UniverseTransaction {
 
     // Instance part
 
-    private final Clock                       clock;
-    private       Setable<DUniverse, Boolean> stopSetable;
-    private       Thread                      inputReader;
-    private       Timer                       timer;
+    private final Clock                 clock;
+    private Setable<DUniverse, Boolean> stopSetable;
+    private Thread                      inputReader;
+    private Timer                       timer;
 
-    private final Action<Universe> stop        = Action.of("$stop", o -> stopSetable.set(universe(), true));
-    private final Action<Universe> setTime     = Action.of("$setTime", o -> setTime());
-    private final Action<Universe> animate     = Action.of("$animate", o -> animate());
-    private final Action<Universe> printOutput = Action.of("$printOutput", o -> printOutput());
-    private final Action<Universe> restart     = Action.of("$restart", o -> restart());
-    private final Action<Universe> checkFatals;
+    private final Action<Universe>      stop        = Action.of("$stop", o -> stopSetable.set(universe(), true));
+    private final Action<Universe>      setTime     = Action.of("$setTime", o -> setTime());
+    private final Action<Universe>      animate     = Action.of("$animate", o -> animate());
+    private final Action<Universe>      printOutput = Action.of("$printOutput", o -> printOutput());
+    private final Action<Universe>      restart     = Action.of("$restart", o -> restart());
+    private final Action<Universe>      checkFatals;
 
     private DClare(Class<? extends DUniverse> universeClass, boolean checkFatals, Clock clock, int maxInInQueue) {
         super(dStruct(universeClass), THE_POOL, null, maxInInQueue, MAX_TOTAL_NR_OF_CHANGES, MAX_NR_OF_CHANGES, MAX_NR_OF_OBSERVED, MAX_NR_OF_OBSERVERS, MAX_NR_OF_HISTORY, null);
@@ -1134,8 +1180,8 @@ public final class DClare<U extends DUniverse> extends UniverseTransaction {
     }
 
     private void printOutput() {
-        int      runNr = ROOT_RUN_NR.set(universe(), Integer::sum, 1);
-        IOString out   = universe().output();
+        int runNr = ROOT_RUN_NR.set(universe(), Integer::sum, 1);
+        IOString out = universe().output();
         if (out.nr() == runNr && !out.string().isEmpty()) {
             System.out.print(out.string());
             System.out.flush();
@@ -1178,7 +1224,6 @@ public final class DClare<U extends DUniverse> extends UniverseTransaction {
         return (U) mutable();
     }
 
-    @SuppressWarnings({"UnusedReturnValue", "SameParameterValue"})
     private static KeyGetable cyclicKey(Method method, int nr) {
         DProperty property = dclare(extend(method, DMethodProperty.class), method);
         PROPERTY.force(method, property);
@@ -1187,7 +1232,6 @@ public final class DClare<U extends DUniverse> extends UniverseTransaction {
         return getable;
     }
 
-    @SuppressWarnings("UnusedReturnValue")
     private static Constant cyclicConstant(Method method) {
         DProperty property = dclare(extend(method, DMethodProperty.class), method);
         PROPERTY.force(method, property);
@@ -1196,7 +1240,6 @@ public final class DClare<U extends DUniverse> extends UniverseTransaction {
         return setable;
     }
 
-    @SuppressWarnings("UnusedReturnValue")
     private static Constant cyclicContainmentConstant(Method method) {
         DProperty property = dclare(extend(method, DMethodProperty.class), method);
         PROPERTY.force(method, property);
@@ -1213,38 +1256,36 @@ public final class DClare<U extends DUniverse> extends UniverseTransaction {
         return setable;
     }
 
-    @SuppressWarnings("UnusedReturnValue")
     private static Observed cyclicContainment(Method method) {
         DProperty property = dclare(extend(method, DMethodProperty.class), method);
         PROPERTY.force(method, property);
-        Object   defaultValue = defaultValue(method, false);
-        Observed setable      = Observed.of(property, defaultValue, true, true);
+        Object defaultValue = defaultValue(method, false);
+        Observed setable = Observed.of(property, defaultValue, true, true);
         GETABLE.force(property, setable);
         return setable;
     }
 
-
     public void start() {
         Action<Universe> bootstrap = Action.of("$bootstrap", o -> {
-            cyclicKey(DClare.<DMethodProperty, Method>method(DMethodProperty::method), 0);
-            cyclicKey(DClare.<DStructClass, Class>method(DStructClass::jClass), 0);
-            cyclicConstant(DClare.<DMethodProperty, Class>method(DMethodProperty::objectClass));
-            cyclicConstant(DClare.<DMethodProperty, Class>method(DMethodProperty::elementClass));
-            cyclicConstant(DClare.<DMethodProperty, Boolean>method(DMethodProperty::key));
-            cyclicConstant(DClare.<DMethodProperty, Integer>method(DMethodProperty::keyNr));
-            cyclicConstant(DClare.<DMethodProperty, Object>method(DMethodProperty::validation));
-            cyclicConstant(DClare.<DMethodProperty, Object>method(DMethodProperty::many));
-            cyclicConstant(DClare.<DMethodProperty, Object>method(DMethodProperty::mandatory));
-            cyclicConstant(DClare.<DMethodProperty, Object>method(DMethodProperty::defaultValue));
-            cyclicContainmentConstant(DClare.<DMethodProperty, DProperty>method(DMethodProperty::implicitOpposite));
-            cyclicConstant(DClare.<DMethodProperty, Boolean>method(DMethodProperty::containment));
-            cyclicConstant(DClare.<DMethodProperty, DProperty>method(DMethodProperty::opposite));
-            cyclicConstant(DClare.<DMethodProperty, DProperty>method(DMethodProperty::scopeProperty));
-            cyclicConstant(DClare.<DMethodProperty, Boolean>method(DMethodProperty::constant));
-            cyclicConstant(DClare.<DMethodProperty, Boolean>method(DMethodProperty::derived));
-            cyclicConstant(DClare.<DMethodProperty, Function>method(DMethodProperty::deriver));
-            cyclicContainment(DClare.<DPackageContainer, Set>method(DPackageContainer::packages));
-            cyclicContainment(DClare.<DClassContainer, Set>method(DClassContainer::classes));
+            cyclicKey(DClare.<DMethodProperty, Method> method(DMethodProperty::method), 0);
+            cyclicKey(DClare.<DStructClass, Class> method(DStructClass::jClass), 0);
+            cyclicConstant(DClare.<DMethodProperty, Class> method(DMethodProperty::objectClass));
+            cyclicConstant(DClare.<DMethodProperty, Class> method(DMethodProperty::elementClass));
+            cyclicConstant(DClare.<DMethodProperty, Boolean> method(DMethodProperty::key));
+            cyclicConstant(DClare.<DMethodProperty, Integer> method(DMethodProperty::keyNr));
+            cyclicConstant(DClare.<DMethodProperty, Object> method(DMethodProperty::validation));
+            cyclicConstant(DClare.<DMethodProperty, Object> method(DMethodProperty::many));
+            cyclicConstant(DClare.<DMethodProperty, Object> method(DMethodProperty::mandatory));
+            cyclicConstant(DClare.<DMethodProperty, Object> method(DMethodProperty::defaultValue));
+            cyclicContainmentConstant(DClare.<DMethodProperty, DProperty> method(DMethodProperty::implicitOpposite));
+            cyclicConstant(DClare.<DMethodProperty, Boolean> method(DMethodProperty::containment));
+            cyclicConstant(DClare.<DMethodProperty, DProperty> method(DMethodProperty::opposite));
+            cyclicConstant(DClare.<DMethodProperty, DProperty> method(DMethodProperty::scopeProperty));
+            cyclicConstant(DClare.<DMethodProperty, Boolean> method(DMethodProperty::constant));
+            cyclicConstant(DClare.<DMethodProperty, Boolean> method(DMethodProperty::derived));
+            cyclicConstant(DClare.<DMethodProperty, Function> method(DMethodProperty::deriver));
+            cyclicContainment(DClare.<DPackageContainer, Set> method(DPackageContainer::packages));
+            cyclicContainment(DClare.<DClassContainer, Set> method(DClassContainer::classes));
             dClass(DMethodProperty.class);
             dClass(DStructClass.class);
             dClass(DClass.class);

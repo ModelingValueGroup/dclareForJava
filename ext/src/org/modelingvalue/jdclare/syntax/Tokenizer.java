@@ -15,12 +15,15 @@
 
 package org.modelingvalue.jdclare.syntax;
 
-import org.modelingvalue.collections.*;
-import org.modelingvalue.jdclare.*;
-import org.modelingvalue.jdclare.syntax.regex.*;
-
 import static org.modelingvalue.jdclare.DClare.*;
 import static org.modelingvalue.jdclare.PropertyQualifier.*;
+
+import org.modelingvalue.collections.List;
+import org.modelingvalue.jdclare.DObject;
+import org.modelingvalue.jdclare.DStruct1;
+import org.modelingvalue.jdclare.Property;
+import org.modelingvalue.jdclare.Rule;
+import org.modelingvalue.jdclare.syntax.regex.DMatch;
 
 @SuppressWarnings("unused")
 public interface Tokenizer<S extends Grammar> extends DStruct1<Text<S, ?>>, DObject {
@@ -33,7 +36,6 @@ public interface Tokenizer<S extends Grammar> extends DStruct1<Text<S, ?>>, DObj
         return text().grammar().newLinePattern().matcher(text().string()).matches(true).toList();
     }
 
-    @SuppressWarnings("InfiniteRecursion")
     @Property(containment)
     default List<Line> lines() {
         return matches().reuse(lines(), (l, m) -> m.value().equals(l.string()), (l, m) -> {

@@ -15,16 +15,22 @@
 
 package org.modelingvalue.jdclare.meta;
 
-import org.modelingvalue.collections.*;
+import static org.modelingvalue.jdclare.PropertyQualifier.*;
+
+import java.lang.reflect.Method;
+import java.util.Comparator;
+
 import org.modelingvalue.collections.Collection;
 import org.modelingvalue.collections.List;
+import org.modelingvalue.collections.QualifiedSet;
 import org.modelingvalue.collections.Set;
-import org.modelingvalue.jdclare.*;
-
-import java.lang.reflect.*;
-import java.util.*;
-
-import static org.modelingvalue.jdclare.PropertyQualifier.*;
+import org.modelingvalue.jdclare.Abstract;
+import org.modelingvalue.jdclare.Constraints;
+import org.modelingvalue.jdclare.DClare;
+import org.modelingvalue.jdclare.DNamed;
+import org.modelingvalue.jdclare.DStruct;
+import org.modelingvalue.jdclare.DStruct1;
+import org.modelingvalue.jdclare.Property;
 
 public interface DStructClass<T extends DStruct> extends DClassContainer, DStruct1<Class<?>> {
 
@@ -34,7 +40,7 @@ public interface DStructClass<T extends DStruct> extends DClassContainer, DStruc
         DClare.<DStructClass, DStructClass, Object, Object> OPPOSITE(DStructClass::allSupers, DStructClass::allSubs);
     }
 
-    @SuppressWarnings({"rawtypes"})
+    @SuppressWarnings({"rawtypes", "unchecked"})
     @Property(constant)
     default Set<DStructClass> allSupers() {
         return Collection.concat(this, supers().flatMap(DStructClass::allSupers)).toSet();

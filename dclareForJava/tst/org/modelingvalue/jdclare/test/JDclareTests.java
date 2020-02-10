@@ -15,20 +15,28 @@
 
 package org.modelingvalue.jdclare.test;
 
-import org.junit.*;
-import org.modelingvalue.collections.Collection;
-import org.modelingvalue.collections.Set;
-import org.modelingvalue.collections.util.*;
-import org.modelingvalue.dclare.*;
-import org.modelingvalue.dclare.ex.*;
-import org.modelingvalue.jdclare.*;
-import org.modelingvalue.jdclare.test.PrioUniverse.*;
-
-import java.time.*;
-import java.util.*;
-
 import static org.junit.Assert.*;
 import static org.modelingvalue.jdclare.DClare.*;
+
+import java.time.Clock;
+import java.time.Instant;
+import java.time.ZoneId;
+import java.util.Optional;
+
+import org.junit.Assert;
+import org.junit.Test;
+import org.modelingvalue.collections.Collection;
+import org.modelingvalue.collections.Set;
+import org.modelingvalue.collections.util.Pair;
+import org.modelingvalue.dclare.Direction;
+import org.modelingvalue.dclare.State;
+import org.modelingvalue.dclare.ex.OutOfScopeException;
+import org.modelingvalue.jdclare.DClare;
+import org.modelingvalue.jdclare.DNamed;
+import org.modelingvalue.jdclare.DObject;
+import org.modelingvalue.jdclare.DStruct;
+import org.modelingvalue.jdclare.DUniverse;
+import org.modelingvalue.jdclare.test.PrioUniverse.Prio;
 
 public class JDclareTests {
 
@@ -40,7 +48,7 @@ public class JDclareTests {
     public void manyUniverse() {
         for (int i = 0; i < MANY_TIMES; i++) {
             DClare<DUniverse> dClare = of(DUniverse.class);
-            State             result = dClare.run();
+            State result = dClare.run();
             result.run(() -> check(result));
         }
     }
@@ -48,7 +56,7 @@ public class JDclareTests {
     @Test
     public void universe() {
         DClare<DUniverse> dClare = of(DUniverse.class);
-        State             result = dClare.run();
+        State result = dClare.run();
         if (DUMP) {
             System.err.println("***************************** Begin DUniverse ***********************************");
             System.err.println(result.asString());
@@ -69,7 +77,7 @@ public class JDclareTests {
         State prev = null;
         for (int i = 0; i < MANY_TIMES; i++) {
             DClare<Orchestra> dClare = of(Orchestra.class, FIXED_CLOCK);
-            State             next   = dClare.run();
+            State next = dClare.run();
             next.run(() -> {
                 check(next);
                 checkOrchestra(next);
@@ -85,7 +93,7 @@ public class JDclareTests {
     @Test
     public void orchestra() {
         DClare<Orchestra> dClare = of(Orchestra.class);
-        State             result = dClare.run();
+        State result = dClare.run();
         result.run(() -> {
             check(result);
             checkOrchestra(result);
@@ -131,7 +139,7 @@ public class JDclareTests {
     @Test
     public void testReparents() {
         DClare<Reparents> dClare = of(Reparents.class);
-        State             result = dClare.run();
+        State result = dClare.run();
         result.run(() -> check(result));
         if (DUMP) {
             result.run(() -> {
@@ -147,7 +155,7 @@ public class JDclareTests {
     @Test
     public void testPriorities() {
         DClare<PrioUniverse> dClare = of(PrioUniverse.class);
-        State                result = dClare.run();
+        State result = dClare.run();
         result.run(() -> {
             check(result);
             checkPriorities(result);
@@ -168,7 +176,7 @@ public class JDclareTests {
         State prev = null;
         for (int i = 0; i < MANY_TIMES; i++) {
             DClare<PrioUniverse> dClare = of(PrioUniverse.class, FIXED_CLOCK);
-            State                next   = dClare.run();
+            State next = dClare.run();
             next.run(() -> {
                 check(next);
                 checkPriorities(next);
@@ -229,7 +237,7 @@ public class JDclareTests {
         return t;
     }
 
-    private void assertThrowable(Throwable cause, @SuppressWarnings("SameParameterValue") Class<? extends Throwable> throwable, String regex) {
+    private void assertThrowable(Throwable cause, Class<? extends Throwable> throwable, String regex) {
         assertEquals(throwable, cause.getClass());
         assertTrue(cause.getMessage() + " != " + regex, cause.getMessage().matches(regex));
     }
