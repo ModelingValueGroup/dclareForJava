@@ -35,14 +35,14 @@ jobs:
 
       - name: "(re)generate some files"
         run:  |
-          . <(java -jar buildTools.jar)
+          . <(java -jar ~/buildTools.jar)
           generateAll
           correctEols
           correctHeaders header
 
       - name: "download dependencies (as mentioned in pom)"
         run:  |
-          . <(java -jar buildTools.jar)
+          . <(java -jar ~/buildTools.jar)
           getAllDependencies ${{ secrets.GITHUB_TOKEN }} "${{ secrets.SCALEWAY_ACCESS_KEY }}" "${{ secrets.SCALEWAY_SECRET_KEY }}"
 
       - name: "build"
@@ -56,7 +56,7 @@ jobs:
 
       - name: "push changes back to github"
         run:  |
-          . <(java -jar buildTools.jar)
+          . <(java -jar ~/buildTools.jar)
           pushBackToGithub "${{ secrets.GITHUB_TOKEN }}" "automation@modelingvalue.com" "adjusted files [by github actions]"
 
       - name: "publish action-artifact jar"
