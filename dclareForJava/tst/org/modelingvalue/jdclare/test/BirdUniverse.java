@@ -15,11 +15,17 @@
 
 package org.modelingvalue.jdclare.test;
 
-import org.modelingvalue.collections.*;
-import org.modelingvalue.jdclare.*;
-
 import static org.modelingvalue.jdclare.DClare.*;
 import static org.modelingvalue.jdclare.PropertyQualifier.*;
+
+import org.modelingvalue.collections.Set;
+import org.modelingvalue.jdclare.DClare;
+import org.modelingvalue.jdclare.DNamed;
+import org.modelingvalue.jdclare.DObject;
+import org.modelingvalue.jdclare.DStruct2;
+import org.modelingvalue.jdclare.DUniverse;
+import org.modelingvalue.jdclare.Property;
+import org.modelingvalue.jdclare.Rule;
 
 @SuppressWarnings("unused")
 public interface BirdUniverse extends DUniverse {
@@ -231,18 +237,17 @@ public interface BirdUniverse extends DUniverse {
     interface HouseSparrow extends Bird {
         @Rule
         default void multiply() {
-            if ("yellow".equals(color()) && children().isEmpty() && name().length() < 7) {
-                for (int i = 0; i < 7; i++) {
+            if ("yellow".equals(color()) && children().isEmpty() && name().length() < 4) {
+                for (int i = 0; i < 200; i++) {
                     Bird child = dclare(HouseSparrow.class, this, name() + i);
                     set(this, Bird::children, Set::add, child);
-                    set(child, Bird::color, "yellow");
                 }
             }
         }
 
-        @Rule
-        default void rule() {
-            dclare(HouseSparrow.class, dUniverse(), "1").color();
+        @Override
+        default String color() {
+            return dclare(HouseSparrow.class, dUniverse(), "1").color();
         }
 
     }
