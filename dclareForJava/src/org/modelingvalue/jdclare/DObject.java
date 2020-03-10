@@ -15,14 +15,29 @@
 
 package org.modelingvalue.jdclare;
 
-import org.modelingvalue.collections.*;
-import org.modelingvalue.collections.util.*;
-import org.modelingvalue.dclare.*;
-import org.modelingvalue.jdclare.meta.*;
-
-import java.io.*;
-
 import static org.modelingvalue.jdclare.PropertyQualifier.*;
+
+import java.io.PrintStream;
+import java.io.PrintWriter;
+
+import org.modelingvalue.collections.Collection;
+import org.modelingvalue.collections.Entry;
+import org.modelingvalue.collections.List;
+import org.modelingvalue.collections.Map;
+import org.modelingvalue.collections.Set;
+import org.modelingvalue.collections.util.NonLockingPrintWriter;
+import org.modelingvalue.collections.util.StringUtil;
+import org.modelingvalue.dclare.Mutable;
+import org.modelingvalue.dclare.MutableTransaction;
+import org.modelingvalue.dclare.Observer;
+import org.modelingvalue.dclare.Setable;
+import org.modelingvalue.dclare.State;
+import org.modelingvalue.dclare.Transaction;
+import org.modelingvalue.dclare.UniverseTransaction;
+import org.modelingvalue.jdclare.meta.DClass;
+import org.modelingvalue.jdclare.meta.DProperty;
+import org.modelingvalue.jdclare.meta.DRule;
+import org.modelingvalue.jdclare.meta.DStructClass;
 
 @SuppressWarnings("unused")
 @Extend(DClass.class)

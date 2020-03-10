@@ -131,8 +131,7 @@ public class JDclareTests {
         assertEquals("Problems:", Set.of(), result.getObjects(DUniverse.class).flatMap(DObject::dAllProblems).toSet());
         assertEquals("ToDo:", Set.of(), result.getObjects(DObject.class).map(o -> Pair.of(o, Collection.concat( //
                 Collection.concat(Direction.forward.depth.get(o), Direction.backward.depth.get(o), Direction.scheduled.depth.get(o)), //
-                Collection.concat(Direction.forward.preDepth.get(o), Direction.backward.preDepth.get(o), Direction.scheduled.preDepth.get(o)), //
-                Collection.concat(Direction.forward.postDepth.get(o), Direction.backward.postDepth.get(o), Direction.scheduled.postDepth.get(o))).//
+                Collection.concat(Direction.forward.preDepth.get(o), Direction.backward.preDepth.get(o), Direction.scheduled.preDepth.get(o))).//
                 toSet())).filter(p -> !p.b().isEmpty()).toSet());
     }
 

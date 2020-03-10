@@ -120,7 +120,7 @@ public final class DClare<U extends DUniverse> extends UniverseTransaction {
 
     private static final Method                                                   PASSED_SECONDS     = method(DClock::passSeconds);
 
-    public static final Setable<DUniverse, Integer>                               ROOT_RUN_NR        = Setable.of("dRootRunNr", 0);
+    public static final Observed<DUniverse, Integer>                              ROOT_RUN_NR        = Observed.of("dRootRunNr", 0);
 
     public static final Context<State>                                            CLASS_INIT_STATE   = Context.of();
 

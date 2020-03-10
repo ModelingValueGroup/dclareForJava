@@ -13,45 +13,67 @@
 //     Arjan Kok, Carel Bast                                                                                           ~
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-package org.modelingvalue.jdclare.meta;
+package org.modelingvalue.jdclare.examples;
 
+import static org.modelingvalue.jdclare.DClare.*;
 import static org.modelingvalue.jdclare.PropertyQualifier.*;
 
-import java.util.function.Consumer;
-
-import org.modelingvalue.dclare.Direction;
-import org.modelingvalue.dclare.NonInternableObserver;
-import org.modelingvalue.dclare.Observer;
 import org.modelingvalue.jdclare.DObject;
-import org.modelingvalue.jdclare.DStruct2;
+import org.modelingvalue.jdclare.DUniverse;
+import org.modelingvalue.jdclare.Default;
+import org.modelingvalue.jdclare.IOString;
 import org.modelingvalue.jdclare.Property;
+import org.modelingvalue.jdclare.Rule;
 
-public interface DObjectRule<O extends DObject> extends DRule<O>, DStruct2<O, String> {
+public interface RecursiveUniverse2 extends DUniverse {
 
-    @Property(key = 0)
-    O object();
+    static void main(String[] args) {
+        runAndRead(RecursiveUniverse2.class);
+    }
 
-    @Property(key = 1)
-    String id();
+    @Default
+    @Property
+    default int depth() {
+        return 3;
+    }
 
-    @Override
-    @Property(constant)
-    Consumer<O> consumer();
+    @Property({containment, constant})
+    default Element element() {
+        return dclareUU(Element.class);
+    }
 
-    @Override
-    @Property(constant)
-    default String name() {
-        return object() + "::" + id();
+    interface Element extends DObject {
+        @Property
+        default int nr() {
+            DObject p = dParent();
+            return p instanceof Element ? ((Element) p).nr() + 1 : 0;
+        }
+
+        @Property({containment, optional})
+        default Element child() {
+            Element child = child();
+            return nr() < dclare(RecursiveUniverse2.class).depth() ? (child == null ? dclareUU(Element.class) : child) : null;
+        }
     }
 
     @Override
-    @Property(constant)
-    Direction initDirection();
+    default IOString output() {
+        return IOString.of(element().dString() + "> ");
+    }
 
-    @Override
-    @Property(constant)
-    default Observer<O> observer() {
-        return NonInternableObserver.of(this, o -> consumer().accept(o), initDirection());
+    @Rule
+    default void readInput() {
+        String input = input().string().replaceAll("\\s+", "");
+        if (input.equals("stop")) {
+            set(this, DUniverse::stop, true);
+        } else if (!input.isEmpty()) {
+            try {
+                set(this, RecursiveUniverse2::depth, Integer.parseInt(input));
+            } catch (NumberFormatException nfe) {
+                set(this, DUniverse::error, IOString.ofln("Only integer or 'stop' allowed"));
+            }
+        }
+        set(this, DUniverse::input, IOString.of(""));
     }
 
 }
