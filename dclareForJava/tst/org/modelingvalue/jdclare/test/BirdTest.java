@@ -228,7 +228,7 @@ public class BirdTest {
             DClare<BirdUniverse> dclare = of(BirdUniverse.class);
             start(dclare);
             addBird(dclare, Sparrow.class, Pair.of("0", "black"));
-            stop(dclare);
+            stop(dclare);//.run(() -> dclare.universe().dDump(System.err));
             Assert.fail();
         } catch (Throwable t) {
             Throwable cause = getCause(t);

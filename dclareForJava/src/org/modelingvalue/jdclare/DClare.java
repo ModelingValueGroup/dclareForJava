@@ -207,7 +207,9 @@ public final class DClare<U extends DUniverse> extends UniverseTransaction {
                                                                                                          } else {
                                                                                                              return dclare(DPackage.class, dUniverse(), n);
                                                                                                          }
-                                                                                                     }, (tx, n, o, p) -> DClare.<DPackageContainer, Set<DPackage>> setable(PACKAGES).set(p.parent(), Set::add, p));
+                                                                                                     }, (tx, n, o, p) -> {
+                                                                                                         DClare.<DPackageContainer, Set<DPackage>> setable(PACKAGES).set(p.parent(), Set::add, p);
+                                                                                                     });
 
     private static final Constant<Class<? extends DStruct>, Lookup>               NATIVE_LOOKUP      = Constant.of("nLookup", c -> dStruct((Class<? extends DStruct>) c).lookup());
 
@@ -448,6 +450,7 @@ public final class DClare<U extends DUniverse> extends UniverseTransaction {
     }
 
     public static <O extends DStruct, V> V pre(O dObject, SerializableFunction<O, V> property) {
+        ROOT_RUN_NR.get(dUniverse());
         return (V) getable(method(dObject, property)).pre(dObject);
     }
 
@@ -1152,6 +1155,7 @@ public final class DClare<U extends DUniverse> extends UniverseTransaction {
     }
 
     private void setTime() {
+        ROOT_RUN_NR.set(universe(), Integer::sum, 1);
         set(dUniverse().clock(), DClock::time, clock.instant());
     }
 
@@ -1180,8 +1184,8 @@ public final class DClare<U extends DUniverse> extends UniverseTransaction {
     }
 
     private void printOutput() {
-        int runNr = ROOT_RUN_NR.set(universe(), Integer::sum, 1);
         IOString out = universe().output();
+        int runNr = ROOT_RUN_NR.get(universe());
         if (out.nr() == runNr && !out.string().isEmpty()) {
             System.out.print(out.string());
             System.out.flush();

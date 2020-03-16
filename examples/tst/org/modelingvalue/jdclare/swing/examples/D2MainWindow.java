@@ -15,19 +15,40 @@
 
 package org.modelingvalue.jdclare.swing.examples;
 
-import org.modelingvalue.collections.List;
-import org.modelingvalue.collections.*;
-import org.modelingvalue.jdclare.*;
-import org.modelingvalue.jdclare.swing.ScrollPane;
-import org.modelingvalue.jdclare.swing.*;
-import org.modelingvalue.jdclare.swing.draw2d.*;
-
-import java.awt.*;
-import java.awt.event.*;
-import java.util.function.*;
-
 import static org.modelingvalue.jdclare.DClare.*;
 import static org.modelingvalue.jdclare.PropertyQualifier.*;
+
+import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.util.function.Consumer;
+
+import org.modelingvalue.collections.List;
+import org.modelingvalue.collections.Set;
+import org.modelingvalue.jdclare.DObject;
+import org.modelingvalue.jdclare.DStruct1;
+import org.modelingvalue.jdclare.DStruct2;
+import org.modelingvalue.jdclare.DUUObject;
+import org.modelingvalue.jdclare.Property;
+import org.modelingvalue.jdclare.Rule;
+import org.modelingvalue.jdclare.swing.DComponent;
+import org.modelingvalue.jdclare.swing.DToolbar;
+import org.modelingvalue.jdclare.swing.DToolbarItem;
+import org.modelingvalue.jdclare.swing.InputDeviceData;
+import org.modelingvalue.jdclare.swing.ScrollPane;
+import org.modelingvalue.jdclare.swing.SplitPane;
+import org.modelingvalue.jdclare.swing.draw2d.ClickMode;
+import org.modelingvalue.jdclare.swing.draw2d.DCanvas;
+import org.modelingvalue.jdclare.swing.draw2d.DCircle;
+import org.modelingvalue.jdclare.swing.draw2d.DDimension;
+import org.modelingvalue.jdclare.swing.draw2d.DFilled;
+import org.modelingvalue.jdclare.swing.draw2d.DImage;
+import org.modelingvalue.jdclare.swing.draw2d.DLine;
+import org.modelingvalue.jdclare.swing.draw2d.DPoint;
+import org.modelingvalue.jdclare.swing.draw2d.DRectangle;
+import org.modelingvalue.jdclare.swing.draw2d.DShape;
+import org.modelingvalue.jdclare.swing.draw2d.DTriangle;
+import org.modelingvalue.jdclare.swing.draw2d.LineMode;
+import org.modelingvalue.jdclare.swing.draw2d.SelectionMode;
 
 public interface D2MainWindow extends SplitPane, DStruct1<D2Universe> {
 
@@ -47,7 +68,7 @@ public interface D2MainWindow extends SplitPane, DStruct1<D2Universe> {
     }
 
     @Property(containment)
-    default ExampleMapping1 mapping() {
+    default ExampleMapping1 mapping1() {
         return dclare(ExampleMapping1.class, ((DiagramEditor) leftComponent()).canvas(), ((DiagramEditor) rigthComponent()).canvas());
     }
 

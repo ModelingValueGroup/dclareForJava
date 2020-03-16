@@ -15,14 +15,17 @@
 
 package org.modelingvalue.jdclare.meta;
 
-import org.modelingvalue.dclare.*;
-import org.modelingvalue.jdclare.*;
-
-import java.lang.reflect.*;
-import java.util.function.*;
-
 import static org.modelingvalue.jdclare.DClare.*;
 import static org.modelingvalue.jdclare.PropertyQualifier.*;
+
+import java.lang.reflect.Method;
+import java.util.function.Consumer;
+
+import org.modelingvalue.dclare.Direction;
+import org.modelingvalue.jdclare.DClare;
+import org.modelingvalue.jdclare.DObject;
+import org.modelingvalue.jdclare.DStruct1;
+import org.modelingvalue.jdclare.Property;
 
 public interface DMethodRule<O extends DObject, T> extends DRule<O>, DStruct1<Method> {
 

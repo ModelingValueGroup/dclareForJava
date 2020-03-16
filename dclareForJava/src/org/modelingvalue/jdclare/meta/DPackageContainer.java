@@ -15,10 +15,11 @@
 
 package org.modelingvalue.jdclare.meta;
 
-import org.modelingvalue.collections.*;
-import org.modelingvalue.jdclare.*;
-
 import static org.modelingvalue.jdclare.PropertyQualifier.*;
+
+import org.modelingvalue.collections.Set;
+import org.modelingvalue.jdclare.DObject;
+import org.modelingvalue.jdclare.Property;
 
 public interface DPackageContainer extends DObject {
 

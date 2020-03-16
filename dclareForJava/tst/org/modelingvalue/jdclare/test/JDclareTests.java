@@ -30,6 +30,7 @@ import org.modelingvalue.collections.Set;
 import org.modelingvalue.collections.util.Pair;
 import org.modelingvalue.dclare.Direction;
 import org.modelingvalue.dclare.State;
+import org.modelingvalue.dclare.TransactionClass;
 import org.modelingvalue.dclare.ex.OutOfScopeException;
 import org.modelingvalue.jdclare.DClare;
 import org.modelingvalue.jdclare.DNamed;
@@ -129,10 +130,10 @@ public class JDclareTests {
         assertEquals("No dClass:", Set.of(), result.getObjects(DObject.class).filter(o -> o.dClass() == null).toSet());
         assertEquals("No name:", Set.of(), result.getObjects(DNamed.class).filter(o -> o.name() == null).toSet());
         assertEquals("Problems:", Set.of(), result.getObjects(DUniverse.class).flatMap(DObject::dAllProblems).toSet());
-        assertEquals("ToDo:", Set.of(), result.getObjects(DObject.class).map(o -> Pair.of(o, Collection.concat( //
-                Collection.concat(Direction.forward.depth.get(o), Direction.backward.depth.get(o), Direction.scheduled.depth.get(o)), //
-                Collection.concat(Direction.forward.preDepth.get(o), Direction.backward.preDepth.get(o), Direction.scheduled.preDepth.get(o))).//
-                toSet())).filter(p -> !p.b().isEmpty()).toSet());
+        Set<Pair<DObject, Set<TransactionClass>>> scheduled = result.getObjects(DObject.class).map(o -> Pair.of(o, //
+                Collection.of(Direction.values()).flatMap(d -> Collection.concat(d.actions.get(o), d.children.get(o))).toSet())).filter(p -> !p.b().isEmpty()).toSet();
+        // System.err.println(scheduled);
+        assertEquals("Scheduled:", Set.of(), scheduled);
     }
 
     @Test

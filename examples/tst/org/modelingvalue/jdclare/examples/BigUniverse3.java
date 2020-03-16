@@ -13,85 +13,81 @@
 //     Arjan Kok, Carel Bast                                                                                           ~
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-package org.modelingvalue.jdclare.swing.draw2d;
+package org.modelingvalue.jdclare.examples;
 
 import static org.modelingvalue.jdclare.DClare.*;
 import static org.modelingvalue.jdclare.PropertyQualifier.*;
 
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.RenderingHints;
-import java.util.UUID;
-
-import javax.swing.JPanel;
-
 import org.modelingvalue.collections.List;
-import org.modelingvalue.collections.Set;
-import org.modelingvalue.jdclare.DObject;
+import org.modelingvalue.jdclare.DNamed;
+import org.modelingvalue.jdclare.DUniverse;
 import org.modelingvalue.jdclare.Default;
-import org.modelingvalue.jdclare.Native;
+import org.modelingvalue.jdclare.IOString;
 import org.modelingvalue.jdclare.Property;
-import org.modelingvalue.jdclare.swing.DComponent;
-import org.modelingvalue.jdclare.swing.draw2d.DCanvas.DCanvasNative;
-import org.modelingvalue.jdclare.swing.draw2d.DShape.ShapeNative;
+import org.modelingvalue.jdclare.Rule;
 
-@Native(DCanvasNative.class)
-public interface DCanvas extends DComponent {
+@SuppressWarnings("unused")
+public interface BigUniverse3 extends DUniverse {
 
-    UUID SELECTION_MODE = UUID.randomUUID();
+    static void main(String[] args) {
+        runAndRead(BigUniverse3.class);
+    }
 
     @Default
     @Property
-    default Color color() {
-        return Color.WHITE;
-    }
-
-    @Property({containment, optional})
-    CanvasMode mode();
-
-    @Property
-    default Set<DShape> selected() {
-        return shapes().filter(DShape::selected).toSet();
+    default int requiered() {
+        return 100;
     }
 
     @Property(containment)
-    List<DShape> shapes();
+    default List<Element> elements() {
+        List<Element> elements = elements();
+        return requiered() > 0 ? (elements.isEmpty() ? List.of(dclareUU(Element.class)) : elements) : List.of();
+    }
 
-    class DCanvasNative extends DComponentNative<DCanvas, JPanel> {
+    interface Element extends DNamed {
 
-        public DCanvasNative(DCanvas visible) {
-            super(visible);
+        default int nr() {
+            return dclare(BigUniverse3.class).elements().firstIndexOf(this);
         }
 
         @Override
-        public void init(DObject parent) {
-            swing = new JPanel() {
-                private static final long serialVersionUID = 1L;
-
-                @Override
-                protected void paintComponent(Graphics g) {
-                    Graphics2D g2d = (Graphics2D) g;
-                    g2d.setRenderingHints(new RenderingHints(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON));
-                    super.paintComponent(g);
-                    visible.shapes().forEach(s -> ((ShapeNative<?>) dNative(s)).paint(g2d));
-                }
-            };
-            swing.setOpaque(true);
-            swing.setPreferredSize(new Dimension(2000, 2000));
-            swing.setDoubleBuffered(true);
-            super.init(parent);
+        default String name() {
+            return "E" + nr();
         }
 
-        public void color(Color pre, Color post) {
-            swing.setBackground(post);
+        @Rule
+        default void next() {
+            BigUniverse3 u = dclare(BigUniverse3.class);
+            int requiered = u.requiered();
+            int nr = nr();
+            int size = u.elements().size();
+            if (nr < requiered && size < requiered) {
+                set(u, BigUniverse3::elements, List::append, dclareUU(Element.class));
+            } else if (nr > requiered) {
+                set(u, BigUniverse3::elements, List::remove, this);
+            }
         }
+    }
 
-        public void shapes(List<DShape> pre, List<DShape> post) {
-            swing.repaint();
+    @Override
+    default IOString output() {
+        return IOString.of(elements() + System.lineSeparator() + "> ");
+    }
+
+    @Rule
+    default void readInput() {
+        String input = input().string().replaceAll("\\s+", "");
+        if (input.equals("stop")) {
+            set(this, DUniverse::stop, true);
+        } else if (!input.isEmpty()) {
+            try {
+                set(this, BigUniverse3::requiered, Integer.parseInt(input));
+            } catch (NumberFormatException nfe) {
+                set(this, DUniverse::error, IOString.ofln("Only integer or 'stop' allowed"));
+            }
         }
-
+        set(this, DUniverse::input, IOString.of(""));
     }
 
 }

@@ -257,7 +257,7 @@ public interface BirdUniverse extends DUniverse {
         @Rule
         default void addChildren() {
             if ("black".equals(color())) {
-                for (int i = 0; i < 400; i++) {
+                for (int i = 0; i < 500; i++) {
                     Sparrow child = dclare(Sparrow.class, this, name() + i);
                     set(child, Bird::color, "noblack");
                     set(this, Bird::children, Set::add, child);

@@ -15,18 +15,26 @@
 
 package org.modelingvalue.jdclare.swing.examples;
 
-import org.modelingvalue.collections.List;
-import org.modelingvalue.collections.*;
-import org.modelingvalue.jdclare.*;
-import org.modelingvalue.jdclare.swing.Frame;
-import org.modelingvalue.jdclare.swing.Panel;
-import org.modelingvalue.jdclare.swing.*;
-import org.modelingvalue.jdclare.swing.draw2d.*;
-
-import java.awt.*;
-
 import static org.modelingvalue.jdclare.DClare.*;
 import static org.modelingvalue.jdclare.PropertyQualifier.*;
+
+import java.awt.BorderLayout;
+import java.awt.LayoutManager;
+
+import org.modelingvalue.collections.List;
+import org.modelingvalue.collections.Map;
+import org.modelingvalue.collections.Set;
+import org.modelingvalue.jdclare.DStruct1;
+import org.modelingvalue.jdclare.Default;
+import org.modelingvalue.jdclare.Property;
+import org.modelingvalue.jdclare.swing.DComponent;
+import org.modelingvalue.jdclare.swing.DMenu;
+import org.modelingvalue.jdclare.swing.DMenubar;
+import org.modelingvalue.jdclare.swing.Frame;
+import org.modelingvalue.jdclare.swing.GuiUniverse;
+import org.modelingvalue.jdclare.swing.Panel;
+import org.modelingvalue.jdclare.swing.draw2d.DDimension;
+import org.modelingvalue.jdclare.swing.draw2d.DPoint;
 
 public interface D2Universe extends GuiUniverse {
 
@@ -47,6 +55,7 @@ public interface D2Universe extends GuiUniverse {
         }
 
         @Override
+        @Property(constant)
         default DMenubar menubar() {
             return dclare(D2Menubar.class, this);
         }
