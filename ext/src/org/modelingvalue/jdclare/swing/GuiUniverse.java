@@ -15,15 +15,23 @@
 
 package org.modelingvalue.jdclare.swing;
 
-import org.modelingvalue.collections.*;
-import org.modelingvalue.jdclare.*;
+import static org.modelingvalue.jdclare.DClare.callNativesOfClass;
+import static org.modelingvalue.jdclare.DClare.dClare;
+import static org.modelingvalue.jdclare.DClare.pre;
+import static org.modelingvalue.jdclare.PropertyQualifier.containment;
+import static org.modelingvalue.jdclare.PropertyQualifier.hidden;
 
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.*;
+import java.awt.KeyboardFocusManager;
+import java.awt.event.KeyEvent;
 
-import static org.modelingvalue.jdclare.DClare.*;
-import static org.modelingvalue.jdclare.PropertyQualifier.*;
+import javax.swing.SwingUtilities;
+
+import org.modelingvalue.collections.Set;
+import org.modelingvalue.dclare.ImperativeTransaction;
+import org.modelingvalue.dclare.LeafTransaction;
+import org.modelingvalue.jdclare.DUniverse;
+import org.modelingvalue.jdclare.Property;
+import org.modelingvalue.jdclare.Rule;
 
 public interface GuiUniverse extends DUniverse {
 
@@ -40,7 +48,8 @@ public interface GuiUniverse extends DUniverse {
     @Override
     default void init() {
         DUniverse.super.init();
-        dClare().addImperative("swingNative", callNativesOfClass(DVisible.class), SwingUtilities::invokeLater);
+        ImperativeTransaction itx = dClare().addImperative("swingNative", callNativesOfClass(DVisible.class), SwingUtilities::invokeLater);
+        SwingUtilities.invokeLater(() -> LeafTransaction.getContext().set(itx));
         KeyboardFocusManager kfm = KeyboardFocusManager.getCurrentKeyboardFocusManager();
         kfm.addKeyEventDispatcher(e -> {
             if (e.getID() == KeyEvent.KEY_PRESSED && e.isControlDown()) {
