@@ -15,7 +15,7 @@
 
 package org.modelingvalue.jdclare;
 
-import static org.modelingvalue.jdclare.PropertyQualifier.*;
+import static org.modelingvalue.jdclare.PropertyQualifier.constant;
 
 import java.lang.annotation.Annotation;
 import java.lang.invoke.MethodHandle;
@@ -71,7 +71,6 @@ import org.modelingvalue.dclare.Constant;
 import org.modelingvalue.dclare.Direction;
 import org.modelingvalue.dclare.Getable;
 import org.modelingvalue.dclare.LeafTransaction;
-import org.modelingvalue.dclare.MandatoryObserved;
 import org.modelingvalue.dclare.Mutable;
 import org.modelingvalue.dclare.Observed;
 import org.modelingvalue.dclare.Setable;
@@ -176,16 +175,15 @@ public final class DClare<U extends DUniverse> extends UniverseTransaction {
     private static final Constant<DProperty, Getable>                             GETABLE            = Constant.of("dGetable", p -> {
                                                                                                          Object d = p.key() ? null : p.defaultValue();
                                                                                                          boolean cc = p.checkConsistency();
+                                                                                                         boolean man = p.mandatory() && (d == null || d instanceof ContainingCollection);
+                                                                                                         Function der = p.derived() ? p.deriver() : null;
                                                                                                          DProperty oppos = p.opposite();
                                                                                                          DProperty scope = p.scopeProperty();
                                                                                                          Supplier<Setable<?, ?>> os = oppos != null ? () -> DClare.setable(oppos) : null;
                                                                                                          Supplier<Setable<DObject, Set<?>>> ss = scope != null ? () -> DClare.setable(scope) : null;
                                                                                                          return p.key() ? new KeyGetable(p, p.keyNr(), null) : p.constant() ?                                                                                           //
-                                                                                                         (p.containment() ? Constant.of(p, d, true, p.derived() ? p.deriver() : null, cc) :                                                                             //
-                                                                                                         Constant.of(p, d, os, ss, p.derived() ? p.deriver() : null, cc)) :                                                                                             //
-                                                                                                         (p.mandatory() && (d == null || d instanceof ContainingCollection)) ?                                                                                          //
-                                                                                                         (p.containment() ? MandatoryObserved.of(p, d, true, cc) : MandatoryObserved.of(p, d, os, ss, cc)) :                                                            //
-                                                                                                         (p.containment() ? Observed.of(p, d, true, cc) : Observed.of(p, d, os, ss, cc));
+                                                                                                         (p.containment() ? Constant.of(p, d, true, der, cc) : Constant.of(p, d, os, ss, der, cc)) :                                                                    //
+                                                                                                         (p.containment() ? Observed.of(p, man, d, true, cc) : Observed.of(p, man, d, os, ss, cc));
                                                                                                      });
 
     public static final Constant<Method, DMethodRule>                             RULE               = Constant.of("dRule", (Method m) -> {
