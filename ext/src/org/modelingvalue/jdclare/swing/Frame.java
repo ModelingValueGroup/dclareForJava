@@ -43,7 +43,7 @@ public interface Frame extends DContainer {
             windowLsitener = new WindowAdapter() {
                 @Override
                 public void windowClosed(WindowEvent e) {
-                    DClare.<GuiUniverse, Set<Frame>, Frame> set(((GuiUniverse) DClare.dUniverse()), GuiUniverse::frames, Set::remove, visible);
+                    DClare.set(((GuiUniverse) DClare.dUniverse()), GuiUniverse::frames, Set::remove, visible);
                 }
             };
         }

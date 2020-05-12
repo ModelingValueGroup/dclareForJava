@@ -19,5 +19,5 @@ public enum DSeverity {
     fatal(),
     error(),
     warning(),
-    info();
+    info()
 }

@@ -13,53 +13,67 @@
 //     Arjan Kok, Carel Bast                                                                                           ~
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-package org.modelingvalue.jdclare.syntax;
+package org.modelingvalue.jdclare.examples;
 
 import static org.modelingvalue.jdclare.DClare.*;
 import static org.modelingvalue.jdclare.PropertyQualifier.*;
 
-import org.modelingvalue.collections.List;
 import org.modelingvalue.jdclare.DObject;
-import org.modelingvalue.jdclare.DStruct1;
+import org.modelingvalue.jdclare.DUniverse;
+import org.modelingvalue.jdclare.Default;
+import org.modelingvalue.jdclare.IOString;
 import org.modelingvalue.jdclare.Property;
 import org.modelingvalue.jdclare.Rule;
-import org.modelingvalue.jdclare.syntax.regex.DMatch;
 
-@SuppressWarnings("unused")
-public interface Tokenizer<S extends Grammar> extends DStruct1<Text<S, ?>>, DObject {
+public interface RecursiveUniverse2 extends DUniverse {
 
-    @Property(key = 0)
-    Text<S, ?> text();
-
-    @Property
-    default List<DMatch> matches() {
-        return text().grammar().newLinePattern().matcher(text().string()).matches(true).toList();
+    static void main(String[] args) {
+        runAndRead(RecursiveUniverse2.class);
     }
 
-    @Property(containment)
-    default List<Line> lines() {
-        return matches().reuse(lines(), (l, m) -> m.value().equals(l.string()), (l, m) -> {
-            set(l, Line::startInText, m.start());
-            set(l, Line::string, m.value());
-        }, Line::id, (l, m) -> true, (i, m) -> dclare(Line.class, text(), i)).linked((p, l, n) -> {
-            set(l, Line::next, n);
-            return l;
-        }).toList();
+    @Default
+    @Property
+    default int depth() {
+        return 3;
+    }
+
+    @Property({containment, constant})
+    default Element element() {
+        return dclareUU(Element.class);
+    }
+
+    interface Element extends DObject {
+        @Property
+        default int nr() {
+            DObject p = dParent();
+            return p instanceof Element ? ((Element) p).nr() + 1 : 0;
+        }
+
+        @Property({containment, optional})
+        default Element child() {
+            Element child = child();
+            return nr() < dclare(RecursiveUniverse2.class).depth() ? (child == null ? dclareUU(Element.class) : child) : null;
+        }
+    }
+
+    @Override
+    default IOString output() {
+        return IOString.of(element().dString() + "> ");
     }
 
     @Rule
-    default void connectLineEnTokens() {
-        lines().linked((p, l, n) -> {
-            List<Token> tokens = l.tokens();
-            Token first = tokens.first();
-            Token last = tokens.last();
-            if (p == null && first != null) {
-                set(first, Token::previousToken, null);
+    default void readInput() {
+        String input = input().string().replaceAll("\\s+", "");
+        if (input.equals("stop")) {
+            set(this, DUniverse::stop, true);
+        } else if (!input.isEmpty()) {
+            try {
+                set(this, RecursiveUniverse2::depth, Integer.parseInt(input));
+            } catch (NumberFormatException nfe) {
+                set(this, DUniverse::error, IOString.ofln("Only integer or 'stop' allowed"));
             }
-            if (last != null) {
-                set(last, Token::nextToken, n != null ? n.tokens().first() : null);
-            }
-        });
+        }
+        set(this, DUniverse::input, IOString.of(""));
     }
 
 }

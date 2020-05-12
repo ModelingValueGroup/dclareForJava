@@ -35,9 +35,7 @@ public interface GrammarClass<T extends Grammar> extends DClass<T> {
     @Property(constant)
     default Set<TokenType> skipped() {
         Skipped skipped = ann(jClass(), Skipped.class);
-        return skipped == null ? Set.of() : Collection.of(skipped.value()).map(r -> {
-            return dclare(TokenType.class, GrammarClass.this, r, null, set(TokenType::skipped, true));
-        }).toSet();
+        return skipped == null ? Set.of() : Collection.of(skipped.value()).map(r -> dclare(TokenType.class, GrammarClass.this, r, null, set(TokenType::skipped, true))).toSet();
     }
 
     @SuppressWarnings("rawtypes")

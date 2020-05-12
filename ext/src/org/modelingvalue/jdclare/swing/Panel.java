@@ -15,15 +15,20 @@
 
 package org.modelingvalue.jdclare.swing;
 
-import org.modelingvalue.collections.*;
-import org.modelingvalue.jdclare.*;
-import org.modelingvalue.jdclare.swing.Panel.*;
-
-import javax.swing.*;
-import java.awt.*;
-
 import static org.modelingvalue.jdclare.PropertyQualifier.*;
 
+import java.awt.LayoutManager;
+
+import javax.swing.JPanel;
+
+import org.modelingvalue.collections.Map;
+import org.modelingvalue.collections.Set;
+import org.modelingvalue.jdclare.DObject;
+import org.modelingvalue.jdclare.Native;
+import org.modelingvalue.jdclare.Property;
+import org.modelingvalue.jdclare.swing.Panel.PanelNative;
+
+@SuppressWarnings("unused")
 @Native(PanelNative.class)
 public interface Panel extends DComponent {
 
@@ -56,12 +61,8 @@ public interface Panel extends DComponent {
         }
 
         public void content(Map<DComponent, Object> pre, Map<DComponent, Object> post) {
-            pre.removeAllKey(post).forEach(ct -> {
-                swing.remove(swing(ct.getKey()));
-            });
-            post.removeAllKey(pre).forEach(ct -> {
-                swing.add(swing(ct.getKey()), ct.getValue());
-            });
+            pre.removeAllKey(post).forEach(ct -> swing.remove(swing(ct.getKey())));
+            post.removeAllKey(pre).forEach(ct -> swing.add(swing(ct.getKey()), ct.getValue()));
             swing.invalidate();
             swing.repaint();
         }

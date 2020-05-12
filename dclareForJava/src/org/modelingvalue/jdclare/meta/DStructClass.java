@@ -15,12 +15,22 @@
 
 package org.modelingvalue.jdclare.meta;
 
-import org.modelingvalue.collections.*;
-import org.modelingvalue.jdclare.*;
-
-import java.lang.reflect.*;
-
 import static org.modelingvalue.jdclare.PropertyQualifier.*;
+
+import java.lang.reflect.Method;
+import java.util.Comparator;
+
+import org.modelingvalue.collections.Collection;
+import org.modelingvalue.collections.List;
+import org.modelingvalue.collections.QualifiedSet;
+import org.modelingvalue.collections.Set;
+import org.modelingvalue.jdclare.Abstract;
+import org.modelingvalue.jdclare.Constraints;
+import org.modelingvalue.jdclare.DClare;
+import org.modelingvalue.jdclare.DNamed;
+import org.modelingvalue.jdclare.DStruct;
+import org.modelingvalue.jdclare.DStruct1;
+import org.modelingvalue.jdclare.Property;
 
 public interface DStructClass<T extends DStruct> extends DClassContainer, DStruct1<Class<?>> {
 
@@ -87,7 +97,7 @@ public interface DStructClass<T extends DStruct> extends DClassContainer, DStruc
     default QualifiedSet<String, DProperty<T, ?>> allProperties() {
         QualifiedSet<String, DProperty<T, ?>> result = QualifiedSet.of(DNamed::name);
         for (DStructClass<T> cls : sortedSupers()) {
-            if (cls instanceof DStructClass) {
+            if (cls != null) {
                 result = result.addAll(cls.properties().map(p -> p.actualize(this)));
             }
         }
@@ -96,7 +106,7 @@ public interface DStructClass<T extends DStruct> extends DClassContainer, DStruc
 
     @Property(constant)
     default List<DProperty<T, ?>> keys() {
-        return allProperties().filter(p -> p.key()).sorted((a, b) -> ((Integer) a.keyNr()).compareTo(b.keyNr())).toList();
+        return allProperties().filter(DProperty::key).sorted(Comparator.comparingInt(DProperty::keyNr)).toList();
     }
 
     @SuppressWarnings({"rawtypes", "unchecked"})

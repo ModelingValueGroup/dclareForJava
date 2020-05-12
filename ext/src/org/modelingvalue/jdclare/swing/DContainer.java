@@ -15,15 +15,23 @@
 
 package org.modelingvalue.jdclare.swing;
 
-import org.modelingvalue.jdclare.*;
-import org.modelingvalue.jdclare.swing.DContainer.*;
-import org.modelingvalue.jdclare.swing.draw2d.*;
-
-import java.awt.*;
-import java.awt.event.*;
-
 import static org.modelingvalue.jdclare.DClare.*;
 import static org.modelingvalue.jdclare.PropertyQualifier.*;
+
+import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.Point;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
+
+import org.modelingvalue.jdclare.DObject;
+import org.modelingvalue.jdclare.Default;
+import org.modelingvalue.jdclare.Deferred;
+import org.modelingvalue.jdclare.Native;
+import org.modelingvalue.jdclare.Property;
+import org.modelingvalue.jdclare.swing.DContainer.DContainerNative;
+import org.modelingvalue.jdclare.swing.draw2d.DDimension;
+import org.modelingvalue.jdclare.swing.draw2d.DPoint;
 
 @Native(DContainerNative.class)
 public interface DContainer extends DVisible {
@@ -46,6 +54,7 @@ public interface DContainer extends DVisible {
         return DDimension.NULL;
     }
 
+    @SuppressWarnings("unused")
     class DContainerNative<N extends DContainer, T extends Container> extends VisibleNative<N> implements ComponentListener {
 
         protected T swing;

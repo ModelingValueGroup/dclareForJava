@@ -54,7 +54,7 @@ public interface LineMode extends CanvasMode {
         InputDeviceData di = c.deviceInput();
         if (di.isLeftMouseDown() && !pre(di, InputDeviceData::isLeftMouseDown)) {
             Optional<DShape> shape = c.shapes().filter(s -> s.hit(di.mousePosition())).findFirst();
-            return shape.isPresent() ? shape.get() : null;
+            return shape.orElse(null);
         }
         return null;
     }

@@ -15,19 +15,40 @@
 
 package org.modelingvalue.jdclare.swing.examples;
 
-import org.modelingvalue.collections.List;
-import org.modelingvalue.collections.*;
-import org.modelingvalue.jdclare.*;
-import org.modelingvalue.jdclare.swing.ScrollPane;
-import org.modelingvalue.jdclare.swing.*;
-import org.modelingvalue.jdclare.swing.draw2d.*;
-
-import java.awt.*;
-import java.awt.event.*;
-import java.util.function.*;
-
 import static org.modelingvalue.jdclare.DClare.*;
 import static org.modelingvalue.jdclare.PropertyQualifier.*;
+
+import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.util.function.Consumer;
+
+import org.modelingvalue.collections.List;
+import org.modelingvalue.collections.Set;
+import org.modelingvalue.jdclare.DObject;
+import org.modelingvalue.jdclare.DStruct1;
+import org.modelingvalue.jdclare.DStruct2;
+import org.modelingvalue.jdclare.DUUObject;
+import org.modelingvalue.jdclare.Property;
+import org.modelingvalue.jdclare.Rule;
+import org.modelingvalue.jdclare.swing.DComponent;
+import org.modelingvalue.jdclare.swing.DToolbar;
+import org.modelingvalue.jdclare.swing.DToolbarItem;
+import org.modelingvalue.jdclare.swing.InputDeviceData;
+import org.modelingvalue.jdclare.swing.ScrollPane;
+import org.modelingvalue.jdclare.swing.SplitPane;
+import org.modelingvalue.jdclare.swing.draw2d.ClickMode;
+import org.modelingvalue.jdclare.swing.draw2d.DCanvas;
+import org.modelingvalue.jdclare.swing.draw2d.DCircle;
+import org.modelingvalue.jdclare.swing.draw2d.DDimension;
+import org.modelingvalue.jdclare.swing.draw2d.DFilled;
+import org.modelingvalue.jdclare.swing.draw2d.DImage;
+import org.modelingvalue.jdclare.swing.draw2d.DLine;
+import org.modelingvalue.jdclare.swing.draw2d.DPoint;
+import org.modelingvalue.jdclare.swing.draw2d.DRectangle;
+import org.modelingvalue.jdclare.swing.draw2d.DShape;
+import org.modelingvalue.jdclare.swing.draw2d.DTriangle;
+import org.modelingvalue.jdclare.swing.draw2d.LineMode;
+import org.modelingvalue.jdclare.swing.draw2d.SelectionMode;
 
 public interface D2MainWindow extends SplitPane, DStruct1<D2Universe> {
 
@@ -47,7 +68,7 @@ public interface D2MainWindow extends SplitPane, DStruct1<D2Universe> {
     }
 
     @Property(containment)
-    default ExampleMapping1 mapping() {
+    default ExampleMapping1 mapping1() {
         return dclare(ExampleMapping1.class, ((DiagramEditor) leftComponent()).canvas(), ((DiagramEditor) rigthComponent()).canvas());
     }
 
@@ -113,47 +134,41 @@ public interface D2MainWindow extends SplitPane, DStruct1<D2Universe> {
 
         @Property(constant)
         default ClickMode rectangleMode() {
-            return dclareUU(ClickMode.class, e -> {
-                set(e, ClickMode::action, z -> {
-                    InputDeviceData di = z.deviceInput();
-                    DRectangle r = dclareUU(DRectangle.class, set(DShape::position, di.mousePosition()));
-                    set(dclare(MappingData.class, ((DUUObject) r).uuid()).triangle(), DShape::position, di.mousePosition());
-                    appendShape(r);
-                    set(z, DCanvas::mode, selectionMode());
-                });
-            });
+            return dclareUU(ClickMode.class, e -> set(e, ClickMode::action, z -> {
+                InputDeviceData di = z.deviceInput();
+                DRectangle r = dclareUU(DRectangle.class, set(DShape::position, di.mousePosition()));
+                set(dclare(MappingData.class, ((DUUObject) r).uuid()).triangle(), DShape::position, di.mousePosition());
+                appendShape(r);
+                set(z, DCanvas::mode, selectionMode());
+            }));
         }
 
         @Property(constant)
         default ClickMode circleMode() {
-            return dclareUU(ClickMode.class, e -> {
-                set(e, ClickMode::action, c -> {
-                    InputDeviceData di = c.deviceInput();
-                    appendShape(dclareUU(DCircle.class, set(DShape::position, di.mousePosition())));
-                    set(c, DCanvas::mode, selectionMode());
-                });
-            });
+            return dclareUU(ClickMode.class, e -> set(e, ClickMode::action, c -> {
+                InputDeviceData di = c.deviceInput();
+                appendShape(dclareUU(DCircle.class, set(DShape::position, di.mousePosition())));
+                set(c, DCanvas::mode, selectionMode());
+            }));
         }
 
         @Property(constant)
         default LineMode lineMode() {
-            return dclareUU(LineMode.class, e -> {
-                set(e, LineMode::action, (c, sel) -> {
-                    DShape one = sel.get(0);
-                    DShape two = sel.get(1);
-                    prependShape(dclareUU(DLine.class, //
-                            rule(DShape::position, l -> one.centre()), //
-                            rule(DLine::endPoint, l -> two.centre()), //
-                            rule("delete", l -> {
-                                if ((pre(() -> one.dParent()) != null && one.dParent() == null) || //
-                                (pre(() -> two.dParent()) != null && two.dParent() == null)) {
-                                    clear(l);
-                                }
-                            }) //
-                    ));
-                    set(c, DCanvas::mode, selectionMode());
-                });
-            });
+            return dclareUU(LineMode.class, e -> set(e, LineMode::action, (c, sel) -> {
+                DShape one = sel.get(0);
+                DShape two = sel.get(1);
+                prependShape(dclareUU(DLine.class, //
+                        rule(DShape::position, l -> one.centre()), //
+                        rule(DLine::endPoint, l -> two.centre()), //
+                        rule("delete", l -> {
+                            if ((pre(one::dParent) != null && one.dParent() == null) || //
+                            (pre(two::dParent) != null && two.dParent() == null)) {
+                                clear(l);
+                            }
+                        }) //
+                ));
+                set(c, DCanvas::mode, selectionMode());
+            }));
         }
 
         @Property(constant)
@@ -168,18 +183,10 @@ public interface D2MainWindow extends SplitPane, DStruct1<D2Universe> {
                 set(c, DToolbar::preferredSize, dclare(DDimension.class, 40.0, 100.0));
                 set(c, DToolbar::minimumSize, dclare(DDimension.class, 50.0, 100.0));
                 set(c, DToolbar::items, List.of(//
-                        item("Select", "selection.png", (x) -> {
-                            set(canvas(), DCanvas::mode, selectionMode());
-                        }), //
-                        item("Rectangle", "rectangle.png", (x) -> {
-                            set(canvas(), DCanvas::mode, rectangleMode());
-                        }), //
-                        item("Circle", "circle.png", (x) -> {
-                            set(canvas(), DCanvas::mode, circleMode());
-                        }), //
-                        item("Line", "line.png", (x) -> {
-                            set(canvas(), DCanvas::mode, lineMode());
-                        }) //
+                        item("Select", "selection.png", (x) -> set(canvas(), DCanvas::mode, selectionMode())), //
+                        item("Rectangle", "rectangle.png", (x) -> set(canvas(), DCanvas::mode, rectangleMode())), //
+                        item("Circle", "circle.png", (x) -> set(canvas(), DCanvas::mode, circleMode())), //
+                        item("Line", "line.png", (x) -> set(canvas(), DCanvas::mode, lineMode())) //
                 ));
             });
         }

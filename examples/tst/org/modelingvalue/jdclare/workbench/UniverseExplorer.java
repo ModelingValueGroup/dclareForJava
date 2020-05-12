@@ -51,7 +51,7 @@ public interface UniverseExplorer extends Tree, DStruct1<WBUniverse> {
             return object//
                     .dClass()//
                     .allContainments()//
-                    .filter(c -> c.visible())//
+                    .filter(DProperty::visible)//
                     .sorted()//
                     .map(c -> dclare(DPropertyTreeNode.class, this, c));
         }
@@ -146,7 +146,7 @@ public interface UniverseExplorer extends Tree, DStruct1<WBUniverse> {
         default List<MenuItem> items() {
             DProperty prop = node().object();
             if (prop.many()) {
-                DStructClass<?> ec = DClare.dClass((Class) prop.elementClass());
+                DStructClass<?> ec = DClare.dClass(prop.elementClass());
                 if (ec instanceof DClass) {
                     DClass cls = (DClass) ec;
                     DObject parent = (DObject) node().parent().object();

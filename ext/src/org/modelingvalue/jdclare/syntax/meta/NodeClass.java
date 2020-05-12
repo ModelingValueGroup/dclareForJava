@@ -39,7 +39,7 @@ public interface NodeClass<T extends Node> extends DStructClass<T>, NodeType {
     @Property(constant)
     default Set<NodeType> options() {
         Class cls = jClass();
-        return Collection.of(cls.getDeclaringClass().getClasses()).filter(c -> cls.isAssignableFrom(c)).map(c -> (NodeType) DClare.dClass(c)).//
+        return Collection.of(cls.getDeclaringClass().getClasses()).filter(cls::isAssignableFrom).map(c -> (NodeType) DClare.dClass(c)).//
                 filter(c -> c instanceof TerminalClass || c instanceof SequenceType).toSet();
     }
 
@@ -63,6 +63,7 @@ public interface NodeClass<T extends Node> extends DStructClass<T>, NodeType {
     @SuppressWarnings("unchecked")
     @Property(constant)
     default Set<SyntaxProperty<Node, Object>> syntaxProperties() {
+        //REVIEW: this gives an error in IntelliJ but compiles ok with javac => report to Jetbrains
         return properties().filter(SyntaxProperty.class).toSet();
     }
 

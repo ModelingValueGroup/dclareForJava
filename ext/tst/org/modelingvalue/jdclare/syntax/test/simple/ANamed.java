@@ -15,14 +15,10 @@
 
 package org.modelingvalue.jdclare.syntax.test.simple;
 
+import org.modelingvalue.jdclare.*;
+
 import static org.modelingvalue.jdclare.DClare.*;
 import static org.modelingvalue.jdclare.PropertyQualifier.*;
-
-import org.modelingvalue.jdclare.DNamed;
-import org.modelingvalue.jdclare.DProblem;
-import org.modelingvalue.jdclare.DSeverity;
-import org.modelingvalue.jdclare.Default;
-import org.modelingvalue.jdclare.Property;
 
 public interface ANamed extends DNamed {
 
@@ -34,8 +30,10 @@ public interface ANamed extends DNamed {
         return NO_NAME;
     }
 
+    @SuppressWarnings("unused")
     @Property({validation, hidden})
     default DProblem noName() {
+        //noinspection StringEquality
         return name() == NO_NAME ? dclare(DProblem.class, this, "NO_NAME", DSeverity.fatal, "No Name") : null;
     }
 

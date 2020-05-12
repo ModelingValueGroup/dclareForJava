@@ -15,24 +15,32 @@
 
 package org.modelingvalue.jdclare.swing.draw2d;
 
-import org.modelingvalue.collections.List;
-import org.modelingvalue.collections.Set;
-import org.modelingvalue.jdclare.*;
-import org.modelingvalue.jdclare.swing.*;
-import org.modelingvalue.jdclare.swing.draw2d.DCanvas.*;
-import org.modelingvalue.jdclare.swing.draw2d.DShape.*;
-
-import javax.swing.*;
-import java.awt.*;
-import java.util.*;
-
 import static org.modelingvalue.jdclare.DClare.*;
 import static org.modelingvalue.jdclare.PropertyQualifier.*;
+
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
+import java.util.UUID;
+
+import javax.swing.JPanel;
+
+import org.modelingvalue.collections.List;
+import org.modelingvalue.collections.Set;
+import org.modelingvalue.jdclare.DObject;
+import org.modelingvalue.jdclare.Default;
+import org.modelingvalue.jdclare.Native;
+import org.modelingvalue.jdclare.Property;
+import org.modelingvalue.jdclare.swing.DComponent;
+import org.modelingvalue.jdclare.swing.draw2d.DCanvas.DCanvasNative;
+import org.modelingvalue.jdclare.swing.draw2d.DShape.ShapeNative;
 
 @Native(DCanvasNative.class)
 public interface DCanvas extends DComponent {
 
-    public UUID SELECTION_MODE = UUID.randomUUID();
+    UUID SELECTION_MODE = UUID.randomUUID();
 
     @Default
     @Property
@@ -45,7 +53,7 @@ public interface DCanvas extends DComponent {
 
     @Property
     default Set<DShape> selected() {
-        return shapes().filter(s -> s.selected()).toSet();
+        return shapes().filter(DShape::selected).toSet();
     }
 
     @Property(containment)

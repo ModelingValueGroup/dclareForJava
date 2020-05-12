@@ -15,15 +15,19 @@
 
 package org.modelingvalue.jdclare.syntax;
 
-import org.modelingvalue.collections.List;
-import org.modelingvalue.jdclare.*;
-import org.modelingvalue.jdclare.syntax.meta.*;
-import org.modelingvalue.jdclare.syntax.regex.*;
-
-import java.util.*;
-
 import static org.modelingvalue.jdclare.DClare.*;
 import static org.modelingvalue.jdclare.PropertyQualifier.*;
+
+import java.util.Objects;
+
+import org.modelingvalue.collections.List;
+import org.modelingvalue.jdclare.Constraints;
+import org.modelingvalue.jdclare.DObject;
+import org.modelingvalue.jdclare.DStruct2;
+import org.modelingvalue.jdclare.Property;
+import org.modelingvalue.jdclare.syntax.meta.TokenType;
+import org.modelingvalue.jdclare.syntax.regex.DMatch;
+import org.modelingvalue.jdclare.syntax.regex.DMultiMatcher;
 
 public interface Line extends DObject, DStruct2<Text<?, ?>, Long> {
 

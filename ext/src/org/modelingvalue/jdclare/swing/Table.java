@@ -94,7 +94,7 @@ public interface Table<R, C, V> extends DComponent {
         @SuppressWarnings("serial")
         @Override
         public void init(DObject parent) {
-            DTableModel<R, C, V> model = new DTableModel<R, C, V>(visible);
+            DTableModel<R, C, V> model = new DTableModel<>(visible);
             swing = new JTable(model) {
                 @SuppressWarnings({"rawtypes", "unchecked"})
                 @Override

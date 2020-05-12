@@ -15,12 +15,16 @@
 
 package org.modelingvalue.jdclare.meta;
 
-import org.modelingvalue.dclare.*;
-import org.modelingvalue.jdclare.*;
-
-import java.util.function.*;
-
 import static org.modelingvalue.jdclare.PropertyQualifier.*;
+
+import java.util.function.Consumer;
+
+import org.modelingvalue.dclare.Direction;
+import org.modelingvalue.dclare.Observer;
+import org.modelingvalue.jdclare.Abstract;
+import org.modelingvalue.jdclare.DNamed;
+import org.modelingvalue.jdclare.DObject;
+import org.modelingvalue.jdclare.Property;
 
 @Abstract
 public interface DRule<O extends DObject> extends DNamed {
@@ -33,7 +37,7 @@ public interface DRule<O extends DObject> extends DNamed {
 
     @Property(constant)
     default Observer<O> observer() {
-        return Observer.of(this, o -> consumer().accept(o), initDirection(), Priority.postDepth);
+        return Observer.of(this, o -> consumer().accept(o), initDirection());
     }
 
     @Property

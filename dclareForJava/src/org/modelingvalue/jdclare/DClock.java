@@ -21,7 +21,7 @@ import static org.modelingvalue.jdclare.DClare.*;
 
 public interface DClock extends DObject, DStruct0 {
 
-    final double BILLION = 1000000000.0;
+    double BILLION = 1000000000.0;
 
     @Property
     @Default

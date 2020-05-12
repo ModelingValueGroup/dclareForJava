@@ -18,6 +18,8 @@ package org.modelingvalue.jdclare.swing.examples.newton;
 import static org.modelingvalue.jdclare.DClare.*;
 import static org.modelingvalue.jdclare.PropertyQualifier.*;
 
+import java.util.Comparator;
+
 import org.modelingvalue.collections.List;
 import org.modelingvalue.collections.Set;
 import org.modelingvalue.jdclare.DClock;
@@ -27,11 +29,6 @@ import org.modelingvalue.jdclare.swing.draw2d.DCanvas;
 import org.modelingvalue.jdclare.swing.draw2d.DPoint;
 
 public interface Table extends DCanvas {
-
-    @Property()
-    default List<Ball> balls() {
-        return shapes().filter(Ball.class).toList();
-    }
 
     @Property(constant)
     default double gravity() {
@@ -46,16 +43,6 @@ public interface Table extends DCanvas {
     @Property(constant)
     default double friction() {
         return gravity() * rollingResistance();
-    }
-
-    @Property
-    default double velocityDelta() {
-        return friction() * passSeconds();
-    }
-
-    @Property
-    default double positionDelta() {
-        return 0.5 * velocityDelta() * passSeconds();
     }
 
     @Property(constant)
@@ -83,19 +70,34 @@ public interface Table extends DCanvas {
         return dclare(DPoint.class, ballRadius(), ballRadius());
     }
 
+    @Property(containment)
+    default Set<CollisionPair> collisionPairs() {
+        return balls().flatMap(Ball::collisionPairs).toSet();
+    }
+
+    @Property()
+    default List<Ball> balls() {
+        return shapes().filter(Ball.class).toList();
+    }
+
     @Property
     default DPoint cushionMaximum() {
         return size().toPoint().minus(cushionMinimum());
     }
 
-    @Property(containment)
-    default Set<CollisionPair> collisionPairs() {
-        return balls().flatMap(b -> b.collisionPairs()).toSet();
+    @Property
+    default boolean moving() {
+        return balls().anyMatch(Ball::moving);
     }
 
     @Property
-    default boolean moving() {
-        return balls().anyMatch(b -> b.moving());
+    default double velocityDelta() {
+        return friction() * passSeconds();
+    }
+
+    @Property
+    default double positionDelta() {
+        return 0.5 * velocityDelta() * passSeconds();
     }
 
     @Property
@@ -107,8 +109,7 @@ public interface Table extends DCanvas {
     default CollisionPair firstCollision() {
         if (moving()) {
             double timeWindow = dUniverse().clock().passSeconds() * 2;
-            return collisionPairs().filter(c -> c.preCollisionTime() > 0.0 && c.preCollisionTime() <= timeWindow).//
-                    sorted((a, b) -> Double.compare(a.preCollisionTime(), b.preCollisionTime())).findFirst().orElse(null);
+            return collisionPairs().filter(c -> c.preCollisionTime() > 0.0 && c.preCollisionTime() <= timeWindow).min(Comparator.comparingDouble(CollisionPair::preCollisionTime)).orElse(null);
         } else {
             return null;
         }

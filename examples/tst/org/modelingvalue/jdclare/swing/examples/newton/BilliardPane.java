@@ -96,12 +96,8 @@ public interface BilliardPane extends SplitPane, DStruct1<BilliardUniverse> {
                 set(DToolbar::preferredSize, dclare(DDimension.class, 40.0, 100.0)), //
                 set(DToolbar::minimumSize, dclare(DDimension.class, 50.0, 100.0)), //
                 set(DToolbar::items, List.of(//
-                        item("Select", "selection.png", (x) -> {
-                            set(canvas(), DCanvas::mode, selectionMode());
-                        }), //
-                        item("Ball", "circle.png", (x) -> {
-                            set(canvas(), DCanvas::mode, ballMode());
-                        }) //
+                        item("Select", "selection.png", (x) -> set(canvas(), DCanvas::mode, selectionMode())), //
+                        item("Ball", "circle.png", (x) -> set(canvas(), DCanvas::mode, ballMode())) //
                 )));
     }
 

@@ -81,6 +81,7 @@ public interface DClass<T extends DObject> extends DStructClass<T>, MutableClass
     @Override
     @SuppressWarnings({"unchecked", "rawtypes"})
     default Collection<? extends Observer<?>> dObservers() {
+        //noinspection RedundantCast
         return (Collection) allRules().map(DRule::observer);
     }
 

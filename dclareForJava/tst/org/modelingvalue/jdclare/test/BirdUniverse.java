@@ -27,6 +27,7 @@ import org.modelingvalue.jdclare.DUniverse;
 import org.modelingvalue.jdclare.Property;
 import org.modelingvalue.jdclare.Rule;
 
+@SuppressWarnings("unused")
 public interface BirdUniverse extends DUniverse {
 
     @Property(containment)
@@ -216,7 +217,7 @@ public interface BirdUniverse extends DUniverse {
         @Rule
         default void setYellowChildrenName() {
             if ("yellow".equals(color())) {
-                set(this, Bird::childrenName, children().flatMap(c -> c.children()).reduce("", (n, b) -> n + b.name(), (a, b) -> a + b));
+                set(this, Bird::childrenName, children().flatMap(Bird::children).reduce("", (n, b) -> n + b.name(), (a, b) -> a + b));
             }
         }
 
@@ -236,14 +237,19 @@ public interface BirdUniverse extends DUniverse {
     interface HouseSparrow extends Bird {
         @Rule
         default void multiply() {
-            if ("yellow".equals(color()) && children().isEmpty() && name().length() < 7) {
-                for (int i = 0; i < 7; i++) {
-                    Bird child = dclare(HouseSparrow.class, this, name() + i, rule("rule", c -> c.firstBird().name()));
+            if ("yellow".equals(color()) && children().isEmpty() && name().length() < 4) {
+                for (int i = 0; i < 200; i++) {
+                    Bird child = dclare(HouseSparrow.class, this, name() + i);
                     set(this, Bird::children, Set::add, child);
-                    set(child, Bird::color, "yellow");
                 }
             }
         }
+
+        @Override
+        default String color() {
+            return dclare(HouseSparrow.class, dUniverse(), "1").color();
+        }
+
     }
 
     interface Sparrow extends Bird {
@@ -251,7 +257,7 @@ public interface BirdUniverse extends DUniverse {
         @Rule
         default void addChildren() {
             if ("black".equals(color())) {
-                for (int i = 0; i < 400; i++) {
+                for (int i = 0; i < 500; i++) {
                     Sparrow child = dclare(Sparrow.class, this, name() + i);
                     set(child, Bird::color, "noblack");
                     set(this, Bird::children, Set::add, child);
@@ -327,6 +333,7 @@ public interface BirdUniverse extends DUniverse {
                 set(child, Bird::wingColor, null);
                 String wingColor = child.wingColor();
                 if (wingColor == null) {
+                    //noinspection ConstantConditions
                     System.err.println(wingColor.length());
                 }
             }
@@ -337,6 +344,7 @@ public interface BirdUniverse extends DUniverse {
             if ("red".equals(color())) {
                 Wing wing = dclare(Wing.class, this, "Left");
                 int span = wing.span();
+                //noinspection divzero
                 set(wing, Wing::span, span / 0);
             }
         }

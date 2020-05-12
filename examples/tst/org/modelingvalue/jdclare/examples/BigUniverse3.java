@@ -13,53 +13,81 @@
 //     Arjan Kok, Carel Bast                                                                                           ~
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-package org.modelingvalue.jdclare.syntax;
+package org.modelingvalue.jdclare.examples;
 
 import static org.modelingvalue.jdclare.DClare.*;
 import static org.modelingvalue.jdclare.PropertyQualifier.*;
 
 import org.modelingvalue.collections.List;
-import org.modelingvalue.jdclare.DObject;
-import org.modelingvalue.jdclare.DStruct1;
+import org.modelingvalue.jdclare.DNamed;
+import org.modelingvalue.jdclare.DUniverse;
+import org.modelingvalue.jdclare.Default;
+import org.modelingvalue.jdclare.IOString;
 import org.modelingvalue.jdclare.Property;
 import org.modelingvalue.jdclare.Rule;
-import org.modelingvalue.jdclare.syntax.regex.DMatch;
 
 @SuppressWarnings("unused")
-public interface Tokenizer<S extends Grammar> extends DStruct1<Text<S, ?>>, DObject {
+public interface BigUniverse3 extends DUniverse {
 
-    @Property(key = 0)
-    Text<S, ?> text();
+    static void main(String[] args) {
+        runAndRead(BigUniverse3.class);
+    }
 
+    @Default
     @Property
-    default List<DMatch> matches() {
-        return text().grammar().newLinePattern().matcher(text().string()).matches(true).toList();
+    default int requiered() {
+        return 100;
     }
 
     @Property(containment)
-    default List<Line> lines() {
-        return matches().reuse(lines(), (l, m) -> m.value().equals(l.string()), (l, m) -> {
-            set(l, Line::startInText, m.start());
-            set(l, Line::string, m.value());
-        }, Line::id, (l, m) -> true, (i, m) -> dclare(Line.class, text(), i)).linked((p, l, n) -> {
-            set(l, Line::next, n);
-            return l;
-        }).toList();
+    default List<Element> elements() {
+        List<Element> elements = elements();
+        return requiered() > 0 ? (elements.isEmpty() ? List.of(dclareUU(Element.class)) : elements) : List.of();
+    }
+
+    interface Element extends DNamed {
+
+        default int nr() {
+            return dclare(BigUniverse3.class).elements().firstIndexOf(this);
+        }
+
+        @Override
+        default String name() {
+            return "E" + nr();
+        }
+
+        @Rule
+        default void next() {
+            BigUniverse3 u = dclare(BigUniverse3.class);
+            int requiered = u.requiered();
+            int nr = nr();
+            int size = u.elements().size();
+            if (nr < requiered && size < requiered) {
+                set(u, BigUniverse3::elements, List::append, dclareUU(Element.class));
+            } else if (nr > requiered) {
+                set(u, BigUniverse3::elements, List::remove, this);
+            }
+        }
+    }
+
+    @Override
+    default IOString output() {
+        return IOString.of(elements() + System.lineSeparator() + "> ");
     }
 
     @Rule
-    default void connectLineEnTokens() {
-        lines().linked((p, l, n) -> {
-            List<Token> tokens = l.tokens();
-            Token first = tokens.first();
-            Token last = tokens.last();
-            if (p == null && first != null) {
-                set(first, Token::previousToken, null);
+    default void readInput() {
+        String input = input().string().replaceAll("\\s+", "");
+        if (input.equals("stop")) {
+            set(this, DUniverse::stop, true);
+        } else if (!input.isEmpty()) {
+            try {
+                set(this, BigUniverse3::requiered, Integer.parseInt(input));
+            } catch (NumberFormatException nfe) {
+                set(this, DUniverse::error, IOString.ofln("Only integer or 'stop' allowed"));
             }
-            if (last != null) {
-                set(last, Token::nextToken, n != null ? n.tokens().first() : null);
-            }
-        });
+        }
+        set(this, DUniverse::input, IOString.of(""));
     }
 
 }

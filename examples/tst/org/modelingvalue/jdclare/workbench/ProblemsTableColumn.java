@@ -24,11 +24,11 @@ public enum ProblemsTableColumn {
 
     context(p -> StringUtil.toString(p.context()), 11),
 
-    id(p -> p.id(), 11),
+    id(DProblem::id, 11),
 
-    severity(p -> p.severity(), 7),
+    severity(DProblem::severity, 7),
 
-    message(p -> p.message(), 71);
+    message(DProblem::message, 71);
 
     private final Function<DProblem, Object> function;
     private final int                        width;

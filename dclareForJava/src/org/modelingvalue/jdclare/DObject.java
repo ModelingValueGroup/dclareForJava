@@ -15,15 +15,31 @@
 
 package org.modelingvalue.jdclare;
 
-import org.modelingvalue.collections.*;
-import org.modelingvalue.collections.util.*;
-import org.modelingvalue.dclare.*;
-import org.modelingvalue.jdclare.meta.*;
-
-import java.io.*;
-
 import static org.modelingvalue.jdclare.PropertyQualifier.*;
 
+import java.io.PrintStream;
+import java.io.PrintWriter;
+
+import org.modelingvalue.collections.Collection;
+import org.modelingvalue.collections.Entry;
+import org.modelingvalue.collections.List;
+import org.modelingvalue.collections.Map;
+import org.modelingvalue.collections.Set;
+import org.modelingvalue.collections.util.NonLockingPrintWriter;
+import org.modelingvalue.collections.util.StringUtil;
+import org.modelingvalue.dclare.Mutable;
+import org.modelingvalue.dclare.MutableTransaction;
+import org.modelingvalue.dclare.Observer;
+import org.modelingvalue.dclare.Setable;
+import org.modelingvalue.dclare.State;
+import org.modelingvalue.dclare.Transaction;
+import org.modelingvalue.dclare.UniverseTransaction;
+import org.modelingvalue.jdclare.meta.DClass;
+import org.modelingvalue.jdclare.meta.DProperty;
+import org.modelingvalue.jdclare.meta.DRule;
+import org.modelingvalue.jdclare.meta.DStructClass;
+
+@SuppressWarnings("unused")
 @Extend(DClass.class)
 public interface DObject extends DStruct, Mutable {
 
@@ -56,12 +72,13 @@ public interface DObject extends DStruct, Mutable {
     @Override
     @SuppressWarnings({"unchecked", "rawtypes"})
     default Collection<? extends Observer<?>> dMutableObservers() {
+        //noinspection RedundantCast
         return (Collection) dObjectRules().map(DRule::observer);
     }
 
     @Override
     default Setable<Mutable, ?> dContaining() {
-        return Mutable.super.dContaining();
+        return Mutable.super.dContaining(); // do not remove this! it seems unneccesarry but it is not; this has to do with how Proxy handles calls.
     }
 
     @Override
@@ -76,12 +93,12 @@ public interface DObject extends DStruct, Mutable {
 
     @Override
     default void dActivate() {
-        Mutable.super.dActivate();
+        Mutable.super.dActivate(); // do not remove this! it seems unneccesarry but it is not; this has to do with how Proxy handles calls.
     }
 
     @Override
     default void dDeactivate() {
-        Mutable.super.dDeactivate();
+        Mutable.super.dDeactivate(); // do not remove this! it seems unneccesarry but it is not; this has to do with how Proxy handles calls.
     }
 
     @Override
@@ -119,7 +136,7 @@ public interface DObject extends DStruct, Mutable {
     @Property(hidden)
     default Set<DProblem> dProblems() {
         return Collection.concat(dClass().allValidations().flatMap(p -> (Collection<DProblem>) p.getCollection(this)), //
-                dProblemsMap().flatMap(e -> e.getValue())).toSet();
+                dProblemsMap().flatMap(Entry::getValue)).toSet();
     }
 
     @Property(hidden)
@@ -136,8 +153,8 @@ public interface DObject extends DStruct, Mutable {
     }
 
     default String dString(String prefix) {
-        StringBuffer sb = new StringBuffer();
-        dDump(NonLockingPrintWriter.of(s -> sb.append(s)), prefix);
+        var sb = new StringBuilder();
+        dDump(NonLockingPrintWriter.of(sb::append), prefix);
         return sb.toString();
     }
 

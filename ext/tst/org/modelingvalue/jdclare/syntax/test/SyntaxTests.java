@@ -39,9 +39,7 @@ public class SyntaxTests {
         State prev = null;
         for (int i = 0; i < MANY_TIMES; i++) {
             State next = doit();
-            next.run(() -> {
-                test(next);
-            });
+            next.run(() -> test(next));
             if (prev != null && !prev.equals(next)) {
                 String diff = prev.diffString(next);
                 assertEquals("Diff: ", "", diff);
@@ -53,20 +51,14 @@ public class SyntaxTests {
     private State doit() {
         DClare<TextUniverse> dClare = of(TextUniverse.class, FIXED_CLOCK);
         dClare.start();
-        dClare.put("change0", () -> {
-            DClare.set(dClare.universe().text(), Text::string, STRING);
-        });
-        dClare.put("change1", () -> {
-            DClare.set(dClare.universe().text(), Text::string, (s, e) -> s.replace("low", e), "lowest");
-        });
-        dClare.put("change2", () -> {
-            DClare.set(dClare.universe().text(), Text::string, (s, e) -> s.replace("aaa", e), "bbb");
-        });
+        dClare.put("change0", () -> DClare.set(dClare.universe().text(), Text::string, STRING));
+        dClare.put("change1", () -> DClare.set(dClare.universe().text(), Text::string, (s, e) -> s.replace("low", e), "lowest"));
+        dClare.put("change2", () -> DClare.set(dClare.universe().text(), Text::string, (s, e) -> s.replace("aaa", e), "bbb"));
         dClare.stop();
         return dClare.waitForEnd();
     }
 
-    private static String STRING = List.of(//
+    private static final String STRING = List.of(//
             "package jdclare.test;", //
             "class Upper {", //
             "   Number low = 1000;", //
@@ -100,7 +92,7 @@ public class SyntaxTests {
                 result.getObjects(Unit.class).forEach(u -> u.dDump(System.err));
                 System.err.println("******************************End Root****************************************");
                 System.err.println("******************************Begin Problems**********************************");
-                result.getObjects(DUniverse.class).forEach(u -> u.dAllProblems().forEach(p -> System.err.println(p)));
+                result.getObjects(DUniverse.class).forEach(u -> u.dAllProblems().forEach(System.err::println));
                 System.err.println("******************************End Problems************************************");
             }
             test(result);

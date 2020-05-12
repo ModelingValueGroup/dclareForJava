@@ -19,6 +19,7 @@ import org.modelingvalue.collections.*;
 
 import java.util.function.*;
 
+@SuppressWarnings("unused")
 public interface DFunctionObject<O> extends DStruct1<Function<List<?>, O>> {
 
     @Property(key = 0)

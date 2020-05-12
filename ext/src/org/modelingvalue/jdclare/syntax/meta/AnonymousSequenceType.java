@@ -38,7 +38,7 @@ public interface AnonymousSequenceType extends SequenceType, DStruct3<GrammarCla
 
     @Override
     default String asString() {
-        return sequenceElements().map(se -> se.nodeType()).toList().toString().substring(4);
+        return sequenceElements().map(SequenceElement::nodeType).toList().toString().substring(4);
     }
 
 }

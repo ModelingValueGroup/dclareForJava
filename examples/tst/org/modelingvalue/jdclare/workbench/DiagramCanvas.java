@@ -68,7 +68,7 @@ public interface DiagramCanvas extends DStruct1<WBUniverse>, DCanvas {
 
     @Property(containment)
     default QualifiedSet<Integer, Level> levels() {
-        return classes().map(c -> c.level()).distinct().map(l -> dclare(Level.class, this, l)).toQualifiedSet(Level::level);
+        return classes().map(ClassRectangle::level).distinct().map(l -> dclare(Level.class, this, l)).toQualifiedSet(Level::level);
     }
 
     interface Level extends DObject, DStruct2<DiagramCanvas, Integer> {
@@ -141,6 +141,7 @@ public interface DiagramCanvas extends DStruct1<WBUniverse>, DCanvas {
 
         @Property
         default Set<ClassRectangle> supers() {
+            //noinspection unchecked
             return cls().supers().map(s -> dclare(ClassRectangle.class, diagram(), s)).toSet();
         }
 

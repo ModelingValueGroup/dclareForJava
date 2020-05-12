@@ -20,5 +20,5 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
 public @interface Skipped {
-    String[] value();;
+    String[] value();
 }

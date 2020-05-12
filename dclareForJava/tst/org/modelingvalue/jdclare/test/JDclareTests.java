@@ -15,19 +15,29 @@
 
 package org.modelingvalue.jdclare.test;
 
-import org.junit.*;
-import org.modelingvalue.collections.Collection;
-import org.modelingvalue.collections.Set;
-import org.modelingvalue.collections.util.*;
-import org.modelingvalue.dclare.*;
-import org.modelingvalue.jdclare.*;
-import org.modelingvalue.jdclare.test.PrioUniverse.*;
-
-import java.time.*;
-import java.util.*;
-
 import static org.junit.Assert.*;
 import static org.modelingvalue.jdclare.DClare.*;
+
+import java.time.Clock;
+import java.time.Instant;
+import java.time.ZoneId;
+import java.util.Optional;
+
+import org.junit.Assert;
+import org.junit.Test;
+import org.modelingvalue.collections.Collection;
+import org.modelingvalue.collections.Set;
+import org.modelingvalue.collections.util.Pair;
+import org.modelingvalue.dclare.Direction;
+import org.modelingvalue.dclare.State;
+import org.modelingvalue.dclare.TransactionClass;
+import org.modelingvalue.dclare.ex.OutOfScopeException;
+import org.modelingvalue.jdclare.DClare;
+import org.modelingvalue.jdclare.DNamed;
+import org.modelingvalue.jdclare.DObject;
+import org.modelingvalue.jdclare.DStruct;
+import org.modelingvalue.jdclare.DUniverse;
+import org.modelingvalue.jdclare.test.PrioUniverse.Prio;
 
 public class JDclareTests {
 
@@ -39,7 +49,7 @@ public class JDclareTests {
     public void manyUniverse() {
         for (int i = 0; i < MANY_TIMES; i++) {
             DClare<DUniverse> dClare = of(DUniverse.class);
-            State             result = dClare.run();
+            State result = dClare.run();
             result.run(() -> check(result));
         }
     }
@@ -47,7 +57,7 @@ public class JDclareTests {
     @Test
     public void universe() {
         DClare<DUniverse> dClare = of(DUniverse.class);
-        State             result = dClare.run();
+        State result = dClare.run();
         if (DUMP) {
             System.err.println("***************************** Begin DUniverse ***********************************");
             System.err.println(result.asString());
@@ -68,7 +78,7 @@ public class JDclareTests {
         State prev = null;
         for (int i = 0; i < MANY_TIMES; i++) {
             DClare<Orchestra> dClare = of(Orchestra.class, FIXED_CLOCK);
-            State             next   = dClare.run();
+            State next = dClare.run();
             next.run(() -> {
                 check(next);
                 checkOrchestra(next);
@@ -84,7 +94,7 @@ public class JDclareTests {
     @Test
     public void orchestra() {
         DClare<Orchestra> dClare = of(Orchestra.class);
-        State             result = dClare.run();
+        State result = dClare.run();
         result.run(() -> {
             check(result);
             checkOrchestra(result);
@@ -103,10 +113,10 @@ public class JDclareTests {
             assertTrue("No Keys", p.size() > 0);
             assertEquals(p.size(), p.keys().size());
             assertEquals(p.big(), p.size() > 24);
-            assertEquals(p.size() * 5 / 12, p.keys().filter(k -> k.black()).size());
+            assertEquals(p.size() * 5 / 12, p.keys().filter(PianoKey::black).size());
             p.keys().forEach(k -> {
                 KeyNative n = dNative(k);
-                assertTrue("No KeyNative", n != null);
+                assertNotNull("No KeyNative", n);
                 assertEquals("Init not 1:", 1, n.inits());
                 assertEquals("Black Native not equal:", k.black(), n.black());
             });
@@ -119,21 +129,18 @@ public class JDclareTests {
         assertEquals("No dStructType:", Set.of(), result.getObjects(DStruct.class).filter(o -> o.dStructClass() == null).toSet());
         assertEquals("No dClass:", Set.of(), result.getObjects(DObject.class).filter(o -> o.dClass() == null).toSet());
         assertEquals("No name:", Set.of(), result.getObjects(DNamed.class).filter(o -> o.name() == null).toSet());
-        assertEquals("Problems:", Set.of(), result.getObjects(DUniverse.class).flatMap(t -> t.dAllProblems()).toSet());
-        assertEquals("ToDo:", Set.of(), result.getObjects(DObject.class).map(o -> Pair.of(o, Collection.concat( //
-                Collection.concat(Direction.forward.depth.get(o), Direction.backward.depth.get(o), Direction.scheduled.depth.get(o)), //
-                Collection.concat(Direction.forward.preDepth.get(o), Direction.backward.preDepth.get(o), Direction.scheduled.preDepth.get(o)), //
-                Collection.concat(Direction.forward.postDepth.get(o), Direction.backward.postDepth.get(o), Direction.scheduled.postDepth.get(o))).//
-                toSet())).filter(p -> !p.b().isEmpty()).toSet());
+        assertEquals("Problems:", Set.of(), result.getObjects(DUniverse.class).flatMap(DObject::dAllProblems).toSet());
+        Set<Pair<DObject, Set<TransactionClass>>> scheduled = result.getObjects(DObject.class).map(o -> Pair.of(o, //
+                Collection.of(Direction.values()).flatMap(d -> Collection.concat(d.actions.get(o), d.children.get(o))).toSet())).filter(p -> !p.b().isEmpty()).toSet();
+        // System.err.println(scheduled);
+        assertEquals("Scheduled:", Set.of(), scheduled);
     }
 
     @Test
     public void testReparents() {
         DClare<Reparents> dClare = of(Reparents.class);
-        State             result = dClare.run();
-        result.run(() -> {
-            check(result);
-        });
+        State result = dClare.run();
+        result.run(() -> check(result));
         if (DUMP) {
             result.run(() -> {
                 Optional<Reparents> r = result.getObjects(Reparents.class).findAny();
@@ -148,7 +155,7 @@ public class JDclareTests {
     @Test
     public void testPriorities() {
         DClare<PrioUniverse> dClare = of(PrioUniverse.class);
-        State                result = dClare.run();
+        State result = dClare.run();
         result.run(() -> {
             check(result);
             checkPriorities(result);
@@ -169,7 +176,7 @@ public class JDclareTests {
         State prev = null;
         for (int i = 0; i < MANY_TIMES; i++) {
             DClare<PrioUniverse> dClare = of(PrioUniverse.class, FIXED_CLOCK);
-            State                next   = dClare.run();
+            State next = dClare.run();
             next.run(() -> {
                 check(next);
                 checkPriorities(next);
@@ -197,13 +204,11 @@ public class JDclareTests {
     public void testScrum() {
         DClare<Scrum> dClare = of(Scrum.class);
         dClare.start();
-        dClare.put("company", () -> {
-            dClare.universe().initTest(dClare);
-        });
+        dClare.put("company", () -> dClare.universe().initTest(dClare));
         dClare.stop();
         State result = dClare.waitForEnd();
         result.run(() -> {
-            assertFalse("Wim is has no Problems!", result.getObjects(Team.class).flatMap(t -> t.problems()).isEmpty());
+            assertFalse("Wim is has no Problems!", result.getObjects(Team.class).flatMap(Team::problems).isEmpty());
             if (DUMP) {
                 result.getObjects(Team.class).forEach(v -> v.dDump(System.err));
             }
@@ -215,9 +220,7 @@ public class JDclareTests {
         try {
             DClare<Scrum> dClare = of(Scrum.class);
             dClare.start();
-            dClare.put("company", () -> {
-                dClare.universe().initScopeProblem(dClare);
-            });
+            dClare.put("company", () -> dClare.universe().initScopeProblem(dClare));
             dClare.stop();
             dClare.waitForEnd();
             Assert.fail();
