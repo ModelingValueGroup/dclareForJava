@@ -4,6 +4,7 @@ on: [push]
 
 jobs:
   build-and-test:
+
     runs-on: ubuntu-latest
 
     steps:
@@ -18,13 +19,18 @@ jobs:
         with:
           java-version: 11
 
-      - name: "get generic info"
+      - name: "get generic mvg-info"
         uses: ModelingValueGroup/generic-info@master
 
       - name: "get buildTools"
         uses: ModelingValueGroup/buildTools@master
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: "if master: fail if there is already a tag for this version"
+        run:  |
+          . <(java -jar ~/buildTools.jar)
+          errorIfMasterAndVersionTagExists
 
       - name: "prepare ant"
         run:  |
@@ -40,24 +46,36 @@ jobs:
           correctEols
           correctHeaders header
 
+      - name: "push changes back to github"
+        run:  |
+          . <(java -jar ~/buildTools.jar)
+          pushBackToGithub "${{ secrets.GITHUB_TOKEN }}" "automation@modelingvalue.com" "adjusted files [by github actions]"
+
       - name: "download dependencies (as mentioned in pom)"
         run:  |
           . <(java -jar ~/buildTools.jar)
-          getAllDependencies ${{ secrets.GITHUB_TOKEN }} "${{ secrets.SCALEWAY_ACCESS_KEY }}" "${{ secrets.SCALEWAY_SECRET_KEY }}"
+          getAllDependencies "${{ secrets.GITHUB_TOKEN }}" "${{ secrets.SCALEWAY_ACCESS_KEY }}" "${{ secrets.SCALEWAY_SECRET_KEY }}"
 
       - name: "build"
         run:  ant
 
       - name: "test"
-        run:  ant test
+        run:  |
+          if ! ant test; then
+            for i in TEST-*.xml; do
+              echo "=============== $i"
+              sed "s/^/>> /" $i
+            done
+            exit 42
+          fi
 
       - name: "generate javadoc"
         run:  ant javadoc
 
-      - name: "push changes back to github"
+      - name: "if master: tag with version"
         run:  |
           . <(java -jar ~/buildTools.jar)
-          pushBackToGithub "${{ secrets.GITHUB_TOKEN }}" "automation@modelingvalue.com" "adjusted files [by github actions]"
+          setVersionTagIfMaster "${{ secrets.GITHUB_TOKEN }}" "automation@modelingvalue.com"
 
       - name: "publish action-artifact jar"
         uses: actions/upload-artifact@v1
@@ -97,8 +115,7 @@ jobs:
 
       - name: "if master: publish maven-artifacts (jar/pom/sources/javadoc)"
         uses: ModelingValueGroup/upload-maven-package-action@master
-        if: github.ref == 'refs/heads/master'
+        if  : github.ref == 'refs/heads/master'
         with:
-          file: "out/artifacts/dclareForJava.jar"
+          file : "out/artifacts/dclareForJava.jar"
           token: "${{ secrets.GITHUB_TOKEN }}"
-
