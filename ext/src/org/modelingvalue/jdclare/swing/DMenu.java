@@ -60,7 +60,7 @@ public interface DMenu extends DComponent, DStruct2<DComponent, String>, DNamed,
 
         public void menuItems(List<MenuItem> pre, List<MenuItem> post) {
             swing.removeAll();
-            post.forEach(i -> swing.add(((MenuItemNative) dNative(i)).swing));
+            post.forEachOrdered(i -> swing.add(((MenuItemNative) dNative(i)).swing));
         }
     }
 

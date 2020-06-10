@@ -100,7 +100,7 @@ public class JDclareTests {
             checkOrchestra(result);
             if (DUMP) {
                 System.err.println("******************************Begin Orchestra*******************************");
-                result.getObjects(Piano.class).forEach(u -> u.dDump(System.err));
+                result.getObjects(Piano.class).forEachOrdered(u -> u.dDump(System.err));
                 System.err.println("******************************End Orchestra*********************************");
             }
         });
@@ -109,12 +109,12 @@ public class JDclareTests {
     private void checkOrchestra(State result) {
         Set<Piano> pianos = result.getObjects(Piano.class).toSet();
         assertEquals("Unexpected Pianos: " + pianos, 3, pianos.size());
-        pianos.forEach(p -> {
+        pianos.forEachOrdered(p -> {
             assertTrue("No Keys", p.size() > 0);
             assertEquals(p.size(), p.keys().size());
             assertEquals(p.big(), p.size() > 24);
             assertEquals(p.size() * 5 / 12, p.keys().filter(PianoKey::black).size());
-            p.keys().forEach(k -> {
+            p.keys().forEachOrdered(k -> {
                 KeyNative n = dNative(k);
                 assertNotNull("No KeyNative", n);
                 assertEquals("Init not 1:", 1, n.inits());
@@ -146,7 +146,7 @@ public class JDclareTests {
                 Optional<Reparents> r = result.getObjects(Reparents.class).findAny();
                 r.ifPresent(u -> System.err.println(u.tree()));
                 System.err.println("******************************Begin Reparents************************************");
-                r.ifPresent(u -> u.tree().forEach(v -> v.dDump(System.err)));
+                r.ifPresent(u -> u.tree().forEachOrdered(v -> v.dDump(System.err)));
                 System.err.println("******************************End Reparents**************************************");
             });
         }
@@ -192,7 +192,7 @@ public class JDclareTests {
     private void checkPriorities(State result) {
         Set<Prio> prios = result.getObjects(Prio.class).toSet();
         assertEquals("Unexpected Priorities: " + prios, 3, prios.size());
-        prios.forEach(p -> {
+        prios.forEachOrdered(p -> {
             String target = p.dClass().name();
             target = target.substring(target.length() - 1);
             assertEquals(target, p.x());
@@ -210,7 +210,7 @@ public class JDclareTests {
         result.run(() -> {
             assertFalse("Wim is has no Problems!", result.getObjects(Team.class).flatMap(Team::problems).isEmpty());
             if (DUMP) {
-                result.getObjects(Team.class).forEach(v -> v.dDump(System.err));
+                result.getObjects(Team.class).forEachOrdered(v -> v.dDump(System.err));
             }
         });
     }

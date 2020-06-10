@@ -83,16 +83,16 @@ public class SyntaxTests {
                 System.err.println(result.asString());
                 System.err.println("******************************End State***************************************");
                 System.err.println("******************************Begin Syntax************************************");
-                result.getObjects(GrammarClass.class).filter(s -> s.jClass() == MySyntax.class).forEach(u -> u.dDump(System.err));
+                result.getObjects(GrammarClass.class).filter(s -> s.jClass() == MySyntax.class).forEachOrdered(u -> u.dDump(System.err));
                 System.err.println("******************************End Syntax**************************************");
                 System.err.println("******************************Begin Text**************************************");
-                result.getObjects(Text.class).forEach(u -> u.dDump(System.err));
+                result.getObjects(Text.class).forEachOrdered(u -> u.dDump(System.err));
                 System.err.println("******************************End Text****************************************");
                 System.err.println("******************************Begin Root**************************************");
-                result.getObjects(Unit.class).forEach(u -> u.dDump(System.err));
+                result.getObjects(Unit.class).forEachOrdered(u -> u.dDump(System.err));
                 System.err.println("******************************End Root****************************************");
                 System.err.println("******************************Begin Problems**********************************");
-                result.getObjects(DUniverse.class).forEach(u -> u.dAllProblems().forEach(System.err::println));
+                result.getObjects(DUniverse.class).forEachOrdered(u -> u.dAllProblems().forEachOrdered(System.err::println));
                 System.err.println("******************************End Problems************************************");
             }
             test(result);

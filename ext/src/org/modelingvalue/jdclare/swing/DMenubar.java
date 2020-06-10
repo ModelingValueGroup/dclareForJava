@@ -54,7 +54,7 @@ public interface DMenubar extends DComponent, DStruct1<Frame> {
 
         public void menus(List<DMenu> pre, List<DMenu> post) {
             swing.removeAll();
-            post.forEach(i -> swing.add(((DMenuNative) dNative(i)).swing));
+            post.forEachOrdered(i -> swing.add(((DMenuNative) dNative(i)).swing));
         }
     }
 
