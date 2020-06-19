@@ -15,17 +15,39 @@
 
 package org.modelingvalue.jdclare.meta;
 
-import org.modelingvalue.collections.*;
-import org.modelingvalue.collections.util.*;
-import org.modelingvalue.dclare.*;
-import org.modelingvalue.jdclare.*;
-import org.modelingvalue.jdclare.DNative.*;
+import static org.modelingvalue.jdclare.DClare.D_OBJECT_CLASS;
+import static org.modelingvalue.jdclare.DClare.OPPOSITE;
+import static org.modelingvalue.jdclare.DClare.SCOPE;
+import static org.modelingvalue.jdclare.DClare.ann;
+import static org.modelingvalue.jdclare.DClare.dProperty;
+import static org.modelingvalue.jdclare.DClare.dclare;
+import static org.modelingvalue.jdclare.DClare.getConstraints;
+import static org.modelingvalue.jdclare.DClare.overridden;
+import static org.modelingvalue.jdclare.DClare.qual;
+import static org.modelingvalue.jdclare.DClare.rawClass;
+import static org.modelingvalue.jdclare.PropertyQualifier.constant;
+import static org.modelingvalue.jdclare.PropertyQualifier.containment;
+import static org.modelingvalue.jdclare.PropertyQualifier.hidden;
+import static org.modelingvalue.jdclare.PropertyQualifier.mandatory;
+import static org.modelingvalue.jdclare.PropertyQualifier.optional;
+import static org.modelingvalue.jdclare.PropertyQualifier.unchecked;
+import static org.modelingvalue.jdclare.PropertyQualifier.validation;
+import static org.modelingvalue.jdclare.PropertyQualifier.visible;
 
-import java.lang.reflect.*;
-import java.util.function.*;
+import java.lang.reflect.Method;
+import java.util.function.Function;
 
-import static org.modelingvalue.jdclare.DClare.*;
-import static org.modelingvalue.jdclare.PropertyQualifier.*;
+import org.modelingvalue.collections.ContainingCollection;
+import org.modelingvalue.collections.Set;
+import org.modelingvalue.collections.util.StringUtil;
+import org.modelingvalue.dclare.State;
+import org.modelingvalue.jdclare.DClare;
+import org.modelingvalue.jdclare.DNative.ChangeHandler;
+import org.modelingvalue.jdclare.DObject;
+import org.modelingvalue.jdclare.DStruct;
+import org.modelingvalue.jdclare.DStruct1;
+import org.modelingvalue.jdclare.Native;
+import org.modelingvalue.jdclare.Property;
 
 public interface DMethodProperty<O extends DStruct, T> extends DProperty<O, T>, DStruct1<Method> {
 
@@ -87,6 +109,13 @@ public interface DMethodProperty<O extends DStruct, T> extends DProperty<O, T>, 
         } else {
             return keyNr() < 0 && !validation();
         }
+    }
+
+    @Override
+    @Property(constant)
+    default boolean checkConsistency() {
+        Method method = method();
+        return !qual(method, unchecked);
     }
 
     @Override
@@ -222,8 +251,8 @@ public interface DMethodProperty<O extends DStruct, T> extends DProperty<O, T>, 
     @Property(constant)
     default ChangeHandler<DObject, T> nativeChangeHandler() {
         Method method = method();
-        Class  pType  = method.getReturnType();
-        Native ann    = ann(method.getDeclaringClass(), Native.class);
+        Class pType = method.getReturnType();
+        Native ann = ann(method.getDeclaringClass(), Native.class);
         if (ann != null) {
             try {
                 return ChangeHandler.of(ann.value().getMethod(method.getName(), pType, pType));

@@ -15,10 +15,10 @@
 
 package org.modelingvalue.jdclare.syntax.test.simple;
 
-import org.modelingvalue.collections.*;
-import org.modelingvalue.jdclare.*;
+import static org.modelingvalue.jdclare.PropertyQualifier.containment;
 
-import static org.modelingvalue.jdclare.PropertyQualifier.*;
+import org.modelingvalue.collections.Set;
+import org.modelingvalue.jdclare.Property;
 
 public interface AClass extends ANamed {
 

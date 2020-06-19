@@ -15,16 +15,18 @@
 
 package org.modelingvalue.jdclare.swing.draw2d;
 
-import org.modelingvalue.jdclare.*;
-import org.modelingvalue.jdclare.swing.DComponent.*;
-import org.modelingvalue.jdclare.swing.*;
-import org.modelingvalue.jdclare.swing.draw2d.DFilled.*;
+import static org.modelingvalue.jdclare.DClare.pre;
+import static org.modelingvalue.jdclare.DClare.set;
+import static org.modelingvalue.jdclare.PropertyQualifier.optional;
 
-import java.awt.*;
-import java.awt.event.*;
+import java.awt.Color;
+import java.awt.event.KeyEvent;
 
-import static org.modelingvalue.jdclare.DClare.*;
-import static org.modelingvalue.jdclare.PropertyQualifier.*;
+import org.modelingvalue.jdclare.Native;
+import org.modelingvalue.jdclare.Property;
+import org.modelingvalue.jdclare.swing.DComponent.DComponentNative;
+import org.modelingvalue.jdclare.swing.InputDeviceData;
+import org.modelingvalue.jdclare.swing.draw2d.DFilled.FilledNative;
 
 @Native(FilledNative.class)
 public interface DFilled extends DShape {
@@ -50,8 +52,8 @@ public interface DFilled extends DShape {
 
     @Property()
     default boolean dragging() {
-        DCanvas         canvas = canvas();
-        InputDeviceData di     = canvas.deviceInput();
+        DCanvas canvas = canvas();
+        InputDeviceData di = canvas.deviceInput();
         if (!pre(di, InputDeviceData::isLeftMouseDown) && di.isLeftMouseDown() && pre(this::dParent) != null && hit(di.mousePosition())) {
             set(this, DFilled::dragStartPosition, position());
             set(this, DFilled::dragStartMousePosition, di.mousePosition());

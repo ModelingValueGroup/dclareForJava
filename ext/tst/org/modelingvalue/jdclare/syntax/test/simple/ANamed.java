@@ -15,10 +15,16 @@
 
 package org.modelingvalue.jdclare.syntax.test.simple;
 
-import org.modelingvalue.jdclare.*;
+import static org.modelingvalue.jdclare.DClare.dclare;
+import static org.modelingvalue.jdclare.PropertyQualifier.hidden;
+import static org.modelingvalue.jdclare.PropertyQualifier.unchecked;
+import static org.modelingvalue.jdclare.PropertyQualifier.validation;
 
-import static org.modelingvalue.jdclare.DClare.*;
-import static org.modelingvalue.jdclare.PropertyQualifier.*;
+import org.modelingvalue.jdclare.DNamed;
+import org.modelingvalue.jdclare.DProblem;
+import org.modelingvalue.jdclare.DSeverity;
+import org.modelingvalue.jdclare.Default;
+import org.modelingvalue.jdclare.Property;
 
 public interface ANamed extends DNamed {
 
@@ -26,6 +32,7 @@ public interface ANamed extends DNamed {
 
     @Override
     @Default
+    @Property(unchecked)
     default String name() {
         return NO_NAME;
     }

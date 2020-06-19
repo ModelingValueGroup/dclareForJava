@@ -15,12 +15,15 @@
 
 package org.modelingvalue.jdclare.syntax.test.simple;
 
-import org.modelingvalue.jdclare.*;
-import org.modelingvalue.jdclare.syntax.test.types.*;
+import static org.modelingvalue.jdclare.PropertyQualifier.unchecked;
+
+import org.modelingvalue.jdclare.DObject;
+import org.modelingvalue.jdclare.Property;
+import org.modelingvalue.jdclare.syntax.test.types.AType;
 
 public interface ATyped extends DObject {
 
-    @Property
+    @Property(unchecked)
     AType type();
 
 }

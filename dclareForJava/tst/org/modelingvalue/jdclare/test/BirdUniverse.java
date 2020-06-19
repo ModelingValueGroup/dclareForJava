@@ -15,8 +15,12 @@
 
 package org.modelingvalue.jdclare.test;
 
-import static org.modelingvalue.jdclare.DClare.*;
-import static org.modelingvalue.jdclare.PropertyQualifier.*;
+import static org.modelingvalue.jdclare.DClare.dUniverse;
+import static org.modelingvalue.jdclare.DClare.dclare;
+import static org.modelingvalue.jdclare.DClare.set;
+import static org.modelingvalue.jdclare.PropertyQualifier.constant;
+import static org.modelingvalue.jdclare.PropertyQualifier.containment;
+import static org.modelingvalue.jdclare.PropertyQualifier.optional;
 
 import org.modelingvalue.collections.Set;
 import org.modelingvalue.jdclare.DClare;
@@ -320,7 +324,6 @@ public interface BirdUniverse extends DUniverse {
         default void nullPointerInMandatoryProperty() {
             if ("blue".equals(color())) {
                 Bird child = dclare(HummingBird.class, this, this.name() + "+");
-                set(child, Bird::color, null);
                 set(this, Bird::children, Set::add, child);
             }
         }

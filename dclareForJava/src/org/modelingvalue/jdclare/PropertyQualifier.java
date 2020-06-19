@@ -21,6 +21,7 @@ public enum PropertyQualifier {
     containment(),
     constant(),
     visible(),
+    unchecked(),
     hidden(),
     validation()
 }

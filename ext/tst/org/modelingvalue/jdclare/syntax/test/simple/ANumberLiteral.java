@@ -15,10 +15,11 @@
 
 package org.modelingvalue.jdclare.syntax.test.simple;
 
-import org.modelingvalue.jdclare.*;
-import org.modelingvalue.jdclare.syntax.test.types.*;
+import static org.modelingvalue.jdclare.DClare.dclare;
 
-import static org.modelingvalue.jdclare.DClare.*;
+import org.modelingvalue.jdclare.Property;
+import org.modelingvalue.jdclare.syntax.test.types.ANumberType;
+import org.modelingvalue.jdclare.syntax.test.types.AType;
 
 public interface ANumberLiteral extends AExpression {
 

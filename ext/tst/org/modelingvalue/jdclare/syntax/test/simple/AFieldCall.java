@@ -15,19 +15,22 @@
 
 package org.modelingvalue.jdclare.syntax.test.simple;
 
-import org.modelingvalue.collections.*;
-import org.modelingvalue.jdclare.*;
-import org.modelingvalue.jdclare.syntax.test.types.*;
+import static org.modelingvalue.jdclare.DClare.SCOPE;
+import static org.modelingvalue.jdclare.PropertyQualifier.containment;
+import static org.modelingvalue.jdclare.PropertyQualifier.optional;
+import static org.modelingvalue.jdclare.PropertyQualifier.unchecked;
 
-import static org.modelingvalue.jdclare.DClare.*;
-import static org.modelingvalue.jdclare.PropertyQualifier.*;
+import org.modelingvalue.collections.Set;
+import org.modelingvalue.jdclare.Constraints;
+import org.modelingvalue.jdclare.Property;
+import org.modelingvalue.jdclare.syntax.test.types.AType;
 
 public interface AFieldCall extends AExpression {
 
     @Property({containment, optional})
     AExpression base();
 
-    @Property
+    @Property(unchecked)
     AField field();
 
     @Override
