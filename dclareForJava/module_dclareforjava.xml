@@ -1,32 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="module_dclareforjava" default="compile.module.dclareforjava">
   <dirname property="module.dclareforjava.basedir" file="${ant.file.module_dclareforjava}"/>
-  
   <property name="module.jdk.home.dclareforjava" value="${project.jdk.home}"/>
   <property name="module.jdk.bin.dclareforjava" value="${project.jdk.bin}"/>
   <property name="module.jdk.classpath.dclareforjava" value="${project.jdk.classpath}"/>
-  
   <property name="compiler.args.dclareforjava" value="-encoding UTF-8 -source 11 -target 11 ${compiler.args}"/>
-  
   <property name="dclareforjava.output.dir" value="${module.dclareforjava.basedir}/../out/production/dclareForJava"/>
   <property name="dclareforjava.testoutput.dir" value="${module.dclareforjava.basedir}/../out/test/dclareForJava"/>
-  
   <path id="dclareforjava.module.bootclasspath">
     <!-- Paths to be included in compilation bootclasspath -->
   </path>
-  
   <path id="dclareforjava.module.production.classpath">
     <path refid="${module.jdk.classpath.dclareforjava}"/>
     <path refid="library.gen:_dclare.classpath"/>
     <path refid="library.gen:_immutable-collections.classpath"/>
   </path>
-  
   <path id="dclareforjava.runtime.production.module.classpath">
     <pathelement location="${dclareforjava.output.dir}"/>
     <path refid="library.gen:_dclare.classpath"/>
     <path refid="library.gen:_immutable-collections.classpath"/>
   </path>
-  
   <path id="dclareforjava.module.classpath">
     <path refid="${module.jdk.classpath.dclareforjava}"/>
     <pathelement location="${dclareforjava.output.dir}"/>
@@ -35,7 +28,6 @@
     <path refid="library.gen:_junit.classpath"/>
     <path refid="library.gen:_hamcrest-all.classpath"/>
   </path>
-  
   <path id="dclareforjava.runtime.module.classpath">
     <pathelement location="${dclareforjava.testoutput.dir}"/>
     <pathelement location="${dclareforjava.output.dir}"/>
@@ -44,41 +36,32 @@
     <path refid="library.gen:_junit.classpath"/>
     <path refid="library.gen:_hamcrest-all.classpath"/>
   </path>
-  
-  
   <patternset id="excluded.from.module.dclareforjava">
     <patternset refid="ignored.files"/>
   </patternset>
-  
   <patternset id="excluded.from.compilation.dclareforjava">
     <patternset refid="excluded.from.module.dclareforjava"/>
   </patternset>
-  
   <path id="dclareforjava.module.sourcepath">
     <dirset dir="${module.dclareforjava.basedir}">
       <include name="src"/>
     </dirset>
   </path>
-  
   <path id="dclareforjava.module.test.sourcepath">
     <dirset dir="${module.dclareforjava.basedir}">
       <include name="tst"/>
     </dirset>
   </path>
-  
-  
   <target name="compile.module.dclareforjava" depends="compile.module.dclareforjava.production,compile.module.dclareforjava.tests" description="Compile module dclareForJava"/>
-  
   <target name="compile.module.dclareforjava.production" description="Compile module dclareForJava; production classes">
     <mkdir dir="${dclareforjava.output.dir}"/>
-    <javac destdir="${dclareforjava.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.dclareforjava}/javac">
+    <javac includeantruntime="false" destdir="${dclareforjava.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.dclareforjava}/javac">
       <compilerarg line="${compiler.args.dclareforjava}"/>
       <bootclasspath refid="dclareforjava.module.bootclasspath"/>
       <classpath refid="dclareforjava.module.production.classpath"/>
       <src refid="dclareforjava.module.sourcepath"/>
       <patternset refid="excluded.from.compilation.dclareforjava"/>
     </javac>
-    
     <copy todir="${dclareforjava.output.dir}">
       <fileset dir="${module.dclareforjava.basedir}/src">
         <patternset refid="compiler.resources"/>
@@ -86,17 +69,15 @@
       </fileset>
     </copy>
   </target>
-  
   <target name="compile.module.dclareforjava.tests" depends="compile.module.dclareforjava.production" description="compile module dclareForJava; test classes" unless="skip.tests">
     <mkdir dir="${dclareforjava.testoutput.dir}"/>
-    <javac destdir="${dclareforjava.testoutput.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.dclareforjava}/javac">
+    <javac includeantruntime="false" destdir="${dclareforjava.testoutput.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.dclareforjava}/javac">
       <compilerarg line="${compiler.args.dclareforjava}"/>
       <bootclasspath refid="dclareforjava.module.bootclasspath"/>
       <classpath refid="dclareforjava.module.classpath"/>
       <src refid="dclareforjava.module.test.sourcepath"/>
       <patternset refid="excluded.from.compilation.dclareforjava"/>
     </javac>
-    
     <copy todir="${dclareforjava.testoutput.dir}">
       <fileset dir="${module.dclareforjava.basedir}/tst">
         <patternset refid="compiler.resources"/>
@@ -104,9 +85,37 @@
       </fileset>
     </copy>
   </target>
-  
   <target name="clean.module.dclareforjava" description="cleanup module">
     <delete dir="${dclareforjava.output.dir}"/>
     <delete dir="${dclareforjava.testoutput.dir}"/>
+  </target>
+  <target name="test.module.dclareforjava">
+    <junit haltonfailure="on" logfailedtests="on" fork="on" forkmode="once">
+      <!-- fork="on" forkmode="perTest" threads="8" -->
+      <classpath refid="dclareforjava.runtime.module.classpath"/>
+      <batchtest todir=".">
+        <fileset dir="${dclareforjava.testoutput.dir}">
+          <include name="**/*Test.*"/>
+          <include name="**/*Tests.*"/>
+        </fileset>
+        <formatter type="xml"/>
+      </batchtest>
+    </junit>
+  </target>
+  <target name="testresults.module.dclareforjava" depends="test.module.dclareforjava">
+    <mkdir dir="${basedir}/out/artifacts"/>
+    <jar destfile="${basedir}/out/artifacts/dclareForJava-testresults.jar" filesetmanifest="skip">
+      <zipfileset file="${basedir}/TEST-*.xml"/>
+    </jar>
+  </target>
+  <target name="javadoc.module.dclareforjava">
+    <property name="dclareforjava.javadoc.dir" value="${basedir}/out/artifacts"/>
+    <property name="dclareforjava.javadoc.tmp" value="${dclareforjava.javadoc.dir}/tmp"/>
+    <property name="dclareforjava.javadoc.jar" value="${dclareforjava.javadoc.dir}/dclareForJava-javadoc.jar"/>
+    <javadoc sourcepathref="dclareforjava.module.sourcepath" destdir="${dclareforjava.javadoc.tmp}" classpathref="dclareforjava.module.classpath"/>
+    <jar destfile="${dclareforjava.javadoc.jar}" filesetmanifest="skip">
+      <zipfileset dir="${dclareforjava.javadoc.tmp}"/>
+    </jar>
+    <delete dir="${dclareforjava.javadoc.tmp}"/>
   </target>
 </project>
