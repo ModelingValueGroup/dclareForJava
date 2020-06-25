@@ -217,7 +217,7 @@
       <zipfileset dir="${ext.testoutput.dir}"/>
       <zipfileset src="${basedir}/lib/dclare.jar"/>
       <zipfileset src="${basedir}/lib/immutable-collections.jar"/>
-      <zipfileset src="${basedir}/lib/hamcrest-core.jar"/>
+      <zipfileset src="${basedir}/lib/hamcrest-all.jar"/>
       <zipfileset src="${basedir}/lib/junit.jar"/>
     </jar>
     <copy file="${temp.jar.path.examples.jar}" tofile="${artifact.temp.output.examples}/examples.jar"/>
