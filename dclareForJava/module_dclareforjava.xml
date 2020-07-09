@@ -25,16 +25,26 @@
     <pathelement location="${dclareforjava.output.dir}"/>
     <path refid="library.gen:_dclare.classpath"/>
     <path refid="library.gen:_immutable-collections.classpath"/>
-    <path refid="library.gen:_junit.classpath"/>
-    <path refid="library.gen:_hamcrest-all.classpath"/>
+    <path refid="library.gen:_junit-jupiter-api.classpath"/>
+    <path refid="library.gen:_junit-platform-commons.classpath"/>
+    <path refid="library.gen:_junit-platform-launcher.classpath"/>
+    <path refid="library.gen:_opentest4j.classpath"/>
+    <path refid="library.gen:_apiguardian-api.classpath"/>
+    <path refid="library.gen:_junit-jupiter-engine.classpath"/>
+    <path refid="library.gen:_junit-platform-engine.classpath"/>
   </path>
   <path id="dclareforjava.runtime.module.classpath">
     <pathelement location="${dclareforjava.testoutput.dir}"/>
     <pathelement location="${dclareforjava.output.dir}"/>
     <path refid="library.gen:_dclare.classpath"/>
     <path refid="library.gen:_immutable-collections.classpath"/>
-    <path refid="library.gen:_junit.classpath"/>
-    <path refid="library.gen:_hamcrest-all.classpath"/>
+    <path refid="library.gen:_junit-jupiter-api.classpath"/>
+    <path refid="library.gen:_junit-platform-commons.classpath"/>
+    <path refid="library.gen:_junit-platform-launcher.classpath"/>
+    <path refid="library.gen:_opentest4j.classpath"/>
+    <path refid="library.gen:_apiguardian-api.classpath"/>
+    <path refid="library.gen:_junit-jupiter-engine.classpath"/>
+    <path refid="library.gen:_junit-platform-engine.classpath"/>
   </path>
   <patternset id="excluded.from.module.dclareforjava">
     <patternset refid="ignored.files"/>
@@ -90,17 +100,17 @@
     <delete dir="${dclareforjava.testoutput.dir}"/>
   </target>
   <target name="test.module.dclareforjava">
-    <junit haltonfailure="on" logfailedtests="on" fork="on" forkmode="once">
-      <!-- fork="on" forkmode="perTest" threads="8" -->
+    <junitlauncher haltOnFailure="true" printSummary="true">
       <classpath refid="dclareforjava.runtime.module.classpath"/>
-      <batchtest todir=".">
+      <testclasses outputdir=".">
         <fileset dir="${dclareforjava.testoutput.dir}">
           <include name="**/*Test.*"/>
           <include name="**/*Tests.*"/>
         </fileset>
-        <formatter type="xml"/>
-      </batchtest>
-    </junit>
+        <listener type="legacy-xml" sendSysOut="true" sendSysErr="true"/>
+        <listener type="legacy-plain" sendSysOut="true"/>
+      </testclasses>
+    </junitlauncher>
   </target>
   <target name="testresults.module.dclareforjava" depends="test.module.dclareforjava">
     <mkdir dir="${basedir}/out/artifacts"/>

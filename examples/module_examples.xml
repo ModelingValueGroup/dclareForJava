@@ -81,17 +81,17 @@
     <delete dir="${examples.testoutput.dir}"/>
   </target>
   <target name="test.module.examples">
-    <junit haltonfailure="on" logfailedtests="on" fork="on" forkmode="once">
-      <!-- fork="on" forkmode="perTest" threads="8" -->
+    <junitlauncher haltOnFailure="true" printSummary="true">
       <classpath refid="examples.runtime.module.classpath"/>
-      <batchtest todir=".">
+      <testclasses outputdir=".">
         <fileset dir="${examples.testoutput.dir}">
           <include name="**/*Test.*"/>
           <include name="**/*Tests.*"/>
         </fileset>
-        <formatter type="xml"/>
-      </batchtest>
-    </junit>
+        <listener type="legacy-xml" sendSysOut="true" sendSysErr="true"/>
+        <listener type="legacy-plain" sendSysOut="true"/>
+      </testclasses>
+    </junitlauncher>
   </target>
   <target name="testresults.module.examples" depends="test.module.examples">
     <mkdir dir="${basedir}/out/artifacts"/>

@@ -5,7 +5,7 @@ on: [push]
 jobs:
   build-and-test:
 
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
 
     steps:
       - name: "checkout"
@@ -28,9 +28,10 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: "if master: fail if there is already a tag for this version"
+        if: github.ref == 'refs/heads/master'
         run:  |
           . <(java -jar ~/buildTools.jar)
-          errorIfMasterAndVersionTagExists
+          errorIfVersionTagExists
 
       - name: "prepare ant"
         run:  |
@@ -73,9 +74,10 @@ jobs:
         run:  ant javadoc
 
       - name: "if master: tag with version"
+        if: github.ref == 'refs/heads/master'
         run:  |
           . <(java -jar ~/buildTools.jar)
-          setVersionTagIfMaster "${{ secrets.GITHUB_TOKEN }}" "automation@modelingvalue.com"
+          setVersionTag "${{ secrets.GITHUB_TOKEN }}" "automation@modelingvalue.com"
 
       - name: "publish action-artifact jar"
         uses: actions/upload-artifact@v1
