@@ -15,14 +15,13 @@
 
 package org.modelingvalue.jdclare.test;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.modelingvalue.jdclare.DClare.*;
 
 import java.util.HashSet;
 import java.util.function.Function;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.modelingvalue.collections.Set;
 import org.modelingvalue.collections.util.NotMergeableException;
 import org.modelingvalue.collections.util.Pair;
@@ -42,7 +41,6 @@ import org.modelingvalue.jdclare.test.BirdUniverse.Pigeon;
 import org.modelingvalue.jdclare.test.BirdUniverse.Sparrow;
 
 public class BirdTest {
-
     private static final boolean PRINT_STACK_TRACE = Boolean.getBoolean("PRINT_STACK_TRACE");
 
     private void addBird(DClare<BirdUniverse> dclare, Class<? extends Bird> clazz, Pair<String, String> props) {
@@ -79,7 +77,7 @@ public class BirdTest {
             start(dclare);
             addBird(dclare, Condor.class, Pair.of("0", "red"));
             stop(dclare);
-            Assert.fail();
+            fail();
         } catch (Throwable t) {
             Throwable cause = getCause(t);
             assertThrowable(cause, TooManyChangesException.class);
@@ -93,7 +91,7 @@ public class BirdTest {
             start(dclare);
             addBird(dclare, Condor.class, Pair.of("0", "white"));
             stop(dclare);
-            Assert.fail();
+            fail();
         } catch (Throwable t) {
             Throwable cause = getCause(t);
             assertThrowable(cause, TooManyChangesException.class);
@@ -107,7 +105,7 @@ public class BirdTest {
             start(dclare);
             addBird(dclare, Condor.class, Pair.of("0", "green"));
             stop(dclare);
-            Assert.fail();
+            fail();
         } catch (Throwable t) {
             Throwable cause = getCause(t);
             assertThrowable(cause, TooManyChangesException.class);
@@ -121,7 +119,7 @@ public class BirdTest {
             start(dclare);
             addBird(dclare, Condor.class, Pair.of("0", "black"));
             stop(dclare);
-            Assert.fail();
+            fail();
         } catch (Throwable t) {
             Throwable cause = getCause(t);
             assertThrowable(cause, TooManyChangesException.class);
@@ -135,7 +133,7 @@ public class BirdTest {
             start(dclare);
             addBird(dclare, Condor.class, Pair.of("0", "blue"));
             stop(dclare);
-            Assert.fail();
+            fail();
         } catch (Throwable t) {
             Throwable cause = getCause(t);
             assertThrowable(cause, TooManyChangesException.class);
@@ -149,7 +147,7 @@ public class BirdTest {
             start(dclare);
             addBird(dclare, Condor.class, Pair.of("0", "brown"));
             stop(dclare);
-            Assert.fail();
+            fail();
         } catch (Throwable t) {
             Throwable cause = getCause(t);
             assertThrowable(cause, TooManyChangesException.class);
@@ -163,7 +161,7 @@ public class BirdTest {
             start(dclare);
             addBird(dclare, Condor.class, Pair.of("0", "yellow"));
             stop(dclare);
-            Assert.fail();
+            fail();
         } catch (Throwable t) {
             Throwable cause = getCause(t);
             assertThrowable(cause, TooManyChangesException.class);
@@ -177,7 +175,7 @@ public class BirdTest {
             start(dclare);
             addBird(dclare, Pigeon.class, Pair.of("0", "grey"));
             stop(dclare);
-            Assert.fail();
+            fail();
         } catch (Throwable t) {
             Throwable cause = getCause(t);
             assertThrowable(cause, TooManyObservedException.class, "Too many observed (xxxx) by 0.Pigeon::addChildren1", x -> ((TooManyObservedException) x).getSimpleMessage().replaceFirst("\\d\\d+", "xxxx"));
@@ -191,7 +189,7 @@ public class BirdTest {
             start(dclare);
             addBird(dclare, Pigeon.class, Pair.of("0", "yellow"));
             stop(dclare);
-            Assert.fail();
+            fail();
         } catch (Throwable t) {
             Throwable cause = getCause(t);
             assertThrowable(cause, TooManyObservedException.class, "Too many observed (xxxx) by 0.Pigeon::addChildren2", x -> ((TooManyObservedException) x).getSimpleMessage().replaceFirst("\\d\\d+", "xxxx"));
@@ -203,9 +201,9 @@ public class BirdTest {
         DClare<BirdUniverse> dclare = of(BirdUniverse.class);
         start(dclare);
         addBird(dclare, Pigeon.class, Pair.of("0", "green"));
-        State result = stop(dclare);
-        Set<Bird> birds = result.getObjects(Bird.class).toSet();
-        assertEquals("Unexpected Birds: " + birds, 1, birds.size());
+        State     result = stop(dclare);
+        Set<Bird> birds  = result.getObjects(Bird.class).toSet();
+        assertEquals(1, birds.size(), "Unexpected Birds: " + birds);
     }
 
     @Test
@@ -215,7 +213,7 @@ public class BirdTest {
             start(dclare);
             addBird(dclare, HouseSparrow.class, Pair.of("1", "yellow"));
             stop(dclare);
-            Assert.fail();
+            fail();
         } catch (Throwable t) {
             Throwable cause = getCause(t);
             assertThrowable(cause, TooManyObserversException.class, "Too many observers (xxxx) of 1.color", x -> ((TooManyObserversException) x).getSimpleMessage().replaceFirst("\\d\\d+", "xxxx"));
@@ -229,7 +227,7 @@ public class BirdTest {
             start(dclare);
             addBird(dclare, Sparrow.class, Pair.of("0", "black"));
             stop(dclare);//.run(() -> dclare.universe().dDump(System.err));
-            Assert.fail();
+            fail();
         } catch (Throwable t) {
             Throwable cause = getCause(t);
             assertThrowable(cause, TooManyObserversException.class, "Too many observers (xxxx) of 0.color", x -> ((TooManyObserversException) x).getSimpleMessage().replaceFirst("\\d\\d+", "xxxx"));
@@ -243,7 +241,7 @@ public class BirdTest {
             start(dclare);
             addBird(dclare, HummingBird.class, Pair.of("0", "green"));
             stop(dclare);
-            Assert.fail();
+            fail();
         } catch (Throwable t) {
             Throwable cause = getCause(t);
             assertThrowable(cause, EmptyMandatoryException.class, java.util.regex.Pattern.quote("Empty mandatory property 'color' of object '0+'"));
@@ -257,7 +255,7 @@ public class BirdTest {
             start(dclare);
             addBird(dclare, HummingBird.class, Pair.of("0", "blue"));
             stop(dclare);
-            Assert.fail();
+            fail();
         } catch (Throwable t) {
             Throwable cause = getCause(t);
             assertThrowable(cause, EmptyMandatoryException.class, java.util.regex.Pattern.quote("Empty mandatory property 'color' of object '0+'"));
@@ -271,7 +269,7 @@ public class BirdTest {
             start(dclare);
             addBird(dclare, HummingBird.class, Pair.of("0", "yellow"));
             stop(dclare);
-            Assert.fail();
+            fail();
         } catch (Throwable t) {
             Throwable cause = getCause(t);
             assertThrowable(cause, NullPointerException.class);
@@ -285,7 +283,7 @@ public class BirdTest {
             start(dclare);
             addBird(dclare, HummingBird.class, Pair.of("0", "red"));
             stop(dclare);
-            Assert.fail();
+            fail();
         } catch (Throwable t) {
             Throwable cause = getCause(t);
             assertThrowable(cause, ArithmeticException.class);
@@ -299,7 +297,7 @@ public class BirdTest {
             start(dclare);
             addBird(dclare, Pheasant.class, Pair.of("0", "blue"));
             stop(dclare);
-            Assert.fail();
+            fail();
         } catch (Throwable t) {
             Throwable cause = getCause(t);
             assertThrowable(cause, NonDeterministicException.class);
@@ -313,7 +311,7 @@ public class BirdTest {
             start(dclare);
             addBird(dclare, Pheasant.class, Pair.of("0", "yellow"));
             stop(dclare);
-            Assert.fail();
+            fail();
         } catch (Throwable t) {
             Throwable cause = getCause(t);
             assertThrowable(cause, NonDeterministicException.class, java.util.regex.Pattern.quote("Constant is not consistent 0.tailColor=yellow!=notyellow"));
@@ -330,7 +328,7 @@ public class BirdTest {
             props.add(Pair.of("1", "yellow"));
             addBirds(dclare, Pheasant.class, props);
             stop(dclare);
-            Assert.fail();
+            fail();
         } catch (Throwable t) {
             Throwable cause = getCause(t);
             assertThrowable(cause, NonDeterministicException.class, java.util.regex.Pattern.quote("Constant is not consistent 1.tailColor=yellow!=notyellow"));
@@ -347,7 +345,7 @@ public class BirdTest {
             props.add(Pair.of("0", "yellow"));
             addBirds(dclare, Pheasant.class, props);
             stop(dclare);
-            Assert.fail();
+            fail();
         } catch (Throwable t) {
             Throwable cause = getCause(t);
             assertThrowable(cause, NotMergeableException.class, java.util.regex.Pattern.quote("0.color= null -> [green,yellow]"));
@@ -361,7 +359,7 @@ public class BirdTest {
             start(dclare);
             addBird(dclare, Pheasant.class, Pair.of("0", "red"));
             stop(dclare);
-            Assert.fail();
+            fail();
         } catch (Throwable t) {
             Throwable cause = getCause(t);
             assertThrowable(cause, Error.class, "Constant headColor is not set and not derived");
@@ -375,7 +373,7 @@ public class BirdTest {
             start(dclare);
             addBird(dclare, Pheasant.class, Pair.of("0", "black"));
             stop(dclare);
-            Assert.fail();
+            fail();
         } catch (Throwable t) {
             Throwable cause = getCause(t);
             assertThrowable(cause, Error.class, "Constant legColor is derived");
@@ -389,7 +387,7 @@ public class BirdTest {
             start(dclare);
             addBird(dclare, Pheasant.class, Pair.of("0", "white"));
             stop(dclare);
-            Assert.fail();
+            fail();
         } catch (Throwable t) {
             Throwable cause = getCause(t);
             assertThrowable(cause, Error.class, "Constant (left|right)LegColor is derived");
@@ -416,7 +414,7 @@ public class BirdTest {
             cause.printStackTrace();
         }
         assertEquals(throwable, cause.getClass());
-        assertTrue(cause.getMessage() + " != " + regex, cause.getMessage().matches(regex));
+        assertTrue(cause.getMessage().matches(regex), cause.getMessage() + " != " + regex);
     }
 
     private void assertThrowable(Throwable cause, Class<? extends Throwable> throwable, String message, Function<Throwable, String> f) {

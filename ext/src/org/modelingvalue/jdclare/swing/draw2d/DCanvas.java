@@ -75,7 +75,7 @@ public interface DCanvas extends DComponent {
                     Graphics2D g2d = (Graphics2D) g;
                     g2d.setRenderingHints(new RenderingHints(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON));
                     super.paintComponent(g);
-                    visible.shapes().forEach(s -> ((ShapeNative<?>) dNative(s)).paint(g2d));
+                    visible.shapes().forEachOrdered(s -> ((ShapeNative<?>) dNative(s)).paint(g2d));
                 }
             };
             swing.setOpaque(true);

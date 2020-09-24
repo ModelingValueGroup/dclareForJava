@@ -48,7 +48,7 @@ public interface PopupMenu extends DComponent {
 
         public void items(List<MenuItem> pre, List<MenuItem> post) {
             swing.removeAll();
-            post.forEach(i -> swing.add(((MenuItemNative) dNative(i)).swing));
+            post.forEachOrdered(i -> swing.add(((MenuItemNative) dNative(i)).swing));
         }
 
     }

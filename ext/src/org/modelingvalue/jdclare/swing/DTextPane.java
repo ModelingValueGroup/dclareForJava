@@ -106,7 +106,7 @@ public interface DTextPane<E extends TextElement> extends DTextComponent {
             Highlighter highlighter = swing.getHighlighter();
             highlighter.removeAllHighlights();
             StyledDocument styledDocument = swing.getStyledDocument();
-            post.forEach(el -> {
+            post.forEachOrdered(el -> {
                 TextStyle style = el.style();
                 styledDocument.setCharacterAttributes(el.offset(), el.len(), style.attributeSet(), true);
                 HighlightPainter hl = style.highligth();

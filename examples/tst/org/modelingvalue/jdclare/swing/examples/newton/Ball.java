@@ -15,14 +15,22 @@
 
 package org.modelingvalue.jdclare.swing.examples.newton;
 
-import org.modelingvalue.collections.*;
-import org.modelingvalue.jdclare.*;
-import org.modelingvalue.jdclare.swing.*;
-import org.modelingvalue.jdclare.swing.draw2d.*;
+import static org.modelingvalue.jdclare.DClare.dUniverse;
+import static org.modelingvalue.jdclare.DClare.dclare;
+import static org.modelingvalue.jdclare.DClare.pre;
+import static org.modelingvalue.jdclare.DClare.set;
 
-import java.awt.event.*;
+import java.awt.event.KeyEvent;
 
-import static org.modelingvalue.jdclare.DClare.*;
+import org.modelingvalue.collections.List;
+import org.modelingvalue.collections.Set;
+import org.modelingvalue.jdclare.Default;
+import org.modelingvalue.jdclare.Property;
+import org.modelingvalue.jdclare.Rule;
+import org.modelingvalue.jdclare.swing.InputDeviceData;
+import org.modelingvalue.jdclare.swing.draw2d.DCircle;
+import org.modelingvalue.jdclare.swing.draw2d.DPoint;
+import org.modelingvalue.jdclare.swing.draw2d.DShape;
 
 public interface Ball extends DCircle {
 
@@ -87,9 +95,9 @@ public interface Ball extends DCircle {
 
     @Property
     default Set<CollisionPair> collisionPairs() {
-        List<Ball>         balls = table().balls();
-        int                next  = balls.firstIndexOf(this) + 1;
-        Set<CollisionPair> set   = Set.of();
+        List<Ball> balls = table().balls();
+        int next = balls.firstIndexOf(this) + 1;
+        Set<CollisionPair> set = Set.of();
         if (next < balls.size()) {
             set = set.addAll(balls.sublist(next, balls.size()).map(b -> dclare(BallBallPair.class, this, b)));
         }

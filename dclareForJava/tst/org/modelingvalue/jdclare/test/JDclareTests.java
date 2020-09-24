@@ -15,7 +15,7 @@
 
 package org.modelingvalue.jdclare.test;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.modelingvalue.jdclare.DClare.*;
 
 import java.time.Clock;
@@ -23,8 +23,7 @@ import java.time.Instant;
 import java.time.ZoneId;
 import java.util.Optional;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.modelingvalue.collections.Collection;
 import org.modelingvalue.collections.Set;
 import org.modelingvalue.collections.util.Pair;
@@ -40,7 +39,6 @@ import org.modelingvalue.jdclare.DUniverse;
 import org.modelingvalue.jdclare.test.PrioUniverse.Prio;
 
 public class JDclareTests {
-
     private static final int     MANY_TIMES  = 100;
     private static final boolean DUMP        = Boolean.getBoolean("DUMP");
     private static final Clock   FIXED_CLOCK = Clock.fixed(Instant.EPOCH, ZoneId.systemDefault());
@@ -49,7 +47,7 @@ public class JDclareTests {
     public void manyUniverse() {
         for (int i = 0; i < MANY_TIMES; i++) {
             DClare<DUniverse> dClare = of(DUniverse.class);
-            State result = dClare.run();
+            State             result = dClare.run();
             result.run(() -> check(result));
         }
     }
@@ -57,7 +55,7 @@ public class JDclareTests {
     @Test
     public void universe() {
         DClare<DUniverse> dClare = of(DUniverse.class);
-        State result = dClare.run();
+        State             result = dClare.run();
         if (DUMP) {
             System.err.println("***************************** Begin DUniverse ***********************************");
             System.err.println(result.asString());
@@ -78,14 +76,14 @@ public class JDclareTests {
         State prev = null;
         for (int i = 0; i < MANY_TIMES; i++) {
             DClare<Orchestra> dClare = of(Orchestra.class, FIXED_CLOCK);
-            State next = dClare.run();
+            State             next   = dClare.run();
             next.run(() -> {
                 check(next);
                 checkOrchestra(next);
             });
             if (prev != null && !prev.equals(next)) {
                 String diff = prev.diffString(next);
-                assertEquals("Diff: ", "", diff);
+                assertEquals("", diff, "Diff: ");
             }
             prev = next;
         }
@@ -94,13 +92,13 @@ public class JDclareTests {
     @Test
     public void orchestra() {
         DClare<Orchestra> dClare = of(Orchestra.class);
-        State result = dClare.run();
+        State             result = dClare.run();
         result.run(() -> {
             check(result);
             checkOrchestra(result);
             if (DUMP) {
                 System.err.println("******************************Begin Orchestra*******************************");
-                result.getObjects(Piano.class).forEach(u -> u.dDump(System.err));
+                result.getObjects(Piano.class).forEachOrdered(u -> u.dDump(System.err));
                 System.err.println("******************************End Orchestra*********************************");
             }
         });
@@ -108,45 +106,45 @@ public class JDclareTests {
 
     private void checkOrchestra(State result) {
         Set<Piano> pianos = result.getObjects(Piano.class).toSet();
-        assertEquals("Unexpected Pianos: " + pianos, 3, pianos.size());
-        pianos.forEach(p -> {
-            assertTrue("No Keys", p.size() > 0);
+        assertEquals(3, pianos.size(), "Unexpected Pianos: " + pianos);
+        pianos.forEachOrdered(p -> {
+            assertTrue(p.size() > 0, "No Keys");
             assertEquals(p.size(), p.keys().size());
             assertEquals(p.big(), p.size() > 24);
             assertEquals(p.size() * 5 / 12, p.keys().filter(PianoKey::black).size());
-            p.keys().forEach(k -> {
+            p.keys().forEachOrdered(k -> {
                 KeyNative n = dNative(k);
-                assertNotNull("No KeyNative", n);
-                assertEquals("Init not 1:", 1, n.inits());
-                assertEquals("Black Native not equal:", k.black(), n.black());
+                assertNotNull(n, "No KeyNative");
+                assertEquals(1, n.inits(), "Init not 1:");
+                assertEquals(k.black(), n.black(), "Black Native not equal:");
             });
 
         });
     }
 
     private void check(State result) {
-        assertEquals("No Parent:", Set.of(), result.getObjects(DObject.class).filter(o -> !(o instanceof DUniverse) && o.dParent() == null).toSet());
-        assertEquals("No dStructType:", Set.of(), result.getObjects(DStruct.class).filter(o -> o.dStructClass() == null).toSet());
-        assertEquals("No dClass:", Set.of(), result.getObjects(DObject.class).filter(o -> o.dClass() == null).toSet());
-        assertEquals("No name:", Set.of(), result.getObjects(DNamed.class).filter(o -> o.name() == null).toSet());
-        assertEquals("Problems:", Set.of(), result.getObjects(DUniverse.class).flatMap(DObject::dAllProblems).toSet());
+        assertEquals(Set.of(), result.getObjects(DObject.class).filter(o -> !(o instanceof DUniverse) && o.dParent() == null).toSet(), "No Parent:");
+        assertEquals(Set.of(), result.getObjects(DStruct.class).filter(o -> o.dStructClass() == null).toSet(), "No dStructType:");
+        assertEquals(Set.of(), result.getObjects(DObject.class).filter(o -> o.dClass() == null).toSet(), "No dClass:");
+        assertEquals(Set.of(), result.getObjects(DNamed.class).filter(o -> o.name() == null).toSet(), "No name:");
+        assertEquals(Set.of(), result.getObjects(DUniverse.class).flatMap(DObject::dAllProblems).toSet(), "Problems:");
         Set<Pair<DObject, Set<TransactionClass>>> scheduled = result.getObjects(DObject.class).map(o -> Pair.of(o, //
                 Collection.of(Direction.values()).flatMap(d -> Collection.concat(d.actions.get(o), d.children.get(o))).toSet())).filter(p -> !p.b().isEmpty()).toSet();
         // System.err.println(scheduled);
-        assertEquals("Scheduled:", Set.of(), scheduled);
+        assertEquals(Set.of(), scheduled, "Scheduled:");
     }
 
     @Test
     public void testReparents() {
         DClare<Reparents> dClare = of(Reparents.class);
-        State result = dClare.run();
+        State             result = dClare.run();
         result.run(() -> check(result));
         if (DUMP) {
             result.run(() -> {
                 Optional<Reparents> r = result.getObjects(Reparents.class).findAny();
                 r.ifPresent(u -> System.err.println(u.tree()));
                 System.err.println("******************************Begin Reparents************************************");
-                r.ifPresent(u -> u.tree().forEach(v -> v.dDump(System.err)));
+                r.ifPresent(u -> u.tree().forEachOrdered(v -> v.dDump(System.err)));
                 System.err.println("******************************End Reparents**************************************");
             });
         }
@@ -155,7 +153,7 @@ public class JDclareTests {
     @Test
     public void testPriorities() {
         DClare<PrioUniverse> dClare = of(PrioUniverse.class);
-        State result = dClare.run();
+        State                result = dClare.run();
         result.run(() -> {
             check(result);
             checkPriorities(result);
@@ -176,14 +174,14 @@ public class JDclareTests {
         State prev = null;
         for (int i = 0; i < MANY_TIMES; i++) {
             DClare<PrioUniverse> dClare = of(PrioUniverse.class, FIXED_CLOCK);
-            State next = dClare.run();
+            State                next   = dClare.run();
             next.run(() -> {
                 check(next);
                 checkPriorities(next);
             });
             if (prev != null && !prev.equals(next)) {
                 String diff = prev.diffString(next);
-                assertEquals("Diff: ", "", diff);
+                assertEquals("", diff, "Diff: ");
             }
             prev = next;
         }
@@ -191,8 +189,8 @@ public class JDclareTests {
 
     private void checkPriorities(State result) {
         Set<Prio> prios = result.getObjects(Prio.class).toSet();
-        assertEquals("Unexpected Priorities: " + prios, 3, prios.size());
-        prios.forEach(p -> {
+        assertEquals(3, prios.size(), "Unexpected Priorities: " + prios);
+        prios.forEachOrdered(p -> {
             String target = p.dClass().name();
             target = target.substring(target.length() - 1);
             assertEquals(target, p.x());
@@ -208,9 +206,9 @@ public class JDclareTests {
         dClare.stop();
         State result = dClare.waitForEnd();
         result.run(() -> {
-            assertFalse("Wim is has no Problems!", result.getObjects(Team.class).flatMap(Team::problems).isEmpty());
+            assertFalse(result.getObjects(Team.class).flatMap(Team::problems).isEmpty(), "Wim is has no Problems!");
             if (DUMP) {
-                result.getObjects(Team.class).forEach(v -> v.dDump(System.err));
+                result.getObjects(Team.class).forEachOrdered(v -> v.dDump(System.err));
             }
         });
     }
@@ -223,7 +221,7 @@ public class JDclareTests {
             dClare.put("company", () -> dClare.universe().initScopeProblem(dClare));
             dClare.stop();
             dClare.waitForEnd();
-            Assert.fail();
+            fail();
         } catch (Throwable t) {
             Throwable cause = getCause(t);
             assertThrowable(cause, OutOfScopeException.class, java.util.regex.Pattern.quote("The value 'Set[Pieter Puk]' of 'developers' of object 'DClare' is out of scope 'Set[]'"));
@@ -239,7 +237,7 @@ public class JDclareTests {
 
     private void assertThrowable(Throwable cause, Class<? extends Throwable> throwable, String regex) {
         assertEquals(throwable, cause.getClass());
-        assertTrue(cause.getMessage() + " != " + regex, cause.getMessage().matches(regex));
+        assertTrue(cause.getMessage().matches(regex), cause.getMessage() + " != " + regex);
     }
 
 }

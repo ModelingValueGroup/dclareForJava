@@ -15,12 +15,24 @@
 
 package org.modelingvalue.jdclare.syntax.test.simple;
 
-import org.modelingvalue.collections.*;
-import org.modelingvalue.jdclare.*;
-import org.modelingvalue.jdclare.syntax.test.types.*;
+import static org.modelingvalue.jdclare.DClare.OPPOSITE;
+import static org.modelingvalue.jdclare.DClare.SCOPE;
+import static org.modelingvalue.jdclare.DClare.dclare;
+import static org.modelingvalue.jdclare.PropertyQualifier.containment;
+import static org.modelingvalue.jdclare.PropertyQualifier.hidden;
+import static org.modelingvalue.jdclare.PropertyQualifier.optional;
+import static org.modelingvalue.jdclare.PropertyQualifier.validation;
 
-import static org.modelingvalue.jdclare.DClare.*;
-import static org.modelingvalue.jdclare.PropertyQualifier.*;
+import org.modelingvalue.collections.Collection;
+import org.modelingvalue.collections.Set;
+import org.modelingvalue.jdclare.Constraints;
+import org.modelingvalue.jdclare.DProblem;
+import org.modelingvalue.jdclare.DSeverity;
+import org.modelingvalue.jdclare.Property;
+import org.modelingvalue.jdclare.syntax.test.types.AClassType;
+import org.modelingvalue.jdclare.syntax.test.types.ANumberType;
+import org.modelingvalue.jdclare.syntax.test.types.AStringType;
+import org.modelingvalue.jdclare.syntax.test.types.AType;
 
 public interface AField extends ANamed, ATyped {
 

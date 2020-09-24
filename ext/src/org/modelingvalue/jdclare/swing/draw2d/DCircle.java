@@ -15,11 +15,14 @@
 
 package org.modelingvalue.jdclare.swing.draw2d;
 
-import org.modelingvalue.jdclare.*;
-import org.modelingvalue.jdclare.swing.DComponent.*;
-import org.modelingvalue.jdclare.swing.draw2d.DCircle.*;
+import java.awt.Color;
+import java.awt.Graphics2D;
 
-import java.awt.*;
+import org.modelingvalue.jdclare.Default;
+import org.modelingvalue.jdclare.Native;
+import org.modelingvalue.jdclare.Property;
+import org.modelingvalue.jdclare.swing.DComponent.DComponentNative;
+import org.modelingvalue.jdclare.swing.draw2d.DCircle.CircleNative;
 
 @Native(CircleNative.class)
 public interface DCircle extends DFilled {

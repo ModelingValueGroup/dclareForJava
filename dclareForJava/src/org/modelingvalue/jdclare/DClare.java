@@ -319,7 +319,7 @@ public final class DClare<U extends DUniverse> extends UniverseTransaction {
     @SafeVarargs
     public static <S extends DObject> S dclareUU(Class<S> jClass, UUID uuid, Consumer<S>... inits) {
         if (!DUUObject.class.isAssignableFrom(jClass)) {
-            DSTRUCTS.filter(s -> s.isAssignableFrom(jClass)).forEach(s -> {
+            DSTRUCTS.filter(s -> s.isAssignableFrom(jClass)).forEachOrdered(s -> {
                 throw new Error("No universally unique object of " + jClass.getSimpleName() + " allowed.");
             });
             return init(dStruct(jClass, DUUObject.class, uuid), inits);
@@ -1282,6 +1282,7 @@ public final class DClare<U extends DUniverse> extends UniverseTransaction {
             cyclicContainmentConstant(DClare.<DMethodProperty, DProperty> method(DMethodProperty::implicitOpposite));
             cyclicConstant(DClare.<DMethodProperty, Boolean> method(DMethodProperty::containment));
             cyclicConstant(DClare.<DMethodProperty, DProperty> method(DMethodProperty::opposite));
+            cyclicConstant(DClare.<DMethodProperty, Boolean> method(DMethodProperty::checkConsistency));
             cyclicConstant(DClare.<DMethodProperty, DProperty> method(DMethodProperty::scopeProperty));
             cyclicConstant(DClare.<DMethodProperty, Boolean> method(DMethodProperty::constant));
             cyclicConstant(DClare.<DMethodProperty, Boolean> method(DMethodProperty::derived));

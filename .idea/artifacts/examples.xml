@@ -9,8 +9,6 @@
       <element id="module-test-output" name="ext" />
       <element id="extracted-dir" path="$PROJECT_DIR$/lib/dclare.jar" path-in-jar="/" />
       <element id="extracted-dir" path="$PROJECT_DIR$/lib/immutable-collections.jar" path-in-jar="/" />
-      <element id="extracted-dir" path="$PROJECT_DIR$/lib/hamcrest-core.jar" path-in-jar="/" />
-      <element id="extracted-dir" path="$PROJECT_DIR$/lib/junit.jar" path-in-jar="/" />
     </root>
   </artifact>
 </component>

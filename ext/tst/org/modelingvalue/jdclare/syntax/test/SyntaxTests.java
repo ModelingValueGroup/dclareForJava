@@ -15,18 +15,21 @@
 
 package org.modelingvalue.jdclare.syntax.test;
 
-import org.junit.*;
-import org.modelingvalue.collections.*;
-import org.modelingvalue.dclare.*;
-import org.modelingvalue.jdclare.*;
-import org.modelingvalue.jdclare.syntax.*;
-import org.modelingvalue.jdclare.syntax.meta.*;
-import org.modelingvalue.jdclare.syntax.test.MySyntax.*;
-
-import java.time.*;
-
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.modelingvalue.jdclare.DClare.*;
+
+import java.time.Clock;
+import java.time.Instant;
+import java.time.ZoneId;
+
+import org.junit.jupiter.api.Test;
+import org.modelingvalue.collections.List;
+import org.modelingvalue.dclare.State;
+import org.modelingvalue.jdclare.DClare;
+import org.modelingvalue.jdclare.DUniverse;
+import org.modelingvalue.jdclare.syntax.Text;
+import org.modelingvalue.jdclare.syntax.meta.GrammarClass;
+import org.modelingvalue.jdclare.syntax.test.MySyntax.Unit;
 
 public class SyntaxTests {
 
@@ -42,7 +45,7 @@ public class SyntaxTests {
             next.run(() -> test(next));
             if (prev != null && !prev.equals(next)) {
                 String diff = prev.diffString(next);
-                assertEquals("Diff: ", "", diff);
+                assertEquals("", diff, "Diff: ");
             }
             prev = next;
         }
@@ -83,16 +86,16 @@ public class SyntaxTests {
                 System.err.println(result.asString());
                 System.err.println("******************************End State***************************************");
                 System.err.println("******************************Begin Syntax************************************");
-                result.getObjects(GrammarClass.class).filter(s -> s.jClass() == MySyntax.class).forEach(u -> u.dDump(System.err));
+                result.getObjects(GrammarClass.class).filter(s -> s.jClass() == MySyntax.class).forEachOrdered(u -> u.dDump(System.err));
                 System.err.println("******************************End Syntax**************************************");
                 System.err.println("******************************Begin Text**************************************");
-                result.getObjects(Text.class).forEach(u -> u.dDump(System.err));
+                result.getObjects(Text.class).forEachOrdered(u -> u.dDump(System.err));
                 System.err.println("******************************End Text****************************************");
                 System.err.println("******************************Begin Root**************************************");
-                result.getObjects(Unit.class).forEach(u -> u.dDump(System.err));
+                result.getObjects(Unit.class).forEachOrdered(u -> u.dDump(System.err));
                 System.err.println("******************************End Root****************************************");
                 System.err.println("******************************Begin Problems**********************************");
-                result.getObjects(DUniverse.class).forEach(u -> u.dAllProblems().forEach(System.err::println));
+                result.getObjects(DUniverse.class).forEachOrdered(u -> u.dAllProblems().forEachOrdered(System.err::println));
                 System.err.println("******************************End Problems************************************");
             }
             test(result);
@@ -100,8 +103,8 @@ public class SyntaxTests {
     }
 
     private void test(State result) {
-        assertTrue("No Root", result.getObjects(TextUniverse.class).allMatch(t -> t.text().root() != null));
-        assertTrue("Problems", result.getObjects(TextUniverse.class).allMatch(t -> t.dAllProblems().isEmpty()));
+        assertTrue(result.getObjects(TextUniverse.class).allMatch(t -> t.text().root() != null), "No Root");
+        assertTrue(result.getObjects(TextUniverse.class).allMatch(t -> t.dAllProblems().isEmpty()), "Problems");
     }
 
 }

@@ -15,13 +15,21 @@
 
 package org.modelingvalue.jdclare.meta;
 
-import org.modelingvalue.collections.*;
-import org.modelingvalue.jdclare.*;
-import org.modelingvalue.jdclare.DNative.*;
+import static org.modelingvalue.jdclare.PropertyQualifier.optional;
 
-import java.util.function.*;
+import java.util.function.BiFunction;
+import java.util.function.Function;
 
-import static org.modelingvalue.jdclare.PropertyQualifier.*;
+import org.modelingvalue.collections.Collection;
+import org.modelingvalue.collections.Set;
+import org.modelingvalue.jdclare.Abstract;
+import org.modelingvalue.jdclare.DClare;
+import org.modelingvalue.jdclare.DNamed;
+import org.modelingvalue.jdclare.DNative.ChangeHandler;
+import org.modelingvalue.jdclare.DObject;
+import org.modelingvalue.jdclare.DStruct;
+import org.modelingvalue.jdclare.Default;
+import org.modelingvalue.jdclare.Property;
 
 @Abstract
 public interface DProperty<O extends DStruct, V> extends DNamed {
@@ -89,6 +97,8 @@ public interface DProperty<O extends DStruct, V> extends DNamed {
         return true;
     }
 
+    @Default
+    @Property
     default boolean checkConsistency() {
         return true;
     }
