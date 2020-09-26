@@ -15,18 +15,17 @@
 
 package org.modelingvalue.jdclare.swing;
 
+import static org.modelingvalue.jdclare.DClare.*;
+import static org.modelingvalue.jdclare.PropertyQualifier.*;
+
+import javax.swing.table.*;
+
 import org.modelingvalue.jdclare.*;
 import org.modelingvalue.jdclare.swing.Cell.*;
 import org.modelingvalue.jdclare.swing.Table.*;
 
-import javax.swing.table.*;
-
-import static org.modelingvalue.jdclare.DClare.*;
-import static org.modelingvalue.jdclare.PropertyQualifier.*;
-
 @Native(CellNative.class)
 public interface Cell<R, C, V> extends DStruct3<Table<R, C, V>, Row<R, C, V>, Column<R, C, V>>, DVisible {
-
     @Property(key = 0)
     Table<R, C, V> table();
 
@@ -46,11 +45,11 @@ public interface Cell<R, C, V> extends DStruct3<Table<R, C, V>, Row<R, C, V>, Co
     }
 
     class CellNative<R, C, V> extends VisibleNative<Cell<R, C, V>> {
-
         public CellNative(Cell<R, C, V> visible) {
             super(visible);
         }
 
+        @SuppressWarnings("unused")
         public void value(V pre, V post) {
             TableNative<R, C, V> table  = dNative(visible.table());
             AbstractTableModel   m      = (AbstractTableModel) table.swing.getModel();
@@ -59,5 +58,4 @@ public interface Cell<R, C, V> extends DStruct3<Table<R, C, V>, Row<R, C, V>, Co
             m.fireTableCellUpdated(row, column);
         }
     }
-
 }

@@ -15,14 +15,14 @@
 
 package org.modelingvalue.jdclare.swing;
 
+import java.awt.event.*;
+
 import org.modelingvalue.collections.*;
 import org.modelingvalue.jdclare.*;
 import org.modelingvalue.jdclare.swing.draw2d.*;
 
-import java.awt.event.*;
-
+@SuppressWarnings("unused")
 public interface InputDeviceData extends DObject, DStruct1<DComponent> {
-
     @Default
     @Property
     default DPoint mousePosition() {
@@ -44,5 +44,4 @@ public interface InputDeviceData extends DObject, DStruct1<DComponent> {
 
     @Property
     Set<Integer> pressedKeys();
-
 }

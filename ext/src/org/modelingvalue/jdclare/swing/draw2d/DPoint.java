@@ -15,15 +15,14 @@
 
 package org.modelingvalue.jdclare.swing.draw2d;
 
-import org.modelingvalue.jdclare.*;
-
 import static org.modelingvalue.jdclare.DClare.*;
 
+import org.modelingvalue.jdclare.*;
+
+@SuppressWarnings("unused")
 public interface DPoint extends DStruct2<Double, Double> {
-
     DPoint NULL = dclare(DPoint.class, 0.0, 0.0);
-
-    DPoint ONE = dclare(DPoint.class, 1.0, 1.0);
+    DPoint ONE  = dclare(DPoint.class, 1.0, 1.0);
 
     @Property(key = 0)
     double x();
@@ -67,5 +66,4 @@ public interface DPoint extends DStruct2<Double, Double> {
     default boolean hasEqualAngle(DPoint p) {
         return p.mult(100.0 / p.length()).minus(mult(100.0 / length())).length() < 2.0;
     }
-
 }

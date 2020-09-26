@@ -15,13 +15,13 @@
 
 package org.modelingvalue.jdclare.workbench;
 
+import static org.modelingvalue.jdclare.DClare.*;
+import static org.modelingvalue.jdclare.PropertyQualifier.*;
+
 import org.modelingvalue.collections.*;
 import org.modelingvalue.jdclare.*;
 import org.modelingvalue.jdclare.swing.*;
 import org.modelingvalue.jdclare.swing.draw2d.*;
-
-import static org.modelingvalue.jdclare.DClare.*;
-import static org.modelingvalue.jdclare.PropertyQualifier.*;
 
 public interface WBOuterSplitPane extends SplitPane, DStruct1<WBUniverse> {
 
@@ -34,7 +34,7 @@ public interface WBOuterSplitPane extends SplitPane, DStruct1<WBUniverse> {
     }
 
     @Override
-    default DComponent rigthComponent() {
+    default DComponent rightComponent() {
         return dclare(InnerSplitPane2.class, wb());
     }
 
@@ -59,7 +59,7 @@ public interface WBOuterSplitPane extends SplitPane, DStruct1<WBUniverse> {
         }
 
         @Override
-        default DComponent rigthComponent() {
+        default DComponent rightComponent() {
             return dclare(MyTabbedPane2.class, wb());
         }
 
@@ -85,7 +85,7 @@ public interface WBOuterSplitPane extends SplitPane, DStruct1<WBUniverse> {
         }
 
         @Override
-        default DComponent rigthComponent() {
+        default DComponent rightComponent() {
             return dclare(MyScrollPane4.class, wb());
         }
 

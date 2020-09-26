@@ -15,18 +15,14 @@
 
 package org.modelingvalue.jdclare.swing.draw2d;
 
-import java.awt.Color;
-import java.awt.Graphics2D;
+import java.awt.*;
 
-import org.modelingvalue.jdclare.Default;
-import org.modelingvalue.jdclare.Native;
-import org.modelingvalue.jdclare.Property;
-import org.modelingvalue.jdclare.swing.DComponent.DComponentNative;
-import org.modelingvalue.jdclare.swing.draw2d.DCircle.CircleNative;
+import org.modelingvalue.jdclare.*;
+import org.modelingvalue.jdclare.swing.DComponent.*;
+import org.modelingvalue.jdclare.swing.draw2d.DCircle.*;
 
 @Native(CircleNative.class)
 public interface DCircle extends DFilled {
-
     @Default
     @Property
     default int radius() {
@@ -44,7 +40,6 @@ public interface DCircle extends DFilled {
     }
 
     class CircleNative extends FilledNative<DCircle> {
-
         public CircleNative(DCircle visible) {
             super(visible);
         }
@@ -59,10 +54,9 @@ public interface DCircle extends DFilled {
             D2D.drawOval(g, (int) pt.x() - rad, (int) pt.y() - rad, rad * 2, rad * 2, fc, lc, str);
         }
 
+        @SuppressWarnings("unused")
         public void radius(int pre, int post) {
             ancestor(DComponentNative.class).swing().repaint();
         }
-
     }
-
 }

@@ -15,12 +15,12 @@
 
 package org.modelingvalue.jdclare.swing;
 
-import org.modelingvalue.jdclare.*;
-import org.modelingvalue.jdclare.swing.ScrollPane.*;
+import static org.modelingvalue.jdclare.PropertyQualifier.*;
 
 import javax.swing.*;
 
-import static org.modelingvalue.jdclare.PropertyQualifier.*;
+import org.modelingvalue.jdclare.*;
+import org.modelingvalue.jdclare.swing.ScrollPane.*;
 
 @Native(ScrollPaneNative.class)
 public interface ScrollPane extends DComponent {
@@ -45,6 +45,7 @@ public interface ScrollPane extends DComponent {
             super.exit(parent);
         }
 
+        @SuppressWarnings("unused")
         public void viewportView(DComponent pre, DComponent post) {
             DComponent vp = visible.viewportView();
             swing.setViewportView(vp != null ? swing(vp) : null);

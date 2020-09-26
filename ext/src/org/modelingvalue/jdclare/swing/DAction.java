@@ -17,6 +17,6 @@ package org.modelingvalue.jdclare.swing;
 
 import org.modelingvalue.jdclare.*;
 
+@SuppressWarnings("unused")
 public interface DAction extends DNamed {
-
 }

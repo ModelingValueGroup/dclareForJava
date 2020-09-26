@@ -15,17 +15,17 @@
 
 package org.modelingvalue.jdclare.swing.examples.newton;
 
-import org.modelingvalue.collections.List;
-import org.modelingvalue.jdclare.*;
-import org.modelingvalue.jdclare.swing.*;
-import org.modelingvalue.jdclare.swing.draw2d.*;
+import static org.modelingvalue.jdclare.DClare.*;
+import static org.modelingvalue.jdclare.PropertyQualifier.*;
 
 import java.awt.*;
 import java.awt.event.*;
 import java.util.function.*;
 
-import static org.modelingvalue.jdclare.DClare.*;
-import static org.modelingvalue.jdclare.PropertyQualifier.*;
+import org.modelingvalue.collections.List;
+import org.modelingvalue.jdclare.*;
+import org.modelingvalue.jdclare.swing.*;
+import org.modelingvalue.jdclare.swing.draw2d.*;
 
 public interface BilliardPane extends SplitPane, DStruct1<BilliardUniverse> {
 
@@ -91,7 +91,7 @@ public interface BilliardPane extends SplitPane, DStruct1<BilliardUniverse> {
 
     @Override
     @Property(constant)
-    default DComponent rigthComponent() {
+    default DComponent rightComponent() {
         return dclareUU(DToolbar.class, //
                 set(DToolbar::preferredSize, dclare(DDimension.class, 40.0, 100.0)), //
                 set(DToolbar::minimumSize, dclare(DDimension.class, 50.0, 100.0)), //

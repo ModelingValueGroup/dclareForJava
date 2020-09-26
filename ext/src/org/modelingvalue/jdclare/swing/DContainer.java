@@ -18,24 +18,15 @@ package org.modelingvalue.jdclare.swing;
 import static org.modelingvalue.jdclare.DClare.*;
 import static org.modelingvalue.jdclare.PropertyQualifier.*;
 
-import java.awt.Container;
-import java.awt.Dimension;
-import java.awt.Point;
-import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
+import java.awt.*;
+import java.awt.event.*;
 
-import org.modelingvalue.jdclare.DObject;
-import org.modelingvalue.jdclare.Default;
-import org.modelingvalue.jdclare.Deferred;
-import org.modelingvalue.jdclare.Native;
-import org.modelingvalue.jdclare.Property;
-import org.modelingvalue.jdclare.swing.DContainer.DContainerNative;
-import org.modelingvalue.jdclare.swing.draw2d.DDimension;
-import org.modelingvalue.jdclare.swing.draw2d.DPoint;
+import org.modelingvalue.jdclare.*;
+import org.modelingvalue.jdclare.swing.DContainer.*;
+import org.modelingvalue.jdclare.swing.draw2d.*;
 
 @Native(DContainerNative.class)
 public interface DContainer extends DVisible {
-
     @Default
     @Property
     default DPoint location() {
@@ -56,7 +47,6 @@ public interface DContainer extends DVisible {
 
     @SuppressWarnings("unused")
     class DContainerNative<N extends DContainer, T extends Container> extends VisibleNative<N> implements ComponentListener {
-
         protected T swing;
 
         public DContainerNative(N visible) {
@@ -102,7 +92,6 @@ public interface DContainer extends DVisible {
             return swing;
         }
 
-        @SuppressWarnings("unchecked")
         public static <C extends Container> C swing(DContainer visible) {
             return ((DContainerNative<?, C>) dNative(visible)).swing;
         }
@@ -126,7 +115,5 @@ public interface DContainer extends DVisible {
         @Override
         public void componentHidden(ComponentEvent e) {
         }
-
     }
-
 }

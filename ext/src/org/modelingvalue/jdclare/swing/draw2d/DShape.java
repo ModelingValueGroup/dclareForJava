@@ -15,19 +15,18 @@
 
 package org.modelingvalue.jdclare.swing.draw2d;
 
+import static org.modelingvalue.jdclare.DClare.*;
+
+import java.awt.*;
+import java.awt.event.*;
+
 import org.modelingvalue.jdclare.*;
 import org.modelingvalue.jdclare.swing.DComponent.*;
 import org.modelingvalue.jdclare.swing.*;
 import org.modelingvalue.jdclare.swing.draw2d.DShape.*;
 
-import java.awt.*;
-import java.awt.event.*;
-
-import static org.modelingvalue.jdclare.DClare.*;
-
 @Native(ShapeNative.class)
 public interface DShape extends DVisible {
-
     default DCanvas canvas() {
         return dAncestor(DCanvas.class);
     }
@@ -75,8 +74,8 @@ public interface DShape extends DVisible {
         return DPoint.NULL;
     }
 
+    @SuppressWarnings("unused")
     abstract class ShapeNative<S extends DShape> extends VisibleNative<S> {
-
         public ShapeNative(S visible) {
             super(visible);
         }
@@ -90,7 +89,5 @@ public interface DShape extends DVisible {
         public void lineColor(Color pre, Color post) {
             ancestor(DComponentNative.class).swing().repaint();
         }
-
     }
-
 }

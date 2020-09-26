@@ -15,13 +15,12 @@
 
 package org.modelingvalue.jdclare.swing;
 
+import static org.modelingvalue.jdclare.PropertyQualifier.*;
+
 import org.modelingvalue.collections.*;
 import org.modelingvalue.jdclare.*;
 
-import static org.modelingvalue.jdclare.PropertyQualifier.*;
-
 public interface Row<R, C, V> extends DStruct3<Table<R, C, V>, R, Integer>, DVisible {
-
     @Property(key = 0)
     Table<R, C, V> table();
 
@@ -35,5 +34,4 @@ public interface Row<R, C, V> extends DStruct3<Table<R, C, V>, R, Integer>, DVis
     default List<Cell<R, C, V>> cells() {
         return table().columns().map(c -> table().cell(this, c)).toList();
     }
-
 }

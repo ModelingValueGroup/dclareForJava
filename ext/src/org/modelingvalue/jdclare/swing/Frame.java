@@ -15,19 +15,20 @@
 
 package org.modelingvalue.jdclare.swing;
 
+import static org.modelingvalue.jdclare.PropertyQualifier.*;
+
+import java.awt.event.*;
+
+import javax.swing.*;
+
 import org.modelingvalue.collections.*;
 import org.modelingvalue.jdclare.*;
 import org.modelingvalue.jdclare.swing.Frame.*;
 import org.modelingvalue.jdclare.swing.draw2d.*;
 
-import javax.swing.*;
-import java.awt.event.*;
-
-import static org.modelingvalue.jdclare.PropertyQualifier.*;
-
+@SuppressWarnings("unused")
 @Native(FrameNative.class)
 public interface Frame extends DContainer {
-
     @Property(containment)
     DComponent contentPane();
 
@@ -35,7 +36,6 @@ public interface Frame extends DContainer {
     DMenubar menubar();
 
     class FrameNative extends DContainerNative<Frame, JFrame> {
-
         private final WindowAdapter windowLsitener;
 
         public FrameNative(Frame visible) {
@@ -94,6 +94,5 @@ public interface Frame extends DContainer {
                 swing.pack();
             }
         }
-
     }
 }

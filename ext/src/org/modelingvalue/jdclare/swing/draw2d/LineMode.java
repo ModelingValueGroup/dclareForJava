@@ -15,18 +15,18 @@
 
 package org.modelingvalue.jdclare.swing.draw2d;
 
-import org.modelingvalue.collections.List;
-import org.modelingvalue.jdclare.*;
-import org.modelingvalue.jdclare.swing.*;
+import static org.modelingvalue.jdclare.DClare.*;
+import static org.modelingvalue.jdclare.PropertyQualifier.*;
 
 import java.util.*;
 import java.util.function.*;
 
-import static org.modelingvalue.jdclare.DClare.*;
-import static org.modelingvalue.jdclare.PropertyQualifier.*;
+import org.modelingvalue.collections.List;
+import org.modelingvalue.jdclare.*;
+import org.modelingvalue.jdclare.swing.*;
 
+@SuppressWarnings("unused")
 public interface LineMode extends CanvasMode {
-
     @Property
     List<DShape> shapes();
 
@@ -58,5 +58,4 @@ public interface LineMode extends CanvasMode {
         }
         return null;
     }
-
 }

@@ -15,17 +15,16 @@
 
 package org.modelingvalue.jdclare.swing.draw2d;
 
+import static org.modelingvalue.jdclare.DClare.*;
+
+import java.awt.*;
+
 import org.modelingvalue.jdclare.*;
 import org.modelingvalue.jdclare.swing.DComponent.*;
 import org.modelingvalue.jdclare.swing.draw2d.DRectangle.*;
 
-import java.awt.*;
-
-import static org.modelingvalue.jdclare.DClare.*;
-
 @Native(RectangleNative.class)
 public interface DRectangle extends DFilled {
-
     @Default
     @Property
     default DDimension size() {
@@ -45,7 +44,6 @@ public interface DRectangle extends DFilled {
     }
 
     class RectangleNative extends FilledNative<DRectangle> {
-
         public RectangleNative(DRectangle visible) {
             super(visible);
         }
@@ -60,10 +58,9 @@ public interface DRectangle extends DFilled {
             D2D.drawRect(g, (int) pt.x(), (int) pt.y(), (int) sz.width(), (int) sz.height(), fc, lc, str);
         }
 
+        @SuppressWarnings("unused")
         public void size(DDimension pre, DDimension post) {
             ancestor(DComponentNative.class).swing().repaint();
         }
-
     }
-
 }

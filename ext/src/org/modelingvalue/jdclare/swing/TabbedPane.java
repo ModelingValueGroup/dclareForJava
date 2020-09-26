@@ -15,18 +15,18 @@
 
 package org.modelingvalue.jdclare.swing;
 
+import static org.modelingvalue.jdclare.DClare.*;
+import static org.modelingvalue.jdclare.PropertyQualifier.*;
+
+import javax.swing.*;
+
 import org.modelingvalue.collections.*;
 import org.modelingvalue.jdclare.*;
 import org.modelingvalue.jdclare.swing.TabbedPane.*;
 
-import javax.swing.*;
-
-import static org.modelingvalue.jdclare.DClare.*;
-import static org.modelingvalue.jdclare.PropertyQualifier.*;
-
+@SuppressWarnings("unused")
 @Native(TabbedPaneNative.class)
 public interface TabbedPane extends DComponent {
-
     @Property
     Map<String, DComponent> tabs();
 
@@ -36,7 +36,6 @@ public interface TabbedPane extends DComponent {
     }
 
     class TabbedPaneNative extends DComponentNative<TabbedPane, JTabbedPane> {
-
         public TabbedPaneNative(TabbedPane visible) {
             super(visible);
         }
@@ -59,9 +58,6 @@ public interface TabbedPane extends DComponent {
             for (Entry<String, DComponent> e : post) {
                 swing.addTab(e.getKey(), ((DComponentNative<?, ?>) dNative(e.getValue())).swing);
             }
-
         }
-
     }
-
 }

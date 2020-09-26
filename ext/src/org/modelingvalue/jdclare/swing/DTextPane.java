@@ -15,23 +15,23 @@
 
 package org.modelingvalue.jdclare.swing;
 
+import static org.modelingvalue.jdclare.DClare.*;
+import static org.modelingvalue.jdclare.PropertyQualifier.*;
+
+import java.awt.*;
+import java.awt.event.*;
+
+import javax.swing.*;
+import javax.swing.text.*;
+import javax.swing.text.Highlighter.*;
+
 import org.modelingvalue.collections.List;
 import org.modelingvalue.jdclare.*;
 import org.modelingvalue.jdclare.swing.DTextPane.*;
 import org.modelingvalue.jdclare.swing.PopupMenu.*;
 
-import javax.swing.*;
-import javax.swing.text.*;
-import javax.swing.text.Highlighter.*;
-import java.awt.*;
-import java.awt.event.*;
-
-import static org.modelingvalue.jdclare.DClare.*;
-import static org.modelingvalue.jdclare.PropertyQualifier.*;
-
 @Native(TextPaneNative.class)
 public interface DTextPane<E extends TextElement> extends DTextComponent {
-
     @Property(containment)
     List<E> elements();
 
@@ -39,8 +39,8 @@ public interface DTextPane<E extends TextElement> extends DTextComponent {
         return elements().filter(e -> e.offset() <= position && position - e.offset() <= e.len()).findFirst().orElse(null);
     }
 
+    @SuppressWarnings("unused")
     class TextPaneNative<E extends TextElement> extends TextComponentNative<DTextPane<E>, JTextPane> {
-
         private final KeyAdapter keyAdapter;
 
         public TextPaneNative(DTextPane<E> visible) {
@@ -119,7 +119,5 @@ public interface DTextPane<E extends TextElement> extends DTextComponent {
                 }
             });
         }
-
     }
-
 }

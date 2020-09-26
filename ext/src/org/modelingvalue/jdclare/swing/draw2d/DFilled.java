@@ -15,22 +15,19 @@
 
 package org.modelingvalue.jdclare.swing.draw2d;
 
-import static org.modelingvalue.jdclare.DClare.pre;
-import static org.modelingvalue.jdclare.DClare.set;
-import static org.modelingvalue.jdclare.PropertyQualifier.optional;
+import static org.modelingvalue.jdclare.DClare.*;
+import static org.modelingvalue.jdclare.PropertyQualifier.*;
 
-import java.awt.Color;
-import java.awt.event.KeyEvent;
+import java.awt.*;
+import java.awt.event.*;
 
-import org.modelingvalue.jdclare.Native;
-import org.modelingvalue.jdclare.Property;
-import org.modelingvalue.jdclare.swing.DComponent.DComponentNative;
-import org.modelingvalue.jdclare.swing.InputDeviceData;
-import org.modelingvalue.jdclare.swing.draw2d.DFilled.FilledNative;
+import org.modelingvalue.jdclare.*;
+import org.modelingvalue.jdclare.swing.DComponent.*;
+import org.modelingvalue.jdclare.swing.*;
+import org.modelingvalue.jdclare.swing.draw2d.DFilled.*;
 
 @Native(FilledNative.class)
 public interface DFilled extends DShape {
-
     @Property
     default Color color() {
         return selected() ? Color.yellow : Color.white;
@@ -70,6 +67,7 @@ public interface DFilled extends DShape {
         }
     }
 
+    @SuppressWarnings("unused")
     abstract class FilledNative<S extends DFilled> extends ShapeNative<S> {
 
         public FilledNative(S visible) {
@@ -83,7 +81,5 @@ public interface DFilled extends DShape {
         public void text(String pre, String post) {
             ancestor(DComponentNative.class).swing().repaint();
         }
-
     }
-
 }

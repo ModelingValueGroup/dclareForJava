@@ -15,26 +15,19 @@
 
 package org.modelingvalue.jdclare.swing;
 
-import static org.modelingvalue.jdclare.DClare.callNativesOfClass;
-import static org.modelingvalue.jdclare.DClare.dClare;
-import static org.modelingvalue.jdclare.DClare.pre;
-import static org.modelingvalue.jdclare.PropertyQualifier.containment;
-import static org.modelingvalue.jdclare.PropertyQualifier.hidden;
+import static org.modelingvalue.jdclare.DClare.*;
+import static org.modelingvalue.jdclare.PropertyQualifier.*;
 
-import java.awt.KeyboardFocusManager;
-import java.awt.event.KeyEvent;
+import java.awt.*;
+import java.awt.event.*;
 
-import javax.swing.SwingUtilities;
+import javax.swing.*;
 
-import org.modelingvalue.collections.Set;
-import org.modelingvalue.dclare.ImperativeTransaction;
-import org.modelingvalue.dclare.LeafTransaction;
-import org.modelingvalue.jdclare.DUniverse;
-import org.modelingvalue.jdclare.Property;
-import org.modelingvalue.jdclare.Rule;
+import org.modelingvalue.collections.*;
+import org.modelingvalue.dclare.*;
+import org.modelingvalue.jdclare.*;
 
 public interface GuiUniverse extends DUniverse {
-
     @Property({containment, hidden})
     Set<Frame> frames();
 
@@ -64,5 +57,4 @@ public interface GuiUniverse extends DUniverse {
             return false;
         });
     }
-
 }

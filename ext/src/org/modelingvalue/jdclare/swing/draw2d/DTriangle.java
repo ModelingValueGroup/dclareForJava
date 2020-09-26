@@ -15,14 +15,13 @@
 
 package org.modelingvalue.jdclare.swing.draw2d;
 
+import java.awt.*;
+
 import org.modelingvalue.jdclare.*;
 import org.modelingvalue.jdclare.swing.DComponent.*;
 
-import java.awt.*;
-
 @Native(DTriangle.TriangleNative.class)
 public interface DTriangle extends DFilled {
-
     @Default
     @Property
     default int radius() {
@@ -40,7 +39,6 @@ public interface DTriangle extends DFilled {
     }
 
     class TriangleNative extends FilledNative<DTriangle> {
-
         public TriangleNative(DTriangle visible) {
             super(visible);
         }
@@ -58,9 +56,9 @@ public interface DTriangle extends DFilled {
 
         }
 
+        @SuppressWarnings("unused")
         public void radius(int pre, int post) {
             ancestor(DComponentNative.class).swing().repaint();
         }
-
     }
 }

@@ -15,19 +15,19 @@
 
 package org.modelingvalue.jdclare.swing.draw2d;
 
-import org.modelingvalue.jdclare.*;
-import org.modelingvalue.jdclare.swing.*;
-
-import java.util.function.*;
-
 import static org.modelingvalue.jdclare.DClare.*;
 import static org.modelingvalue.jdclare.PropertyQualifier.*;
 
-public interface ClickMode extends CanvasMode {
+import java.util.function.*;
 
+import org.modelingvalue.jdclare.*;
+import org.modelingvalue.jdclare.swing.*;
+
+public interface ClickMode extends CanvasMode {
     @Property(constant)
     Consumer<DCanvas> action();
 
+    @SuppressWarnings("unused")
     @Rule
     default void mode() {
         DCanvas c = dAncestor(DCanvas.class);
@@ -37,5 +37,4 @@ public interface ClickMode extends CanvasMode {
             action().accept(c);
         }
     }
-
 }

@@ -15,16 +15,16 @@
 
 package org.modelingvalue.jdclare.swing;
 
-import org.modelingvalue.jdclare.*;
-import org.modelingvalue.jdclare.swing.MenuItem.*;
-
-import javax.swing.*;
 import java.awt.event.*;
 import java.util.function.*;
 
+import javax.swing.*;
+
+import org.modelingvalue.jdclare.*;
+import org.modelingvalue.jdclare.swing.MenuItem.*;
+
 @Native(MenuItemNative.class)
 public interface MenuItem extends DStruct3<DComponent, String, Consumer<ActionEvent>>, DComponent, DNamed {
-
     @Property(key = 0)
     DComponent menu();
 
@@ -36,7 +36,6 @@ public interface MenuItem extends DStruct3<DComponent, String, Consumer<ActionEv
     Consumer<ActionEvent> action();
 
     class MenuItemNative extends DComponentNative<MenuItem, JMenuItem> implements ActionListener {
-
         public MenuItemNative(MenuItem visible) {
             super(visible);
         }
@@ -61,6 +60,5 @@ public interface MenuItem extends DStruct3<DComponent, String, Consumer<ActionEv
                 action.accept(e);
             }
         }
-
     }
 }

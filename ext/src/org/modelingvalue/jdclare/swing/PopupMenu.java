@@ -15,24 +15,23 @@
 
 package org.modelingvalue.jdclare.swing;
 
+import static org.modelingvalue.jdclare.DClare.*;
+import static org.modelingvalue.jdclare.PropertyQualifier.*;
+
+import javax.swing.*;
+
 import org.modelingvalue.collections.*;
 import org.modelingvalue.jdclare.*;
 import org.modelingvalue.jdclare.swing.MenuItem.*;
 import org.modelingvalue.jdclare.swing.PopupMenu.*;
 
-import javax.swing.*;
-
-import static org.modelingvalue.jdclare.DClare.*;
-import static org.modelingvalue.jdclare.PropertyQualifier.*;
-
+@SuppressWarnings("unused")
 @Native(PopupMenuNative.class)
 public interface PopupMenu extends DComponent {
-
     @Property(containment)
     List<MenuItem> items();
 
     class PopupMenuNative extends DComponentNative<PopupMenu, JPopupMenu> {
-
         public PopupMenuNative(PopupMenu visible) {
             super(visible);
         }
@@ -50,6 +49,5 @@ public interface PopupMenu extends DComponent {
             swing.removeAll();
             post.forEachOrdered(i -> swing.add(((MenuItemNative) dNative(i)).swing));
         }
-
     }
 }

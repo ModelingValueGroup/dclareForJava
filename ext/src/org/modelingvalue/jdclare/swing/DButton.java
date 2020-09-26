@@ -15,22 +15,22 @@
 
 package org.modelingvalue.jdclare.swing;
 
-import org.modelingvalue.jdclare.*;
-import org.modelingvalue.jdclare.swing.DButton.*;
-import org.modelingvalue.jdclare.swing.draw2d.*;
+import static org.modelingvalue.jdclare.DClare.*;
+import static org.modelingvalue.jdclare.PropertyQualifier.*;
 
-import javax.swing.*;
-import javax.swing.border.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.function.*;
 
-import static org.modelingvalue.jdclare.DClare.*;
-import static org.modelingvalue.jdclare.PropertyQualifier.*;
+import javax.swing.*;
+import javax.swing.border.*;
+
+import org.modelingvalue.jdclare.*;
+import org.modelingvalue.jdclare.swing.DButton.*;
+import org.modelingvalue.jdclare.swing.draw2d.*;
 
 @Native(ButtonNative.class)
 public interface DButton extends DComponent {
-
     @Property
     String text();
 
@@ -43,8 +43,8 @@ public interface DButton extends DComponent {
     @Property
     Consumer<ActionEvent> action();
 
+    @SuppressWarnings("unused")
     class ButtonNative extends DComponentNative<DButton, JButton> {
-
         public ButtonNative(DButton visible) {
             super(visible);
         }
