@@ -28,7 +28,7 @@ import org.modelingvalue.jdclare.swing.*;
 import org.modelingvalue.jdclare.swing.draw2d.*;
 
 public interface D2MainWindow extends DiagramEditor, DStruct1<D2Universe> {
-    Color canvasBackColor = new Color(new Random().nextInt());
+    Color canvasBackColor = new Color(new Random().nextInt()).brighter().brighter();
 
     @Property(key = 0)
     D2Universe d2();
