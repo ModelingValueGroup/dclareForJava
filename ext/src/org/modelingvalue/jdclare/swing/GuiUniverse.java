@@ -49,7 +49,7 @@ public interface GuiUniverse extends DUniverse {
     default void init() {
         DUniverse.super.init();
         ImperativeTransaction itx = dClare().addImperative("swingNative", callNativesOfClass(DVisible.class), SwingUtilities::invokeLater, true);
-        SwingUtilities.invokeLater(() -> LeafTransaction.getContext().set(itx));
+        SwingUtilities.invokeLater(() -> LeafTransaction.getContext().setOnThread(itx));
         KeyboardFocusManager kfm = KeyboardFocusManager.getCurrentKeyboardFocusManager();
         kfm.addKeyEventDispatcher(e -> {
             if (e.getID() == KeyEvent.KEY_PRESSED && e.isControlDown()) {

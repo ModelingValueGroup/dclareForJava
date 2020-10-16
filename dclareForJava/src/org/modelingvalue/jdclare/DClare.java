@@ -413,11 +413,11 @@ public final class DClare<U extends DUniverse> extends UniverseTransaction {
         Method toMethod = method(to);
         state = state.set(fromMethod, OPPOSITE, toMethod);
         state = state.set(toMethod, OPPOSITE, fromMethod);
-        CLASS_INIT_STATE.set(state);
+        CLASS_INIT_STATE.setOnThread(state);
     }
 
     public static <O extends DObject, A, B> void SCOPE(SerializableFunction<O, A> property, SerializableFunction<O, Collection<B>> scope) {
-        CLASS_INIT_STATE.set(CLASS_INIT_STATE.get().set(method(property), SCOPE, method(scope)));
+        CLASS_INIT_STATE.setOnThread(CLASS_INIT_STATE.get().set(method(property), SCOPE, method(scope)));
     }
 
     public static <O extends DObject, V> void rule(O dObject, SerializableFunction<O, V> property, Function<O, V> value) {
@@ -540,11 +540,10 @@ public final class DClare<U extends DUniverse> extends UniverseTransaction {
     private State constraints(Class<? extends DStruct> cls) {
         for (Method method : cls.getDeclaredMethods()) {
             if (method.isAnnotationPresent(Constraints.class)) {
-                CLASS_INIT_STATE.set(emptyState());
-                run(dStruct(cls, CONSTRAINTS), method);
-                State state = CLASS_INIT_STATE.get();
-                CLASS_INIT_STATE.set(null);
-                return state;
+                return CLASS_INIT_STATE.get(emptyState(), () -> {
+                    run(dStruct(cls, CONSTRAINTS), method);
+                    return CLASS_INIT_STATE.get();
+                });
             }
         }
         return emptyState();
