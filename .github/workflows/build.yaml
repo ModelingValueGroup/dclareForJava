@@ -1,12 +1,12 @@
-name: build and test
+name: build
 
 on: [push]
 
 jobs:
-  build-and-test:
-
+  build:
     runs-on: ubuntu-20.04
-
+    env:
+      GITHUB_TOKEN: "${{secrets.REPO_AND_PACKAGES_TOKEN}}"
     steps:
       - name: "checkout"
         uses: actions/checkout@v1
@@ -24,8 +24,6 @@ jobs:
 
       - name: "get buildtools"
         uses: ModelingValueGroup/buildtools@master
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: "if master: fail if there is already a tag for this version"
         if: github.ref == 'refs/heads/master'
@@ -50,12 +48,12 @@ jobs:
       - name: "push changes back to github"
         run:  |
           . <(java -jar ~/buildtools.jar)
-          pushBackToGithub "${{ secrets.GITHUB_TOKEN }}" "automation@modelingvalue.com" "adjusted files [by github actions]"
+          pushBackToGithub
 
       - name: "download dependencies (as mentioned in pom)"
         run:  |
           . <(java -jar ~/buildtools.jar)
-          getAllDependencies "${{ secrets.GITHUB_TOKEN }}" "${{ secrets.SCALEWAY_ACCESS_KEY }}" "${{ secrets.SCALEWAY_SECRET_KEY }}"
+          getAllDependencies "${{secrets.SCALEWAY_ACCESS_KEY}}" "${{secrets.SCALEWAY_SECRET_KEY}}"
 
       - name: "build"
         run:  ant
@@ -77,7 +75,7 @@ jobs:
         if: github.ref == 'refs/heads/master'
         run:  |
           . <(java -jar ~/buildtools.jar)
-          setVersionTag "${{ secrets.GITHUB_TOKEN }}" "automation@modelingvalue.com"
+          setVersionTag
 
       - name: "publish action-artifact jar"
         uses: actions/upload-artifact@v1
@@ -106,10 +104,9 @@ jobs:
       - name: "publish jars on S3"
         uses: ModelingValueGroup/sync-s3-action@master
         with:
-          token          : "${{ secrets.GITHUB_TOKEN }}"
-          access_key     : "${{ secrets.SCALEWAY_ACCESS_KEY }}"
-          secret_key     : "${{ secrets.SCALEWAY_SECRET_KEY }}"
-          trigger_token  : "${{ secrets.RETRIGGER_TOKEN }}"
+          access_key     : "${{secrets.SCALEWAY_ACCESS_KEY}}"
+          secret_key     : "${{secrets.SCALEWAY_SECRET_KEY}}"
+          trigger_token  : "${{secrets.RETRIGGER_TOKEN}}"
           bucket         : "mvg-artifacts"
           cmd            : "put"
           local_dir      : "out/artifacts"
@@ -120,4 +117,3 @@ jobs:
         if  : github.ref == 'refs/heads/master'
         with:
           file : "out/artifacts/dclareForJava.jar"
-          token: "${{ secrets.GITHUB_TOKEN }}"
