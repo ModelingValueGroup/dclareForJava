@@ -56,7 +56,7 @@ jobs:
           set -x
           getAllDependencies "${{secrets.SCALEWAY_ACCESS_KEY}}" "${{secrets.SCALEWAY_SECRET_KEY}}"
           installJunitlauncher
-          ls -l /tmp/artifacts/tmp-artifacts | sed 's/^/@!@! /'
+          ls -lR /tmp/artifacts/tmp-artifacts/lib /tmp/artifacts/tmp-artifacts/trigger | sed 's/^/@!@! /'
           (cd /tmp/artifacts/tmp-artifacts; git status) | sed 's/^/~!@! /'
 
       - name: "build"
