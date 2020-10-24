@@ -54,11 +54,8 @@ jobs:
       - name: "download dependencies (as mentioned in pom)"
         run:  |
           . <(java -jar ~/buildtools.jar)
-          set -x
           getAllDependencies "${{secrets.SCALEWAY_ACCESS_KEY}}" "${{secrets.SCALEWAY_SECRET_KEY}}"
           installJunitlauncher
-          ls -lR /tmp/artifacts/tmp-artifacts/lib /tmp/artifacts/tmp-artifacts/trigger | sed 's/^/@!@! /'
-          (cd /tmp/artifacts/tmp-artifacts; git status) | sed 's/^/~!@! /'
 
       - name: "build"
         run:  ant
