@@ -6,7 +6,8 @@ jobs:
   build:
     runs-on: ubuntu-20.04
     env:
-      GITHUB_TOKEN: "${{secrets.REPO_AND_PACKAGES_TOKEN}}"
+      GITHUB_TOKEN: "${{secrets.GITHUB_TOKEN}}"
+      ALLREP_TOKEN: "${{secrets.ALLREP_TOKEN}}"
     steps:
       - name: "checkout"
         uses: actions/checkout@v1
@@ -105,16 +106,11 @@ jobs:
           name: dclareForJava-testresults.jar
           path: out/artifacts/dclareForJava-testresults.jar
 
-      - name: "publish jars on S3"
-        uses: ModelingValueGroup/sync-s3-action@master
-        with:
-          access_key     : "${{secrets.SCALEWAY_ACCESS_KEY}}"
-          secret_key     : "${{secrets.SCALEWAY_SECRET_KEY}}"
-          trigger_token  : "${{secrets.RETRIGGER_TOKEN}}"
-          bucket         : "mvg-artifacts"
-          cmd            : "put"
-          local_dir      : "out/artifacts"
-          s3_dir_branched: "/"
+      - name: "if NOT master: saving snapshots for other projects on this branch"
+        if: github.ref != 'refs/heads/master'
+        run: |
+          . <(java -jar ~/buildtools.jar)
+          storeMyBranchSnapshots
 
       - name: "if master: publish maven-artifacts (jar/pom/sources/javadoc)"
         uses: ModelingValueGroup/upload-maven-package-action@master
