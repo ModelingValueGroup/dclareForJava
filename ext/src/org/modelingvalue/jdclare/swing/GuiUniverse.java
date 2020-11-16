@@ -48,7 +48,8 @@ public interface GuiUniverse extends DUniverse {
     @Override
     default void init() {
         DUniverse.super.init();
-        ImperativeTransaction itx = dClare().addImperative("swingNative", callNativesOfClass(DVisible.class), SwingUtilities::invokeLater, true);
+        ImperativeTransaction itx = dClare().addImperative("swingNative", pre -> {
+        }, callNativesOfClass(DVisible.class), SwingUtilities::invokeLater, true);
         SwingUtilities.invokeLater(() -> LeafTransaction.getContext().setOnThread(itx));
         KeyboardFocusManager kfm = KeyboardFocusManager.getCurrentKeyboardFocusManager();
         kfm.addKeyEventDispatcher(e -> {
