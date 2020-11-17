@@ -15,8 +15,12 @@
 
 package org.modelingvalue.jdclare.test;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.modelingvalue.jdclare.DClare.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+import static org.modelingvalue.jdclare.DClare.dclare;
+import static org.modelingvalue.jdclare.DClare.of;
+import static org.modelingvalue.jdclare.DClare.set;
 
 import java.util.HashSet;
 import java.util.function.Function;
@@ -201,8 +205,8 @@ public class BirdTest {
         DClare<BirdUniverse> dclare = of(BirdUniverse.class);
         start(dclare);
         addBird(dclare, Pigeon.class, Pair.of("0", "green"));
-        State     result = stop(dclare);
-        Set<Bird> birds  = result.getObjects(Bird.class).toSet();
+        State result = stop(dclare);
+        Set<Bird> birds = result.getObjects(Bird.class).toSet();
         assertEquals(1, birds.size(), "Unexpected Birds: " + birds);
     }
 
@@ -362,7 +366,7 @@ public class BirdTest {
             fail();
         } catch (Throwable t) {
             Throwable cause = getCause(t);
-            assertThrowable(cause, Error.class, "Constant headColor is not set and not derived");
+            assertThrowable(cause, NonDeterministicException.class, "Constant headColor is not set and not derived");
         }
     }
 
