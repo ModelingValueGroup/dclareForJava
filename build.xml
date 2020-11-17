@@ -180,7 +180,7 @@
   <target name="artifact.dclareforjava" depends="init.artifacts, compile.module.dclareforjava" description="Build 'dclareForJava' artifact">
     <property name="artifact.temp.output.dclareforjava" value="${artifacts.temp.dir}/dclareForJava"/>
     <mkdir dir="${artifact.temp.output.dclareforjava}"/>
-    <jar destfile="${temp.jar.path.dclareForJava.jar}" duplicate="preserve" filesetmanifest="mergewithoutmain">
+    <jar destfile="${temp.jar.path.dclareForJava.jar}" duplicate="preserve" filesetmanifest="merge">
       <zipfileset dir="${dclareforjava.output.dir}"/>
       <zipfileset src="${basedir}/lib/immutable-collections.jar"/>
       <zipfileset src="${basedir}/lib/dclare.jar"/>
@@ -190,7 +190,7 @@
   <target name="artifact.dclareforjava-sources" depends="init.artifacts" description="Build 'dclareForJava-sources' artifact">
     <property name="artifact.temp.output.dclareforjava-sources" value="${artifacts.temp.dir}/dclareForJava_sources"/>
     <mkdir dir="${artifact.temp.output.dclareforjava-sources}"/>
-    <jar destfile="${temp.jar.path.dclareForJava-sources.jar}" duplicate="preserve" filesetmanifest="mergewithoutmain">
+    <jar destfile="${temp.jar.path.dclareForJava-sources.jar}" duplicate="preserve" filesetmanifest="merge">
       <zipfileset dir="${basedir}/dclareForJava/src"/>
       <zipfileset src="${basedir}/lib/immutable-collections-sources.jar"/>
       <zipfileset src="${basedir}/lib/dclare-sources.jar"/>
@@ -200,7 +200,7 @@
   <target name="artifact.examples" depends="init.artifacts, compile.module.examples, compile.module.dclareforjava, compile.module.dclareforjava, compile.module.ext, compile.module.ext" description="Build 'examples' artifact">
     <property name="artifact.temp.output.examples" value="${artifacts.temp.dir}/examples"/>
     <mkdir dir="${artifact.temp.output.examples}"/>
-    <jar destfile="${temp.jar.path.examples.jar}" duplicate="preserve" filesetmanifest="mergewithoutmain">
+    <jar destfile="${temp.jar.path.examples.jar}" duplicate="preserve" filesetmanifest="merge">
       <zipfileset dir="${examples.testoutput.dir}"/>
       <zipfileset dir="${dclareforjava.output.dir}"/>
       <zipfileset dir="${dclareforjava.testoutput.dir}"/>
@@ -214,7 +214,7 @@
   <target name="artifact.ext" depends="init.artifacts, compile.module.ext, compile.module.dclareforjava" description="Build 'ext' artifact">
     <property name="artifact.temp.output.ext" value="${artifacts.temp.dir}/ext"/>
     <mkdir dir="${artifact.temp.output.ext}"/>
-    <jar destfile="${temp.jar.path.ext.jar}" duplicate="preserve" filesetmanifest="mergewithoutmain">
+    <jar destfile="${temp.jar.path.ext.jar}" duplicate="preserve" filesetmanifest="merge">
       <zipfileset dir="${ext.output.dir}"/>
       <zipfileset dir="${dclareforjava.output.dir}"/>
       <zipfileset src="${basedir}/lib/dclare.jar"/>
