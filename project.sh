@@ -21,7 +21,7 @@ dependencies=(
   "org.modelingvalue   dclare                  1.4.0       jar jds-"
   "org.modelingvalue   immutable-collections   1.4.0       jar jds-"
 
-  "com.intellij        forms_rt                7.0.3       jar jds-"
+  "com.intellij        forms_rt                7.0.3       jar j---"
 
   "org.junit.jupiter   junit-jupiter-api       5.6.2       jar jdst"
   "org.junit.jupiter   junit-jupiter-engine    5.6.2       jar jdst"
