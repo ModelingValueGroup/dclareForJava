@@ -1,20 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="module_examples" default="compile.module.examples">
   <dirname property="module.examples.basedir" file="${ant.file.module_examples}"/>
-  
   <property name="module.jdk.home.examples" value="${project.jdk.home}"/>
   <property name="module.jdk.bin.examples" value="${project.jdk.bin}"/>
   <property name="module.jdk.classpath.examples" value="${project.jdk.classpath}"/>
-  
   <property name="compiler.args.examples" value="-encoding UTF-8 -source 11 -target 11 ${compiler.args}"/>
-  
   <property name="examples.output.dir" value="${module.examples.basedir}/../out/production/examples"/>
   <property name="examples.testoutput.dir" value="${module.examples.basedir}/../out/test/examples"/>
-  
   <path id="examples.module.bootclasspath">
     <!-- Paths to be included in compilation bootclasspath -->
   </path>
-  
   <path id="examples.module.production.classpath">
     <path refid="${module.jdk.classpath.examples}"/>
     <pathelement location="${dclareforjava.output.dir}"/>
@@ -22,7 +17,6 @@
     <path refid="library.gen:_dclare.classpath"/>
     <path refid="library.gen:_immutable-collections.classpath"/>
   </path>
-  
   <path id="examples.runtime.production.module.classpath">
     <pathelement location="${examples.output.dir}"/>
     <path refid="dclareforjava.runtime.production.module.classpath"/>
@@ -30,7 +24,6 @@
     <path refid="library.gen:_dclare.classpath"/>
     <path refid="library.gen:_immutable-collections.classpath"/>
   </path>
-  
   <path id="examples.module.classpath">
     <path refid="${module.jdk.classpath.examples}"/>
     <pathelement location="${examples.output.dir}"/>
@@ -41,7 +34,6 @@
     <path refid="library.gen:_dclare.classpath"/>
     <path refid="library.gen:_immutable-collections.classpath"/>
   </path>
-  
   <path id="examples.runtime.module.classpath">
     <pathelement location="${examples.testoutput.dir}"/>
     <pathelement location="${examples.output.dir}"/>
@@ -50,38 +42,29 @@
     <path refid="library.gen:_dclare.classpath"/>
     <path refid="library.gen:_immutable-collections.classpath"/>
   </path>
-  
-  
   <patternset id="excluded.from.module.examples">
     <patternset refid="ignored.files"/>
   </patternset>
-  
   <patternset id="excluded.from.compilation.examples">
     <patternset refid="excluded.from.module.examples"/>
   </patternset>
-  
   <path id="examples.module.test.sourcepath">
     <dirset dir="${module.examples.basedir}">
       <include name="tst"/>
       <include name="tstres"/>
     </dirset>
   </path>
-  
-  
   <target name="compile.module.examples" depends="compile.module.examples.production,compile.module.examples.tests" description="Compile module examples"/>
-  
   <target name="compile.module.examples.production" depends="compile.module.dclareforjava,compile.module.ext" description="Compile module examples; production classes"/>
-  
   <target name="compile.module.examples.tests" depends="compile.module.examples.production" description="compile module examples; test classes" unless="skip.tests">
     <mkdir dir="${examples.testoutput.dir}"/>
-    <javac destdir="${examples.testoutput.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.examples}/javac">
+    <javac includeantruntime="false" destdir="${examples.testoutput.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.examples}/javac">
       <compilerarg line="${compiler.args.examples}"/>
       <bootclasspath refid="examples.module.bootclasspath"/>
       <classpath refid="examples.module.classpath"/>
       <src refid="examples.module.test.sourcepath"/>
       <patternset refid="excluded.from.compilation.examples"/>
     </javac>
-    
     <copy todir="${examples.testoutput.dir}">
       <fileset dir="${module.examples.basedir}/tst">
         <patternset refid="compiler.resources"/>
@@ -93,9 +76,27 @@
       </fileset>
     </copy>
   </target>
-  
   <target name="clean.module.examples" description="cleanup module">
     <delete dir="${examples.output.dir}"/>
     <delete dir="${examples.testoutput.dir}"/>
+  </target>
+  <target name="test.module.examples">
+    <junitlauncher haltOnFailure="true" printSummary="true">
+      <classpath refid="examples.runtime.module.classpath"/>
+      <testclasses outputdir=".">
+        <fileset dir="${examples.testoutput.dir}">
+          <include name="**/*Test.*"/>
+          <include name="**/*Tests.*"/>
+        </fileset>
+        <listener type="legacy-xml" sendSysOut="true" sendSysErr="true"/>
+        <listener type="legacy-plain" sendSysOut="true"/>
+      </testclasses>
+    </junitlauncher>
+  </target>
+  <target name="testresults.module.examples" depends="test.module.examples">
+    <mkdir dir="${basedir}/out/artifacts"/>
+    <jar destfile="${basedir}/out/artifacts/examples-testresults.jar" filesetmanifest="skip">
+      <zipfileset file="${basedir}/TEST-*.xml"/>
+    </jar>
   </target>
 </project>
