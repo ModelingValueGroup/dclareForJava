@@ -15,31 +15,38 @@
 
 package org.modelingvalue.jdclare.swing.examples.sync;
 
-import static org.modelingvalue.jdclare.DClare.*;
+import static org.modelingvalue.jdclare.DClare.dclare;
+import static org.modelingvalue.jdclare.DClare.dclareUU;
+import static org.modelingvalue.jdclare.DClare.handler;
 
-import java.awt.*;
-import java.lang.reflect.*;
-import java.util.*;
-import java.util.function.*;
+import java.awt.Color;
+import java.lang.reflect.Method;
+import java.util.UUID;
+import java.util.function.Predicate;
 
 import org.modelingvalue.collections.Collection;
 import org.modelingvalue.collections.List;
 import org.modelingvalue.collections.Set;
-import org.modelingvalue.dclare.*;
-import org.modelingvalue.dclare.sync.*;
-import org.modelingvalue.jdclare.*;
-import org.modelingvalue.jdclare.meta.*;
-import org.modelingvalue.jdclare.swing.draw2d.*;
-import org.modelingvalue.jdclare.swing.examples.sync.D2Universe.*;
+import org.modelingvalue.dclare.Mutable;
+import org.modelingvalue.dclare.Observed;
+import org.modelingvalue.dclare.Setable;
+import org.modelingvalue.dclare.sync.SerializationHelper;
+import org.modelingvalue.dclare.sync.Util;
+import org.modelingvalue.jdclare.DObject;
+import org.modelingvalue.jdclare.DStruct;
+import org.modelingvalue.jdclare.meta.DClass;
+import org.modelingvalue.jdclare.swing.draw2d.DCanvas;
+import org.modelingvalue.jdclare.swing.draw2d.DDimension;
+import org.modelingvalue.jdclare.swing.draw2d.DPoint;
+import org.modelingvalue.jdclare.swing.draw2d.DShape;
+import org.modelingvalue.jdclare.swing.examples.sync.D2Universe.D2Frame;
 
 class SyncSerializationHelper implements SerializationHelper<DClass<DObject>, DObject, Setable<DObject, Object>> {
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     @Override
     public Predicate<Mutable> mutableFilter() {
         return m -> {
-            boolean include = m instanceof DShape
-                    || m instanceof DCanvas
-                    || m instanceof D2Frame;
+            boolean include = m instanceof DShape || m instanceof DCanvas || m instanceof D2Frame;
             //                    if (!b && !m.toString().matches("^(DClock|D2Universe|InputDeviceData).*")) {
             //                        System.err.printf("----- mutable rejected: %-50s\n", m);
             //                        if (m.toString().equals("shapes")) {
@@ -53,12 +60,7 @@ class SyncSerializationHelper implements SerializationHelper<DClass<DObject>, DO
     @Override
     public Predicate<Setable<DObject, ?>> setableFilter() {
         return s -> {
-            boolean include = s instanceof Observed
-                    && !s.toString().equals("D_PARENT_CONTAINING")
-                    && !s.toString().equals("mode")
-                    && !s.toString().equals("dObjectRules")
-                    && !s.toString().startsWith("drag")
-                    && !s.toString().startsWith("~");
+            boolean include = s instanceof Observed && !s.toString().equals("D_PARENT_CONTAINING") && !s.toString().equals("mode") && !s.toString().equals("dObjectRules") && !s.toString().startsWith("drag") && !s.toString().startsWith("~");
             //                    if (!include) {
             //                        System.err.printf("----- setable rejected: %-50s %s\n", s, s.getClass().getSimpleName());
             //                    }
@@ -107,6 +109,7 @@ class SyncSerializationHelper implements SerializationHelper<DClass<DObject>, DO
         return null;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public Setable<DObject, Object> deserializeSetable(DClass<DObject> clazz, String s) {
         //System.err.println("deserializeSetable: " + s);
@@ -114,6 +117,7 @@ class SyncSerializationHelper implements SerializationHelper<DClass<DObject>, DO
         return (Setable<DObject, Object>) clazz.dSetables().filter(stbl -> stbl.toString().equals(s)).findAny().orElseThrow();
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public DObject deserializeMutable(String s) {
         //System.err.println("deserializeMutable: " + s);
@@ -121,17 +125,18 @@ class SyncSerializationHelper implements SerializationHelper<DClass<DObject>, DO
             String[] parts = Util.decodeFromLength(s, 2);
             //noinspection unchecked
             Class<? extends DObject> clazz = (Class<? extends DObject>) Class.forName(parts[0]);
-            UUID                     uuid  = UUID.fromString(parts[1]);
+            UUID uuid = UUID.fromString(parts[1]);
             return dclareUU(clazz, uuid);
         } catch (ClassNotFoundException e) {
             throw new Error("can not deserializeMutable from " + s, e);
         }
     }
 
+    @SuppressWarnings({"rawtypes", "unchecked"})
     @Override
     public Object deserializeValue(Setable<DObject, Object> setable, Object s) {
-        DStruct  id   = (DStruct) setable.id();
-        Method   o    = (Method) handler(id).key[0];
+        DStruct id = (DStruct) setable.id();
+        Method o = (Method) handler(id).key[0];
         Class<?> type = o.getReturnType();
         if (type.equals(boolean.class)) {
             //System.err.println("RECV value boolean   : " + s + "  " + setable.id() + "   " + type.getName() + "  =>  " + s);

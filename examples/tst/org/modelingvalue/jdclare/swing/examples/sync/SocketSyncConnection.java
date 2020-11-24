@@ -15,22 +15,26 @@
 
 package org.modelingvalue.jdclare.swing.examples.sync;
 
-import static org.modelingvalue.collections.util.TraceTimer.*;
+import static org.modelingvalue.collections.util.TraceTimer.traceLog;
 
-import java.io.*;
-import java.net.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.net.Socket;
 
-import org.modelingvalue.dclare.sync.*;
+import org.modelingvalue.dclare.sync.SupplierAndConsumer;
+import org.modelingvalue.dclare.sync.WorkDaemon;
 
 public class SocketSyncConnection {
     private final String                      host;
     private final int                         port;
     private final SupplierAndConsumer<String> sac;
     //
-    private       boolean                     connecting;
-    private       Socket                      socket;
-    private       InpStreamDaemon             inpDaemon;
-    private       OutStreamDaemon             outDaemon;
+    private boolean                           connecting;
+    private Socket                            socket;
+    private InpStreamDaemon                   inpDaemon;
+    private OutStreamDaemon                   outDaemon;
 
     public boolean isConnecting() {
         return connecting;
@@ -104,13 +108,11 @@ public class SocketSyncConnection {
     }
 
     private abstract static class StreamDaemon extends WorkDaemon<String> {
-        protected final Socket clientSocket;
-        protected       int    numlines;
-        protected       int    numChars;
+        protected int numlines;
+        protected int numChars;
 
         public StreamDaemon(String dir, Socket clientSocket) {
             super("serving-" + clientSocket.getPort() + "-" + clientSocket.getLocalPort() + "-" + dir);
-            this.clientSocket = clientSocket;
         }
 
         @Override
