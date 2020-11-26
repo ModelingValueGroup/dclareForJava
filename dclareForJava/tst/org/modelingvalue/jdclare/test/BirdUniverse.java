@@ -28,6 +28,7 @@ import org.modelingvalue.jdclare.DNamed;
 import org.modelingvalue.jdclare.DObject;
 import org.modelingvalue.jdclare.DStruct2;
 import org.modelingvalue.jdclare.DUniverse;
+import org.modelingvalue.jdclare.Default;
 import org.modelingvalue.jdclare.Property;
 import org.modelingvalue.jdclare.Rule;
 
@@ -355,6 +356,12 @@ public interface BirdUniverse extends DUniverse {
 
     interface Pheasant extends Bird {
 
+        @Default
+        @Property(constant)
+        default String feetColor() {
+            return "orange";
+        }
+
         @Property(constant)
         String tailColor();
 
@@ -398,7 +405,8 @@ public interface BirdUniverse extends DUniverse {
         @Rule
         default void setHeadColor1() {
             if ("red".equals(color())) {
-                set(this, Pheasant::headColor, headColor());
+                feetColor(); // init default value
+                set(this, Pheasant::feetColor, "black");
             }
         }
 

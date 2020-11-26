@@ -357,7 +357,7 @@ public class BirdTest {
     }
 
     @Test
-    public void constantNotSetAndNotDerivedError() {
+    public void nonDeterministicException0() {
         try {
             DClare<BirdUniverse> dclare = of(BirdUniverse.class);
             start(dclare);
@@ -366,7 +366,7 @@ public class BirdTest {
             fail();
         } catch (Throwable t) {
             Throwable cause = getCause(t);
-            assertThrowable(cause, NonDeterministicException.class, "Constant headColor is not set and not derived");
+            assertThrowable(cause, NonDeterministicException.class, java.util.regex.Pattern.quote("Constant is not consistent 0.feetColor=orange!=black"));
         }
     }
 
