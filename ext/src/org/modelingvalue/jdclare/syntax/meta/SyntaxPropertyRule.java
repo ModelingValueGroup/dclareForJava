@@ -15,14 +15,14 @@
 
 package org.modelingvalue.jdclare.syntax.meta;
 
-import org.modelingvalue.dclare.*;
-import org.modelingvalue.jdclare.*;
-import org.modelingvalue.jdclare.meta.*;
-import org.modelingvalue.jdclare.syntax.Grammar.*;
+import static org.modelingvalue.jdclare.PropertyQualifier.constant;
 
-import java.util.function.*;
+import java.util.function.Consumer;
 
-import static org.modelingvalue.jdclare.PropertyQualifier.*;
+import org.modelingvalue.jdclare.DStruct1;
+import org.modelingvalue.jdclare.Property;
+import org.modelingvalue.jdclare.meta.DRule;
+import org.modelingvalue.jdclare.syntax.Grammar.ObjectNode;
 
 public interface SyntaxPropertyRule<O extends ObjectNode> extends DRule<O>, DStruct1<SyntaxProperty<O, ?>> {
 
@@ -37,12 +37,6 @@ public interface SyntaxPropertyRule<O extends ObjectNode> extends DRule<O>, DStr
     @Property(constant)
     default String name() {
         return "Syntax::" + syntaxProperty().name();
-    }
-
-    @Override
-    @Property(constant)
-    default Direction initDirection() {
-        return Direction.forward;
     }
 
 }

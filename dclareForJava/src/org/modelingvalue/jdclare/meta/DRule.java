@@ -15,11 +15,10 @@
 
 package org.modelingvalue.jdclare.meta;
 
-import static org.modelingvalue.jdclare.PropertyQualifier.*;
+import static org.modelingvalue.jdclare.PropertyQualifier.constant;
 
 import java.util.function.Consumer;
 
-import org.modelingvalue.dclare.Direction;
 import org.modelingvalue.dclare.Observer;
 import org.modelingvalue.jdclare.Abstract;
 import org.modelingvalue.jdclare.DNamed;
@@ -33,11 +32,8 @@ public interface DRule<O extends DObject> extends DNamed {
     Consumer<O> consumer();
 
     @Property(constant)
-    Direction initDirection();
-
-    @Property(constant)
     default Observer<O> observer() {
-        return Observer.of(this, o -> consumer().accept(o), initDirection());
+        return Observer.of(this, o -> consumer().accept(o));
     }
 
     @Property
