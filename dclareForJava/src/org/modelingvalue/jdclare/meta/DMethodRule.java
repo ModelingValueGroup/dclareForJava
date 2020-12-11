@@ -22,6 +22,7 @@ import static org.modelingvalue.jdclare.PropertyQualifier.validation;
 import java.lang.reflect.Method;
 import java.util.function.Consumer;
 
+import org.modelingvalue.dclare.Direction;
 import org.modelingvalue.jdclare.DClare;
 import org.modelingvalue.jdclare.DObject;
 import org.modelingvalue.jdclare.DStruct1;
@@ -57,6 +58,12 @@ public interface DMethodRule<O extends DObject, T> extends DRule<O>, DStruct1<Me
     default boolean validation() {
         Method method = method();
         return qual(method, validation);
+    }
+
+    @Override
+    @Property(constant)
+    default Direction initDirection() {
+        return validation() ? Direction.backward : Direction.forward;
     }
 
 }

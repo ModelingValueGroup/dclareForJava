@@ -15,16 +15,27 @@
 
 package org.modelingvalue.jdclare.workbench;
 
+import static org.modelingvalue.jdclare.DClare.dclare;
+import static org.modelingvalue.jdclare.PropertyQualifier.constant;
+import static org.modelingvalue.jdclare.PropertyQualifier.containment;
+
+import java.awt.Color;
+
 import org.modelingvalue.collections.List;
-import org.modelingvalue.collections.*;
-import org.modelingvalue.jdclare.*;
-import org.modelingvalue.jdclare.meta.*;
-import org.modelingvalue.jdclare.swing.draw2d.*;
-
-import java.awt.*;
-
-import static org.modelingvalue.jdclare.DClare.*;
-import static org.modelingvalue.jdclare.PropertyQualifier.*;
+import org.modelingvalue.collections.QualifiedSet;
+import org.modelingvalue.collections.Set;
+import org.modelingvalue.jdclare.DObject;
+import org.modelingvalue.jdclare.DStruct1;
+import org.modelingvalue.jdclare.DStruct2;
+import org.modelingvalue.jdclare.DStruct3;
+import org.modelingvalue.jdclare.Property;
+import org.modelingvalue.jdclare.meta.DStructClass;
+import org.modelingvalue.jdclare.swing.draw2d.DCanvas;
+import org.modelingvalue.jdclare.swing.draw2d.DDimension;
+import org.modelingvalue.jdclare.swing.draw2d.DLine;
+import org.modelingvalue.jdclare.swing.draw2d.DPoint;
+import org.modelingvalue.jdclare.swing.draw2d.DRectangle;
+import org.modelingvalue.jdclare.swing.draw2d.DShape;
 
 public interface DiagramCanvas extends DStruct1<WBUniverse>, DCanvas {
 

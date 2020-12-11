@@ -15,10 +15,11 @@
 
 package org.modelingvalue.jdclare.meta;
 
-import static org.modelingvalue.jdclare.PropertyQualifier.constant;
+import static org.modelingvalue.jdclare.PropertyQualifier.*;
 
 import java.util.function.Consumer;
 
+import org.modelingvalue.dclare.Direction;
 import org.modelingvalue.dclare.NonInternableObserver;
 import org.modelingvalue.dclare.Observer;
 import org.modelingvalue.jdclare.DObject;
@@ -45,8 +46,12 @@ public interface DObjectRule<O extends DObject> extends DRule<O>, DStruct2<O, St
 
     @Override
     @Property(constant)
+    Direction initDirection();
+
+    @Override
+    @Property(constant)
     default Observer<O> observer() {
-        return NonInternableObserver.of(this, o -> consumer().accept(o));
+        return NonInternableObserver.of(this, o -> consumer().accept(o), initDirection());
     }
 
 }

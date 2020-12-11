@@ -424,13 +424,15 @@ public final class DClare<U extends DUniverse> extends UniverseTransaction {
         Setable<DObject, Set<DRule>> ors = setable(D_OBJECT_RULES);
         DProperty dProperty = dProperty(dObject, property);
         ors.set(dObject, Set::add, dclare(DObjectRule.class, dObject, dProperty.name(), //
-                set(DObjectRule::consumer, id((Consumer<O>) o -> dProperty.set(o, value.apply(o)), dObject, dProperty))));
+                set(DObjectRule::consumer, id((Consumer<O>) o -> dProperty.set(o, value.apply(o)), dObject, dProperty)), //
+                set(DObjectRule::initDirection, Direction.forward)));
     }
 
     public static <O extends DObject, V> void rule(O dObject, String name, Consumer<O> rule) {
         Setable<DObject, Set<DRule>> ors = setable(D_OBJECT_RULES);
         ors.set(dObject, Set::add, dclare(DObjectRule.class, dObject, name, //
-                set(DObjectRule::consumer, id(rule, dObject, name))));
+                set(DObjectRule::consumer, id(rule, dObject, name)), //
+                set(DObjectRule::initDirection, Direction.forward)));
     }
 
     public static <O extends DObject, V> void set(O dObject, SerializableFunction<O, V> property, V value) {
@@ -1079,7 +1081,7 @@ public final class DClare<U extends DUniverse> extends UniverseTransaction {
                                 }
                             } else if (Mutable.D_PARENT_CONTAINING.get(dObject) != null) {
                                 e0.getValue().forEachOrdered(e1 -> {
-                                    if (e1.getKey().id() instanceof DProperty) {
+                                    if (e1.getKey().id() instanceof DProperty && e1.getKey().getClass() == Observed.class) {
                                         DProperty<DStruct, Object> p = (DProperty) e1.getKey().id();
                                         ChangeHandler nch = p.nativeChangeHandler();
                                         if (nch != null) {
@@ -1309,11 +1311,16 @@ public final class DClare<U extends DUniverse> extends UniverseTransaction {
     @Override
     protected State post(State pre) {
         State post = super.post(pre);
-        if (checkFatals != null) {
-            post = trigger(post, universe(), checkFatals, Direction.backward);
+        if (isStopped(post)) {
+            return post;
+        } else {
+            if (checkFatals != null) {
+                post = trigger(post, universe(), checkFatals, Direction.forward);
+            }
+            post = trigger(post, universe(), printOutput, Direction.forward);
+            post = trigger(post, universe(), animate, Direction.forward);
+            return run(post);
         }
-        post = trigger(post, universe(), printOutput, Direction.backward);
-        return run(isStopped(post) ? post : trigger(post, universe(), animate, Direction.backward));
     }
 
     private static class KeyGetable extends Getable<DStruct, Object> {
