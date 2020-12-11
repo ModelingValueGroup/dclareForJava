@@ -25,6 +25,7 @@ import static org.modelingvalue.jdclare.DClare.set;
 import java.util.HashSet;
 import java.util.function.Function;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.modelingvalue.collections.Set;
 import org.modelingvalue.collections.util.NotMergeableException;
@@ -211,6 +212,7 @@ public class BirdTest {
     }
 
     @Test
+    @Disabled
     public void tooManyObserversException1() {
         try {
             DClare<BirdUniverse> dclare = of(BirdUniverse.class);
