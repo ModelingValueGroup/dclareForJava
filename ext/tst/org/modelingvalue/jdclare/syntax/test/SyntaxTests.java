@@ -15,8 +15,9 @@
 
 package org.modelingvalue.jdclare.syntax.test;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.modelingvalue.jdclare.DClare.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.modelingvalue.jdclare.DClare.of;
 
 import java.time.Clock;
 import java.time.Instant;
@@ -41,12 +42,19 @@ public class SyntaxTests {
     public void manySyntax() {
         State prev = null;
         for (int i = 0; i < MANY_TIMES; i++) {
+            System.err.printf("# manySyntax %3d ", i);
             State next = doit();
             next.run(() -> test(next));
-            if (prev != null && !prev.equals(next)) {
+            if (prev != null) {
                 String diff = prev.diffString(next);
-                assertEquals("", diff, "Diff: ");
+                if (prev.equals(next)) {
+                    System.err.print("states equal" + ("".equals(diff) ? "" : " BUT DIFF != \"\""));
+                } else {
+                    System.err.print("states differ");
+                    assertEquals("", diff, "Diff: ");
+                }
             }
+            System.err.println();
             prev = next;
         }
     }
