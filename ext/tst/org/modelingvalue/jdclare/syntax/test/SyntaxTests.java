@@ -25,6 +25,7 @@ import java.time.ZoneId;
 
 import org.junit.jupiter.api.Test;
 import org.modelingvalue.collections.List;
+import org.modelingvalue.dclare.Mutable;
 import org.modelingvalue.dclare.State;
 import org.modelingvalue.jdclare.DClare;
 import org.modelingvalue.jdclare.DUniverse;
@@ -46,7 +47,7 @@ public class SyntaxTests {
             State next = doit();
             next.run(() -> test(next));
             if (prev != null) {
-                String diff = prev.diffString(next, null, s -> "D_CHANGE_NR".equals(s.id()));
+                String diff = prev.diffString(next, o -> true, s -> Mutable.D_CHANGE_NR != s);
                 if (prev.equals(next)) {
                     System.err.print("states equal" + ("".equals(diff) ? "" : " BUT DIFF != \"\""));
                 } else {
