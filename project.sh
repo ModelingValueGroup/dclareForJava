@@ -18,8 +18,8 @@ artifacts=(
   "org.modelingvalue   dclareForJava           $version    jar jds"
 )
 dependencies=(
-  "org.modelingvalue   dclare                  1.4.0       jar jds-"
-  "org.modelingvalue   immutable-collections   1.4.0       jar jds-"
+  "org.modelingvalue   dclare                  1.5.0       jar jds-"
+  "org.modelingvalue   immutable-collections   1.5.0       jar jds-"
 
   "com.intellij        forms_rt                7.0.3       jar j---"
 
