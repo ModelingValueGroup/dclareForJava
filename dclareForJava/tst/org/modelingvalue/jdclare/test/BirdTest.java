@@ -25,6 +25,7 @@ import static org.modelingvalue.jdclare.DClare.set;
 import java.util.HashSet;
 import java.util.function.Function;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.modelingvalue.collections.Set;
@@ -206,8 +207,8 @@ public class BirdTest {
         DClare<BirdUniverse> dclare = of(BirdUniverse.class);
         start(dclare);
         addBird(dclare, Pigeon.class, Pair.of("0", "green"));
-        State result = stop(dclare);
-        Set<Bird> birds = result.getObjects(Bird.class).toSet();
+        State     result = stop(dclare);
+        Set<Bird> birds  = result.getObjects(Bird.class).toSet();
         assertEquals(1, birds.size(), "Unexpected Birds: " + birds);
     }
 
@@ -228,16 +229,17 @@ public class BirdTest {
 
     @Test
     public void tooManyObserversException2() {
-        try {
-            DClare<BirdUniverse> dclare = of(BirdUniverse.class);
-            start(dclare);
-            addBird(dclare, Sparrow.class, Pair.of("0", "black"));
-            stop(dclare);//.run(() -> dclare.universe().dDump(System.err));
-            fail();
-        } catch (Throwable t) {
-            Throwable cause = getCause(t);
-            assertThrowable(cause, TooManyObserversException.class, "Too many observers (xxxx) of 0.color", x -> ((TooManyObserversException) x).getSimpleMessage().replaceFirst("\\d\\d+", "xxxx"));
-        }
+        TooManyObserversException tmoe = Assertions.assertThrows(TooManyObserversException.class, () -> {
+            try {
+                DClare<BirdUniverse> dclare = of(BirdUniverse.class);
+                start(dclare);
+                addBird(dclare, Sparrow.class, Pair.of("0", "black"));
+                stop(dclare);//.run(() -> dclare.universe().dDump(System.err));
+            } catch (Throwable e) {
+                throw getCause(e);
+            }
+        });
+        assertEquals("Too many observers (xxxx) of 0.color", tmoe.getSimpleMessage().replaceFirst("\\d\\d+", "xxxx"));
     }
 
     @Test
