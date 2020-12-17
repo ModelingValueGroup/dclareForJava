@@ -41,7 +41,7 @@ public interface ANamed extends DNamed {
     @Property({validation, hidden})
     default DProblem noName() {
         //noinspection StringEquality
-        return name() == NO_NAME ? dclare(DProblem.class, this, "NO_NAME", DSeverity.fatal, "No Name") : null;
+        return name() == NO_NAME ? dclare(DProblem.class, this, "NO_NAME", DSeverity.error, "No Name") : null;
     }
 
 }

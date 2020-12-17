@@ -15,17 +15,29 @@
 
 package org.modelingvalue.jdclare.swing.examples.newton;
 
-import static org.modelingvalue.jdclare.DClare.*;
-import static org.modelingvalue.jdclare.PropertyQualifier.*;
+import static org.modelingvalue.jdclare.DClare.dclare;
+import static org.modelingvalue.jdclare.DClare.dclareUU;
+import static org.modelingvalue.jdclare.DClare.set;
+import static org.modelingvalue.jdclare.PropertyQualifier.constant;
 
-import java.awt.*;
-import java.awt.event.*;
-import java.util.function.*;
+import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.util.function.Consumer;
 
 import org.modelingvalue.collections.List;
-import org.modelingvalue.jdclare.*;
-import org.modelingvalue.jdclare.swing.*;
-import org.modelingvalue.jdclare.swing.draw2d.*;
+import org.modelingvalue.jdclare.DStruct1;
+import org.modelingvalue.jdclare.Property;
+import org.modelingvalue.jdclare.swing.DComponent;
+import org.modelingvalue.jdclare.swing.DToolbar;
+import org.modelingvalue.jdclare.swing.DToolbarItem;
+import org.modelingvalue.jdclare.swing.InputDeviceData;
+import org.modelingvalue.jdclare.swing.SplitPane;
+import org.modelingvalue.jdclare.swing.draw2d.ClickMode;
+import org.modelingvalue.jdclare.swing.draw2d.DCanvas;
+import org.modelingvalue.jdclare.swing.draw2d.DDimension;
+import org.modelingvalue.jdclare.swing.draw2d.DImage;
+import org.modelingvalue.jdclare.swing.draw2d.DShape;
+import org.modelingvalue.jdclare.swing.draw2d.SelectionMode;
 
 public interface BilliardPane extends SplitPane, DStruct1<BilliardUniverse> {
 
@@ -75,7 +87,6 @@ public interface BilliardPane extends SplitPane, DStruct1<BilliardUniverse> {
         return dclareUU(Table.class, set(DCanvas::color, new Color(100, 200, 200)), set(DCanvas::mode, selectionMode()));
     }
 
-    @Property(constant)
     default ClickMode ballMode() {
         return dclareUU(ClickMode.class, set(ClickMode::action, c -> {
             InputDeviceData di = c.deviceInput();
@@ -84,7 +95,6 @@ public interface BilliardPane extends SplitPane, DStruct1<BilliardUniverse> {
         }));
     }
 
-    @Property(constant)
     default SelectionMode selectionMode() {
         return dclareUU(SelectionMode.class, DCanvas.SELECTION_MODE);
     }
