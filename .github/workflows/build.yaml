@@ -82,26 +82,26 @@ jobs:
       - name: "publish action-artifact jar"
         uses: actions/upload-artifact@v1
         with:
-          name: dclareForJava.jar
-          path: out/artifacts/dclareForJava.jar
+          name: dclare-for-java.jar
+          path: out/artifacts/dclare-for-java.jar
 
       - name: "publish action-artifact sources"
         uses: actions/upload-artifact@v1
         with:
-          name: dclareForJava-sources.jar
-          path: out/artifacts/dclareForJava-sources.jar
+          name: dclare-for-java-sources.jar
+          path: out/artifacts/dclare-for-java-sources.jar
 
       - name: "publish action-artifact javadoc"
         uses: actions/upload-artifact@v1
         with:
-          name: dclareForJava-javadoc.jar
-          path: out/artifacts/dclareForJava-javadoc.jar
+          name: dclare-for-java-javadoc.jar
+          path: out/artifacts/dclare-for-java-javadoc.jar
 
       - name: "publish action-artifact test-results"
         uses: actions/upload-artifact@v1
         with:
-          name: dclareForJava-testresults.jar
-          path: out/artifacts/dclareForJava-testresults.jar
+          name: dclare-for-java-testresults.jar
+          path: out/artifacts/dclare-for-java-testresults.jar
 
       - name: "if NOT master: saving snapshots for other projects on this branch"
         if: github.ref != 'refs/heads/master'
@@ -113,5 +113,5 @@ jobs:
         uses: ModelingValueGroup/upload-maven-package-action@master
         if  : github.ref == 'refs/heads/master'
         with:
-          file : "out/artifacts/dclareForJava.jar"
+          file : "out/artifacts/dclare-for-java.jar"
 

@@ -13,19 +13,20 @@
 //     Arjan Kok, Carel Bast                                                                                           ~
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-package org.modelingvalue.jdclare.meta;
+package org.modelingvalue.jdclare;
 
-import org.modelingvalue.jdclare.*;
+import java.util.function.Function;
 
-import static org.modelingvalue.jdclare.PropertyQualifier.*;
+import org.modelingvalue.collections.List;
 
-public interface DPackage extends DNamed, DPackageContainer, DClassContainer, DStruct2<DPackageContainer, String> {
+@SuppressWarnings("unused")
+public interface DFunctionObject<O> extends DStruct1<Function<List<?>, O>> {
 
     @Property(key = 0)
-    DPackageContainer parent();
+    Function<List<?>, O> function();
 
-    @Override
-    @Property(value = visible, key = 1)
-    String name();
+    default O run(List<?> params) {
+        return function().apply(params);
+    }
 
 }

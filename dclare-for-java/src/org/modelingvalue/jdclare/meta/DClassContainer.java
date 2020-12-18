@@ -13,30 +13,17 @@
 //     Arjan Kok, Carel Bast                                                                                           ~
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-package org.modelingvalue.jdclare;
+package org.modelingvalue.jdclare.meta;
 
-import java.time.*;
+import static org.modelingvalue.jdclare.PropertyQualifier.containment;
 
-import static org.modelingvalue.jdclare.DClare.*;
+import org.modelingvalue.collections.Set;
+import org.modelingvalue.jdclare.DNamed;
+import org.modelingvalue.jdclare.Property;
 
-public interface DClock extends DObject, DStruct0 {
+public interface DClassContainer extends DNamed {
 
-    double BILLION = 1000000000.0;
-
-    @Property
-    @Default
-    default Instant time() {
-        return dClare().getClock().instant();
-    }
-
-    @Property
-    default Duration passTime() {
-        return Duration.between(pre(this, DClock::time), time());
-    }
-
-    @Property
-    default double passSeconds() {
-        return passTime().toNanos() / BILLION;
-    }
+    @Property(containment)
+    Set<DStructClass<?>> classes();
 
 }

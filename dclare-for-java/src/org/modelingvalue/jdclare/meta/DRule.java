@@ -15,15 +15,32 @@
 
 package org.modelingvalue.jdclare.meta;
 
-import static org.modelingvalue.jdclare.PropertyQualifier.*;
+import static org.modelingvalue.jdclare.PropertyQualifier.constant;
 
-import org.modelingvalue.collections.Set;
+import java.util.function.Consumer;
+
+import org.modelingvalue.dclare.Direction;
+import org.modelingvalue.dclare.Observer;
+import org.modelingvalue.jdclare.Abstract;
+import org.modelingvalue.jdclare.DNamed;
 import org.modelingvalue.jdclare.DObject;
 import org.modelingvalue.jdclare.Property;
 
-public interface DPackageContainer extends DObject {
+@Abstract
+public interface DRule<O extends DObject> extends DNamed {
 
-    @Property(containment)
-    Set<DPackage> packages();
+    @Property
+    Consumer<O> consumer();
+
+    @Property(constant)
+    Direction initDirection();
+
+    @Property(constant)
+    default Observer<O> observer() {
+        return Observer.of(this, o -> consumer().accept(o), initDirection());
+    }
+
+    @Property
+    boolean validation();
 
 }

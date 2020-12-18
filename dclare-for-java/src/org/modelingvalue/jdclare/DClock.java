@@ -15,10 +15,30 @@
 
 package org.modelingvalue.jdclare;
 
-import java.lang.annotation.*;
+import static org.modelingvalue.jdclare.DClare.dClare;
+import static org.modelingvalue.jdclare.DClare.pre;
 
-@Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.TYPE)
-public @interface Abstract {
+import java.time.Duration;
+import java.time.Instant;
+
+public interface DClock extends DObject, DStruct0 {
+
+    double BILLION = 1000000000.0;
+
+    @Property
+    @Default
+    default Instant time() {
+        return dClare().getClock().instant();
+    }
+
+    @Property
+    default Duration passTime() {
+        return Duration.between(pre(this, DClock::time), time());
+    }
+
+    @Property
+    default double passSeconds() {
+        return passTime().toNanos() / BILLION;
+    }
 
 }

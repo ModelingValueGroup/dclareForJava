@@ -8,7 +8,7 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module" module-name="dclareForJava" />
+    <orderEntry type="module" module-name="dclare-for-java" />
     <orderEntry type="library" name="gen: dclare" level="project" />
     <orderEntry type="library" name="gen: immutable-collections" level="project" />
     <orderEntry type="library" scope="TEST" name="gen: junit-jupiter-api" level="project" />

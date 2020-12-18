@@ -15,7 +15,8 @@
 
 package org.modelingvalue.jdclare.meta;
 
-import static org.modelingvalue.jdclare.PropertyQualifier.*;
+import static org.modelingvalue.jdclare.PropertyQualifier.constant;
+import static org.modelingvalue.jdclare.PropertyQualifier.containment;
 
 import java.lang.reflect.Method;
 import java.util.Comparator;

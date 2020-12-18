@@ -13,12 +13,45 @@
 //     Arjan Kok, Carel Bast                                                                                           ~
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-package org.modelingvalue.jdclare;
+package org.modelingvalue.jdclare.meta;
 
-import java.lang.annotation.*;
+import static org.modelingvalue.jdclare.PropertyQualifier.constant;
 
-@Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.METHOD)
-public @interface Deferred {
+import java.util.function.Consumer;
+
+import org.modelingvalue.dclare.Direction;
+import org.modelingvalue.dclare.NonInternableObserver;
+import org.modelingvalue.dclare.Observer;
+import org.modelingvalue.jdclare.DObject;
+import org.modelingvalue.jdclare.DStruct2;
+import org.modelingvalue.jdclare.Property;
+
+public interface DObjectRule<O extends DObject> extends DRule<O>, DStruct2<O, String> {
+
+    @Property(key = 0)
+    O object();
+
+    @Property(key = 1)
+    String id();
+
+    @Override
+    @Property(constant)
+    Consumer<O> consumer();
+
+    @Override
+    @Property(constant)
+    default String name() {
+        return object() + "::" + id();
+    }
+
+    @Override
+    @Property(constant)
+    Direction initDirection();
+
+    @Override
+    @Property(constant)
+    default Observer<O> observer() {
+        return NonInternableObserver.of(this, o -> consumer().accept(o), initDirection());
+    }
 
 }

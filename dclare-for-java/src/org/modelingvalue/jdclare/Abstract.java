@@ -15,18 +15,13 @@
 
 package org.modelingvalue.jdclare;
 
-import org.modelingvalue.collections.*;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-import java.util.function.*;
-
-@SuppressWarnings("unused")
-public interface DFunctionObject<O> extends DStruct1<Function<List<?>, O>> {
-
-    @Property(key = 0)
-    Function<List<?>, O> function();
-
-    default O run(List<?> params) {
-        return function().apply(params);
-    }
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.TYPE)
+public @interface Abstract {
 
 }

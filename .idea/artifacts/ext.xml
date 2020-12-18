@@ -3,7 +3,7 @@
     <output-path>$PROJECT_DIR$/out/artifacts</output-path>
     <root id="archive" name="ext.jar">
       <element id="module-output" name="ext" />
-      <element id="module-output" name="dclareForJava" />
+      <element id="module-output" name="dclare-for-java" />
       <element id="extracted-dir" path="$PROJECT_DIR$/lib/dclare.jar" path-in-jar="/" />
       <element id="extracted-dir" path="$PROJECT_DIR$/lib/immutable-collections.jar" path-in-jar="/" />
     </root>

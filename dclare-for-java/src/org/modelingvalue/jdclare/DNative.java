@@ -13,45 +13,43 @@
 //     Arjan Kok, Carel Bast                                                                                           ~
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-package org.modelingvalue.jdclare.meta;
+package org.modelingvalue.jdclare;
 
-import static org.modelingvalue.jdclare.PropertyQualifier.*;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 
-import java.util.function.Consumer;
+public interface DNative<T extends DObject> {
 
-import org.modelingvalue.dclare.Direction;
-import org.modelingvalue.dclare.NonInternableObserver;
-import org.modelingvalue.dclare.Observer;
-import org.modelingvalue.jdclare.DObject;
-import org.modelingvalue.jdclare.DStruct2;
-import org.modelingvalue.jdclare.Property;
-
-public interface DObjectRule<O extends DObject> extends DRule<O>, DStruct2<O, String> {
-
-    @Property(key = 0)
-    O object();
-
-    @Property(key = 1)
-    String id();
-
-    @Override
-    @Property(constant)
-    Consumer<O> consumer();
-
-    @Override
-    @Property(constant)
-    default String name() {
-        return object() + "::" + id();
+    default void init(DObject parent) {
     }
 
-    @Override
-    @Property(constant)
-    Direction initDirection();
-
-    @Override
-    @Property(constant)
-    default Observer<O> observer() {
-        return NonInternableObserver.of(this, o -> consumer().accept(o), initDirection());
+    default void exit(DObject parent) {
     }
 
+    class ChangeHandler<O extends DObject, V> {
+
+        public static <D extends DObject, E> ChangeHandler<D, E> of(Method handler) {
+            return new ChangeHandler<>(handler);
+        }
+
+        private final Method  handler;
+        private final boolean deferred;
+
+        private ChangeHandler(Method handler) {
+            this.handler = handler;
+            this.deferred = handler.isAnnotationPresent(Deferred.class);
+        }
+
+        public boolean deferred() {
+            return deferred;
+        }
+
+        public void handle(DNative<O> nat, V pre, V post) {
+            try {
+                DClare.actualize(nat.getClass(), handler).invoke(nat, pre, post);
+            } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+                throw new Error(e);
+            }
+        }
+    }
 }

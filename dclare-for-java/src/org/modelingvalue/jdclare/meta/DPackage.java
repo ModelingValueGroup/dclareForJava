@@ -15,14 +15,19 @@
 
 package org.modelingvalue.jdclare.meta;
 
-import org.modelingvalue.collections.*;
-import org.modelingvalue.jdclare.*;
+import static org.modelingvalue.jdclare.PropertyQualifier.visible;
 
-import static org.modelingvalue.jdclare.PropertyQualifier.*;
+import org.modelingvalue.jdclare.DNamed;
+import org.modelingvalue.jdclare.DStruct2;
+import org.modelingvalue.jdclare.Property;
 
-public interface DClassContainer extends DNamed {
+public interface DPackage extends DNamed, DPackageContainer, DClassContainer, DStruct2<DPackageContainer, String> {
 
-    @Property(containment)
-    Set<DStructClass<?>> classes();
+    @Property(key = 0)
+    DPackageContainer parent();
+
+    @Override
+    @Property(value = visible, key = 1)
+    String name();
 
 }

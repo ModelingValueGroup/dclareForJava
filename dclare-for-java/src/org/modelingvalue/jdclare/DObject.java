@@ -15,7 +15,9 @@
 
 package org.modelingvalue.jdclare;
 
-import static org.modelingvalue.jdclare.PropertyQualifier.*;
+import static org.modelingvalue.jdclare.PropertyQualifier.constant;
+import static org.modelingvalue.jdclare.PropertyQualifier.containment;
+import static org.modelingvalue.jdclare.PropertyQualifier.hidden;
 
 import java.io.PrintStream;
 import java.io.PrintWriter;
