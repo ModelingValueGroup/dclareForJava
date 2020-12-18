@@ -1,5 +1,5 @@
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-// (C) Copyright 2018-2019 Modeling Value Group B.V. (http://modelingvalue.org)                                        ~
+// (C) Copyright 2018-2020 Modeling Value Group B.V. (http://modelingvalue.org)                                        ~
 //                                                                                                                     ~
 // Licensed under the GNU Lesser General Public License v3.0 (the 'License'). You may not use this file except in      ~
 // compliance with the License. You may obtain a copy of the License at: https://choosealicense.com/licenses/lgpl-3.0  ~
@@ -15,22 +15,21 @@
 
 package org.modelingvalue.jdclare.swing;
 
-import org.modelingvalue.jdclare.*;
-import org.modelingvalue.jdclare.swing.DTreeNode.*;
-import org.modelingvalue.jdclare.swing.PopupMenu.*;
-import org.modelingvalue.jdclare.swing.Tree.*;
+import static org.modelingvalue.jdclare.DClare.*;
+import static org.modelingvalue.jdclare.PropertyQualifier.*;
 
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.tree.*;
 
-import static org.modelingvalue.jdclare.DClare.*;
-import static org.modelingvalue.jdclare.PropertyQualifier.*;
+import org.modelingvalue.jdclare.*;
+import org.modelingvalue.jdclare.swing.DTreeNode.*;
+import org.modelingvalue.jdclare.swing.PopupMenu.*;
+import org.modelingvalue.jdclare.swing.Tree.*;
 
 @SuppressWarnings("rawtypes")
 @Native(TreeNative.class)
 public interface Tree extends DComponent {
-
     @Property({constant, containment})
     DTreeNode root();
 
@@ -38,7 +37,6 @@ public interface Tree extends DComponent {
     DTreeNode selected();
 
     class TreeNative extends DComponentNative<Tree, JTree> implements TreeSelectionListener, TreeExpansionListener {
-
         public TreeNative(Tree visible) {
             super(visible);
         }
@@ -80,6 +78,7 @@ public interface Tree extends DComponent {
             return (DefaultTreeModel) swing.getModel();
         }
 
+        @SuppressWarnings("unused")
         public void selected(DTreeNode pre, DTreeNode post) {
             swing.setSelectionPath(post != null ? ((DTreeNodeNative) dNative(post)).path() : null);
         }
@@ -102,7 +101,5 @@ public interface Tree extends DComponent {
             DTreeNode n = ((DTreeNodeNative<?>) e.getPath().getLastPathComponent()).visible;
             set(n, DTreeNode::expanded, false);
         }
-
     }
-
 }

@@ -1,5 +1,5 @@
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-// (C) Copyright 2018-2019 Modeling Value Group B.V. (http://modelingvalue.org)                                        ~
+// (C) Copyright 2018-2020 Modeling Value Group B.V. (http://modelingvalue.org)                                        ~
 //                                                                                                                     ~
 // Licensed under the GNU Lesser General Public License v3.0 (the 'License'). You may not use this file except in      ~
 // compliance with the License. You may obtain a copy of the License at: https://choosealicense.com/licenses/lgpl-3.0  ~
@@ -17,21 +17,15 @@ package org.modelingvalue.jdclare.swing;
 
 import static org.modelingvalue.jdclare.DClare.*;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.*;
 
-import javax.swing.JMenu;
+import javax.swing.*;
 
-import org.modelingvalue.collections.List;
-import org.modelingvalue.jdclare.DNamed;
-import org.modelingvalue.jdclare.DObject;
-import org.modelingvalue.jdclare.DStruct2;
-import org.modelingvalue.jdclare.Native;
-import org.modelingvalue.jdclare.Property;
+import org.modelingvalue.collections.*;
+import org.modelingvalue.jdclare.*;
 
 @Native(DMenu.DMenuNative.class)
 public interface DMenu extends DComponent, DStruct2<DComponent, String>, DNamed, MenuItem {
-
     @Override
     @Property(key = 0)
     DComponent menu();
@@ -58,10 +52,10 @@ public interface DMenu extends DComponent, DStruct2<DComponent, String>, DNamed,
         public void actionPerformed(ActionEvent arg0) {
         }
 
+        @SuppressWarnings("unused")
         public void menuItems(List<MenuItem> pre, List<MenuItem> post) {
             swing.removeAll();
             post.forEachOrdered(i -> swing.add(((MenuItemNative) dNative(i)).swing));
         }
     }
-
 }

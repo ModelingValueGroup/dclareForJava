@@ -1,5 +1,5 @@
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-// (C) Copyright 2018-2019 Modeling Value Group B.V. (http://modelingvalue.org)                                        ~
+// (C) Copyright 2018-2020 Modeling Value Group B.V. (http://modelingvalue.org)                                        ~
 //                                                                                                                     ~
 // Licensed under the GNU Lesser General Public License v3.0 (the 'License'). You may not use this file except in      ~
 // compliance with the License. You may obtain a copy of the License at: https://choosealicense.com/licenses/lgpl-3.0  ~
@@ -15,22 +15,19 @@
 
 package org.modelingvalue.jdclare.swing.draw2d;
 
-import static org.modelingvalue.jdclare.DClare.pre;
-import static org.modelingvalue.jdclare.DClare.set;
-import static org.modelingvalue.jdclare.PropertyQualifier.optional;
+import static org.modelingvalue.jdclare.DClare.*;
+import static org.modelingvalue.jdclare.PropertyQualifier.*;
 
-import java.awt.Color;
-import java.awt.event.KeyEvent;
+import java.awt.*;
+import java.awt.event.*;
 
-import org.modelingvalue.jdclare.Native;
-import org.modelingvalue.jdclare.Property;
-import org.modelingvalue.jdclare.swing.DComponent.DComponentNative;
-import org.modelingvalue.jdclare.swing.InputDeviceData;
-import org.modelingvalue.jdclare.swing.draw2d.DFilled.FilledNative;
+import org.modelingvalue.jdclare.*;
+import org.modelingvalue.jdclare.swing.DComponent.*;
+import org.modelingvalue.jdclare.swing.*;
+import org.modelingvalue.jdclare.swing.draw2d.DFilled.*;
 
 @Native(FilledNative.class)
 public interface DFilled extends DShape {
-
     @Property
     default Color color() {
         return selected() ? Color.yellow : Color.white;
@@ -70,6 +67,7 @@ public interface DFilled extends DShape {
         }
     }
 
+    @SuppressWarnings("unused")
     abstract class FilledNative<S extends DFilled> extends ShapeNative<S> {
 
         public FilledNative(S visible) {
@@ -83,7 +81,5 @@ public interface DFilled extends DShape {
         public void text(String pre, String post) {
             ancestor(DComponentNative.class).swing().repaint();
         }
-
     }
-
 }

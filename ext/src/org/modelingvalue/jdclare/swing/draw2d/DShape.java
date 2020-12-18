@@ -1,5 +1,5 @@
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-// (C) Copyright 2018-2019 Modeling Value Group B.V. (http://modelingvalue.org)                                        ~
+// (C) Copyright 2018-2020 Modeling Value Group B.V. (http://modelingvalue.org)                                        ~
 //                                                                                                                     ~
 // Licensed under the GNU Lesser General Public License v3.0 (the 'License'). You may not use this file except in      ~
 // compliance with the License. You may obtain a copy of the License at: https://choosealicense.com/licenses/lgpl-3.0  ~
@@ -15,19 +15,18 @@
 
 package org.modelingvalue.jdclare.swing.draw2d;
 
+import static org.modelingvalue.jdclare.DClare.*;
+
+import java.awt.*;
+import java.awt.event.*;
+
 import org.modelingvalue.jdclare.*;
 import org.modelingvalue.jdclare.swing.DComponent.*;
 import org.modelingvalue.jdclare.swing.*;
 import org.modelingvalue.jdclare.swing.draw2d.DShape.*;
 
-import java.awt.*;
-import java.awt.event.*;
-
-import static org.modelingvalue.jdclare.DClare.*;
-
 @Native(ShapeNative.class)
 public interface DShape extends DVisible {
-
     default DCanvas canvas() {
         return dAncestor(DCanvas.class);
     }
@@ -75,8 +74,8 @@ public interface DShape extends DVisible {
         return DPoint.NULL;
     }
 
+    @SuppressWarnings("unused")
     abstract class ShapeNative<S extends DShape> extends VisibleNative<S> {
-
         public ShapeNative(S visible) {
             super(visible);
         }
@@ -90,7 +89,5 @@ public interface DShape extends DVisible {
         public void lineColor(Color pre, Color post) {
             ancestor(DComponentNative.class).swing().repaint();
         }
-
     }
-
 }

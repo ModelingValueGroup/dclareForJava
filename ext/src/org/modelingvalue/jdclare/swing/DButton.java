@@ -1,5 +1,5 @@
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-// (C) Copyright 2018-2019 Modeling Value Group B.V. (http://modelingvalue.org)                                        ~
+// (C) Copyright 2018-2020 Modeling Value Group B.V. (http://modelingvalue.org)                                        ~
 //                                                                                                                     ~
 // Licensed under the GNU Lesser General Public License v3.0 (the 'License'). You may not use this file except in      ~
 // compliance with the License. You may obtain a copy of the License at: https://choosealicense.com/licenses/lgpl-3.0  ~
@@ -15,22 +15,22 @@
 
 package org.modelingvalue.jdclare.swing;
 
-import org.modelingvalue.jdclare.*;
-import org.modelingvalue.jdclare.swing.DButton.*;
-import org.modelingvalue.jdclare.swing.draw2d.*;
+import static org.modelingvalue.jdclare.DClare.*;
+import static org.modelingvalue.jdclare.PropertyQualifier.*;
 
-import javax.swing.*;
-import javax.swing.border.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.function.*;
 
-import static org.modelingvalue.jdclare.DClare.*;
-import static org.modelingvalue.jdclare.PropertyQualifier.*;
+import javax.swing.*;
+import javax.swing.border.*;
+
+import org.modelingvalue.jdclare.*;
+import org.modelingvalue.jdclare.swing.DButton.*;
+import org.modelingvalue.jdclare.swing.draw2d.*;
 
 @Native(ButtonNative.class)
 public interface DButton extends DComponent {
-
     @Property
     String text();
 
@@ -43,8 +43,8 @@ public interface DButton extends DComponent {
     @Property
     Consumer<ActionEvent> action();
 
+    @SuppressWarnings("unused")
     class ButtonNative extends DComponentNative<DButton, JButton> {
-
         public ButtonNative(DButton visible) {
             super(visible);
         }

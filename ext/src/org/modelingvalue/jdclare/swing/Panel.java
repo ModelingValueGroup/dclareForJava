@@ -1,5 +1,5 @@
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-// (C) Copyright 2018-2019 Modeling Value Group B.V. (http://modelingvalue.org)                                        ~
+// (C) Copyright 2018-2020 Modeling Value Group B.V. (http://modelingvalue.org)                                        ~
 //                                                                                                                     ~
 // Licensed under the GNU Lesser General Public License v3.0 (the 'License'). You may not use this file except in      ~
 // compliance with the License. You may obtain a copy of the License at: https://choosealicense.com/licenses/lgpl-3.0  ~
@@ -17,21 +17,17 @@ package org.modelingvalue.jdclare.swing;
 
 import static org.modelingvalue.jdclare.PropertyQualifier.*;
 
-import java.awt.LayoutManager;
+import java.awt.*;
 
-import javax.swing.JPanel;
+import javax.swing.*;
 
-import org.modelingvalue.collections.Map;
-import org.modelingvalue.collections.Set;
-import org.modelingvalue.jdclare.DObject;
-import org.modelingvalue.jdclare.Native;
-import org.modelingvalue.jdclare.Property;
-import org.modelingvalue.jdclare.swing.Panel.PanelNative;
+import org.modelingvalue.collections.*;
+import org.modelingvalue.jdclare.*;
+import org.modelingvalue.jdclare.swing.Panel.*;
 
 @SuppressWarnings("unused")
 @Native(PanelNative.class)
 public interface Panel extends DComponent {
-
     @Property
     Map<DComponent, Object> content();
 
@@ -44,7 +40,6 @@ public interface Panel extends DComponent {
     }
 
     class PanelNative extends DComponentNative<Panel, JPanel> {
-
         public PanelNative(Panel visible) {
             super(visible);
         }
@@ -66,7 +61,5 @@ public interface Panel extends DComponent {
             swing.invalidate();
             swing.repaint();
         }
-
     }
-
 }

@@ -1,5 +1,5 @@
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-// (C) Copyright 2018-2019 Modeling Value Group B.V. (http://modelingvalue.org)                                        ~
+// (C) Copyright 2018-2020 Modeling Value Group B.V. (http://modelingvalue.org)                                        ~
 //                                                                                                                     ~
 // Licensed under the GNU Lesser General Public License v3.0 (the 'License'). You may not use this file except in      ~
 // compliance with the License. You may obtain a copy of the License at: https://choosealicense.com/licenses/lgpl-3.0  ~
@@ -15,21 +15,20 @@
 
 package org.modelingvalue.jdclare.swing;
 
-import org.modelingvalue.jdclare.*;
-import org.modelingvalue.jdclare.swing.SplitPane.*;
+import static org.modelingvalue.jdclare.PropertyQualifier.*;
 
 import javax.swing.*;
 
-import static org.modelingvalue.jdclare.PropertyQualifier.*;
+import org.modelingvalue.jdclare.*;
+import org.modelingvalue.jdclare.swing.SplitPane.*;
 
 @Native(SplitPaneNative.class)
 public interface SplitPane extends DComponent {
-
     @Property({containment, optional})
     DComponent leftComponent();
 
     @Property({containment, optional})
-    DComponent rigthComponent();
+    DComponent rightComponent();
 
     @Property(constant)
     boolean vertical();
@@ -45,7 +44,6 @@ public interface SplitPane extends DComponent {
     }
 
     class SplitPaneNative extends DComponentNative<SplitPane, JSplitPane> {
-
         public SplitPaneNative(SplitPane visible) {
             super(visible);
         }
@@ -59,6 +57,7 @@ public interface SplitPane extends DComponent {
             super.init(parent);
         }
 
+        @SuppressWarnings("unused")
         public void leftComponent(DComponent pre, DComponent post) {
             DComponent vp = visible.leftComponent();
             swing.setLeftComponent(vp != null ? swing(vp) : null);
@@ -66,13 +65,12 @@ public interface SplitPane extends DComponent {
             swing.repaint();
         }
 
-        public void rigthComponent(DComponent pre, DComponent post) {
-            DComponent vp = visible.rigthComponent();
+        @SuppressWarnings("unused")
+        public void rightComponent(DComponent pre, DComponent post) {
+            DComponent vp = visible.rightComponent();
             swing.setRightComponent(vp != null ? swing(vp) : null);
             swing.invalidate();
             swing.repaint();
         }
-
     }
-
 }

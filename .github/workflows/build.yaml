@@ -1,12 +1,13 @@
-name: build and test
+name: build
 
-on: [push]
+on: [push, workflow_dispatch]
 
 jobs:
-  build-and-test:
-
+  build:
     runs-on: ubuntu-20.04
-
+    env:
+      GITHUB_TOKEN: "${{secrets.GITHUB_TOKEN}}"
+      ALLREP_TOKEN: "${{secrets.ALLREP_TOKEN}}"
     steps:
       - name: "checkout"
         uses: actions/checkout@v1
@@ -22,15 +23,13 @@ jobs:
       - name: "get generic mvg-info"
         uses: ModelingValueGroup/generic-info@master
 
-      - name: "get buildTools"
-        uses: ModelingValueGroup/buildTools@master
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+      - name: "get buildtools"
+        uses: ModelingValueGroup/buildtools@master
 
       - name: "if master: fail if there is already a tag for this version"
         if: github.ref == 'refs/heads/master'
         run:  |
-          . <(java -jar ~/buildTools.jar)
+          . <(java -jar ~/buildtools.jar)
           errorIfVersionTagExists
 
       - name: "prepare ant"
@@ -42,20 +41,21 @@ jobs:
 
       - name: "(re)generate some files"
         run:  |
-          . <(java -jar ~/buildTools.jar)
+          . <(java -jar ~/buildtools.jar)
           generateAll
           correctEols
           correctHeaders header
 
       - name: "push changes back to github"
         run:  |
-          . <(java -jar ~/buildTools.jar)
-          pushBackToGithub "${{ secrets.GITHUB_TOKEN }}" "automation@modelingvalue.com" "adjusted files [by github actions]"
+          . <(java -jar ~/buildtools.jar)
+          pushBackToGithub
 
       - name: "download dependencies (as mentioned in pom)"
         run:  |
-          . <(java -jar ~/buildTools.jar)
-          getAllDependencies "${{ secrets.GITHUB_TOKEN }}" "${{ secrets.SCALEWAY_ACCESS_KEY }}" "${{ secrets.SCALEWAY_SECRET_KEY }}"
+          . <(java -jar ~/buildtools.jar)
+          getAllDependencies
+          installJunitlauncher
 
       - name: "build"
         run:  ant
@@ -76,8 +76,8 @@ jobs:
       - name: "if master: tag with version"
         if: github.ref == 'refs/heads/master'
         run:  |
-          . <(java -jar ~/buildTools.jar)
-          setVersionTag "${{ secrets.GITHUB_TOKEN }}" "automation@modelingvalue.com"
+          . <(java -jar ~/buildtools.jar)
+          setVersionTag
 
       - name: "publish action-artifact jar"
         uses: actions/upload-artifact@v1
@@ -103,21 +103,15 @@ jobs:
           name: dclareForJava-testresults.jar
           path: out/artifacts/dclareForJava-testresults.jar
 
-      - name: "publish jars on S3"
-        uses: ModelingValueGroup/sync-s3-action@master
-        with:
-          token          : "${{ secrets.GITHUB_TOKEN }}"
-          access_key     : "${{ secrets.SCALEWAY_ACCESS_KEY }}"
-          secret_key     : "${{ secrets.SCALEWAY_SECRET_KEY }}"
-          trigger_token  : "${{ secrets.RETRIGGER_TOKEN }}"
-          bucket         : "mvg-artifacts"
-          cmd            : "put"
-          local_dir      : "out/artifacts"
-          s3_dir_branched: "/"
+      - name: "if NOT master: saving snapshots for other projects on this branch"
+        if: github.ref != 'refs/heads/master'
+        run: |
+          . <(java -jar ~/buildtools.jar)
+          storeMyBranchSnapshots
 
       - name: "if master: publish maven-artifacts (jar/pom/sources/javadoc)"
         uses: ModelingValueGroup/upload-maven-package-action@master
         if  : github.ref == 'refs/heads/master'
         with:
           file : "out/artifacts/dclareForJava.jar"
-          token: "${{ secrets.GITHUB_TOKEN }}"
+

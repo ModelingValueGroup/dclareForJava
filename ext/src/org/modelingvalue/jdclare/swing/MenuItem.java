@@ -1,5 +1,5 @@
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-// (C) Copyright 2018-2019 Modeling Value Group B.V. (http://modelingvalue.org)                                        ~
+// (C) Copyright 2018-2020 Modeling Value Group B.V. (http://modelingvalue.org)                                        ~
 //                                                                                                                     ~
 // Licensed under the GNU Lesser General Public License v3.0 (the 'License'). You may not use this file except in      ~
 // compliance with the License. You may obtain a copy of the License at: https://choosealicense.com/licenses/lgpl-3.0  ~
@@ -15,16 +15,16 @@
 
 package org.modelingvalue.jdclare.swing;
 
-import org.modelingvalue.jdclare.*;
-import org.modelingvalue.jdclare.swing.MenuItem.*;
-
-import javax.swing.*;
 import java.awt.event.*;
 import java.util.function.*;
 
+import javax.swing.*;
+
+import org.modelingvalue.jdclare.*;
+import org.modelingvalue.jdclare.swing.MenuItem.*;
+
 @Native(MenuItemNative.class)
 public interface MenuItem extends DStruct3<DComponent, String, Consumer<ActionEvent>>, DComponent, DNamed {
-
     @Property(key = 0)
     DComponent menu();
 
@@ -36,7 +36,6 @@ public interface MenuItem extends DStruct3<DComponent, String, Consumer<ActionEv
     Consumer<ActionEvent> action();
 
     class MenuItemNative extends DComponentNative<MenuItem, JMenuItem> implements ActionListener {
-
         public MenuItemNative(MenuItem visible) {
             super(visible);
         }
@@ -61,6 +60,5 @@ public interface MenuItem extends DStruct3<DComponent, String, Consumer<ActionEv
                 action.accept(e);
             }
         }
-
     }
 }

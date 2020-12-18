@@ -1,5 +1,5 @@
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-// (C) Copyright 2018-2019 Modeling Value Group B.V. (http://modelingvalue.org)                                        ~
+// (C) Copyright 2018-2020 Modeling Value Group B.V. (http://modelingvalue.org)                                        ~
 //                                                                                                                     ~
 // Licensed under the GNU Lesser General Public License v3.0 (the 'License'). You may not use this file except in      ~
 // compliance with the License. You may obtain a copy of the License at: https://choosealicense.com/licenses/lgpl-3.0  ~
@@ -15,14 +15,13 @@
 
 package org.modelingvalue.jdclare.swing.draw2d;
 
+import java.awt.*;
+
 import org.modelingvalue.jdclare.*;
 import org.modelingvalue.jdclare.swing.DComponent.*;
 
-import java.awt.*;
-
 @Native(DTriangle.TriangleNative.class)
 public interface DTriangle extends DFilled {
-
     @Default
     @Property
     default int radius() {
@@ -40,7 +39,6 @@ public interface DTriangle extends DFilled {
     }
 
     class TriangleNative extends FilledNative<DTriangle> {
-
         public TriangleNative(DTriangle visible) {
             super(visible);
         }
@@ -58,9 +56,9 @@ public interface DTriangle extends DFilled {
 
         }
 
+        @SuppressWarnings("unused")
         public void radius(int pre, int post) {
             ancestor(DComponentNative.class).swing().repaint();
         }
-
     }
 }

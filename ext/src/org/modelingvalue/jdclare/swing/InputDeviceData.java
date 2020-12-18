@@ -1,5 +1,5 @@
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-// (C) Copyright 2018-2019 Modeling Value Group B.V. (http://modelingvalue.org)                                        ~
+// (C) Copyright 2018-2020 Modeling Value Group B.V. (http://modelingvalue.org)                                        ~
 //                                                                                                                     ~
 // Licensed under the GNU Lesser General Public License v3.0 (the 'License'). You may not use this file except in      ~
 // compliance with the License. You may obtain a copy of the License at: https://choosealicense.com/licenses/lgpl-3.0  ~
@@ -15,14 +15,14 @@
 
 package org.modelingvalue.jdclare.swing;
 
+import java.awt.event.*;
+
 import org.modelingvalue.collections.*;
 import org.modelingvalue.jdclare.*;
 import org.modelingvalue.jdclare.swing.draw2d.*;
 
-import java.awt.event.*;
-
+@SuppressWarnings("unused")
 public interface InputDeviceData extends DObject, DStruct1<DComponent> {
-
     @Default
     @Property
     default DPoint mousePosition() {
@@ -44,5 +44,4 @@ public interface InputDeviceData extends DObject, DStruct1<DComponent> {
 
     @Property
     Set<Integer> pressedKeys();
-
 }

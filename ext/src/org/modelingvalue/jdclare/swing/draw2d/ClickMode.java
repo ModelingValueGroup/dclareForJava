@@ -1,5 +1,5 @@
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-// (C) Copyright 2018-2019 Modeling Value Group B.V. (http://modelingvalue.org)                                        ~
+// (C) Copyright 2018-2020 Modeling Value Group B.V. (http://modelingvalue.org)                                        ~
 //                                                                                                                     ~
 // Licensed under the GNU Lesser General Public License v3.0 (the 'License'). You may not use this file except in      ~
 // compliance with the License. You may obtain a copy of the License at: https://choosealicense.com/licenses/lgpl-3.0  ~
@@ -15,19 +15,19 @@
 
 package org.modelingvalue.jdclare.swing.draw2d;
 
-import org.modelingvalue.jdclare.*;
-import org.modelingvalue.jdclare.swing.*;
-
-import java.util.function.*;
-
 import static org.modelingvalue.jdclare.DClare.*;
 import static org.modelingvalue.jdclare.PropertyQualifier.*;
 
-public interface ClickMode extends CanvasMode {
+import java.util.function.*;
 
+import org.modelingvalue.jdclare.*;
+import org.modelingvalue.jdclare.swing.*;
+
+public interface ClickMode extends CanvasMode {
     @Property(constant)
     Consumer<DCanvas> action();
 
+    @SuppressWarnings("unused")
     @Rule
     default void mode() {
         DCanvas c = dAncestor(DCanvas.class);
@@ -37,5 +37,4 @@ public interface ClickMode extends CanvasMode {
             action().accept(c);
         }
     }
-
 }

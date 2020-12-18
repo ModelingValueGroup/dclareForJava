@@ -1,5 +1,5 @@
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-// (C) Copyright 2018-2019 Modeling Value Group B.V. (http://modelingvalue.org)                                        ~
+// (C) Copyright 2018-2020 Modeling Value Group B.V. (http://modelingvalue.org)                                        ~
 //                                                                                                                     ~
 // Licensed under the GNU Lesser General Public License v3.0 (the 'License'). You may not use this file except in      ~
 // compliance with the License. You may obtain a copy of the License at: https://choosealicense.com/licenses/lgpl-3.0  ~
@@ -15,23 +15,23 @@
 
 package org.modelingvalue.jdclare.swing;
 
+import static org.modelingvalue.jdclare.DClare.*;
+import static org.modelingvalue.jdclare.PropertyQualifier.*;
+
+import java.awt.*;
+import java.awt.event.*;
+
+import javax.swing.*;
+import javax.swing.text.*;
+import javax.swing.text.Highlighter.*;
+
 import org.modelingvalue.collections.List;
 import org.modelingvalue.jdclare.*;
 import org.modelingvalue.jdclare.swing.DTextPane.*;
 import org.modelingvalue.jdclare.swing.PopupMenu.*;
 
-import javax.swing.*;
-import javax.swing.text.*;
-import javax.swing.text.Highlighter.*;
-import java.awt.*;
-import java.awt.event.*;
-
-import static org.modelingvalue.jdclare.DClare.*;
-import static org.modelingvalue.jdclare.PropertyQualifier.*;
-
 @Native(TextPaneNative.class)
 public interface DTextPane<E extends TextElement> extends DTextComponent {
-
     @Property(containment)
     List<E> elements();
 
@@ -39,8 +39,8 @@ public interface DTextPane<E extends TextElement> extends DTextComponent {
         return elements().filter(e -> e.offset() <= position && position - e.offset() <= e.len()).findFirst().orElse(null);
     }
 
+    @SuppressWarnings("unused")
     class TextPaneNative<E extends TextElement> extends TextComponentNative<DTextPane<E>, JTextPane> {
-
         private final KeyAdapter keyAdapter;
 
         public TextPaneNative(DTextPane<E> visible) {
@@ -119,7 +119,5 @@ public interface DTextPane<E extends TextElement> extends DTextComponent {
                 }
             });
         }
-
     }
-
 }

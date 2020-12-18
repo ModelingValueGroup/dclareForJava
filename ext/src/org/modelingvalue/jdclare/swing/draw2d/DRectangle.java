@@ -1,5 +1,5 @@
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-// (C) Copyright 2018-2019 Modeling Value Group B.V. (http://modelingvalue.org)                                        ~
+// (C) Copyright 2018-2020 Modeling Value Group B.V. (http://modelingvalue.org)                                        ~
 //                                                                                                                     ~
 // Licensed under the GNU Lesser General Public License v3.0 (the 'License'). You may not use this file except in      ~
 // compliance with the License. You may obtain a copy of the License at: https://choosealicense.com/licenses/lgpl-3.0  ~
@@ -15,17 +15,16 @@
 
 package org.modelingvalue.jdclare.swing.draw2d;
 
+import static org.modelingvalue.jdclare.DClare.*;
+
+import java.awt.*;
+
 import org.modelingvalue.jdclare.*;
 import org.modelingvalue.jdclare.swing.DComponent.*;
 import org.modelingvalue.jdclare.swing.draw2d.DRectangle.*;
 
-import java.awt.*;
-
-import static org.modelingvalue.jdclare.DClare.*;
-
 @Native(RectangleNative.class)
 public interface DRectangle extends DFilled {
-
     @Default
     @Property
     default DDimension size() {
@@ -45,7 +44,6 @@ public interface DRectangle extends DFilled {
     }
 
     class RectangleNative extends FilledNative<DRectangle> {
-
         public RectangleNative(DRectangle visible) {
             super(visible);
         }
@@ -60,10 +58,9 @@ public interface DRectangle extends DFilled {
             D2D.drawRect(g, (int) pt.x(), (int) pt.y(), (int) sz.width(), (int) sz.height(), fc, lc, str);
         }
 
+        @SuppressWarnings("unused")
         public void size(DDimension pre, DDimension post) {
             ancestor(DComponentNative.class).swing().repaint();
         }
-
     }
-
 }

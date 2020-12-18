@@ -1,5 +1,5 @@
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-// (C) Copyright 2018-2019 Modeling Value Group B.V. (http://modelingvalue.org)                                        ~
+// (C) Copyright 2018-2020 Modeling Value Group B.V. (http://modelingvalue.org)                                        ~
 //                                                                                                                     ~
 // Licensed under the GNU Lesser General Public License v3.0 (the 'License'). You may not use this file except in      ~
 // compliance with the License. You may obtain a copy of the License at: https://choosealicense.com/licenses/lgpl-3.0  ~
@@ -15,11 +15,17 @@
 
 package org.modelingvalue.jdclare.test;
 
-import org.modelingvalue.collections.*;
-import org.modelingvalue.jdclare.*;
+import static org.modelingvalue.jdclare.DClare.dclare;
+import static org.modelingvalue.jdclare.DClare.set;
+import static org.modelingvalue.jdclare.PropertyQualifier.containment;
 
-import static org.modelingvalue.jdclare.DClare.*;
-import static org.modelingvalue.jdclare.PropertyQualifier.*;
+import org.modelingvalue.collections.Set;
+import org.modelingvalue.jdclare.Abstract;
+import org.modelingvalue.jdclare.DNamed;
+import org.modelingvalue.jdclare.DStruct1;
+import org.modelingvalue.jdclare.DUniverse;
+import org.modelingvalue.jdclare.Property;
+import org.modelingvalue.jdclare.Rule;
 
 public interface PrioUniverse extends DUniverse {
 
@@ -35,56 +41,40 @@ public interface PrioUniverse extends DUniverse {
         @Property(key = 0)
         String name();
 
-        @Default
         @Property
         default String x() {
-            return "X";
+            return y();
         }
 
-        @Default
         @Property
         default String y() {
-            return "Y";
+            return x();
         }
     }
 
     interface PrioX extends Prio {
 
-        @Override
-        default String y() {
-            return x();
+        @Rule
+        default void setY() {
+            set(this, Prio::y, "X");
         }
 
-        @Rule
-        default void setX() {
-            set(this, Prio::x, y());
-        }
     }
 
     interface PrioY extends Prio {
 
-        @Override
-        default String x() {
-            return y();
-        }
-
         @Rule
         default void setY() {
-            set(this, Prio::y, x());
+            set(this, Prio::x, "Y");
         }
 
     }
 
     interface PrioZ extends Prio {
 
-        @Override
-        default String y() {
-            return x();
-        }
-
         @Rule
-        default void setX2Z() {
-            set(this, Prio::x, "Z");
+        default void setY() {
+            set(this, Prio::y, "Z");
         }
 
     }

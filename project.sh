@@ -1,5 +1,5 @@
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-## (C) Copyright 2018-2019 Modeling Value Group B.V. (http://modelingvalue.org)                                        ~
+## (C) Copyright 2018-2020 Modeling Value Group B.V. (http://modelingvalue.org)                                        ~
 ##                                                                                                                     ~
 ## Licensed under the GNU Lesser General Public License v3.0 (the 'License'). You may not use this file except in      ~
 ## compliance with the License. You may obtain a copy of the License at: https://choosealicense.com/licenses/lgpl-3.0  ~
@@ -13,13 +13,15 @@
 ##     Arjan Kok, Carel Bast                                                                                           ~
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-version="1.4.0"
+version="1.5.0"
 artifacts=(
   "org.modelingvalue   dclareForJava           $version    jar jds"
 )
 dependencies=(
-  "org.modelingvalue   dclare                  1.4.0       jar jds-"
-  "org.modelingvalue   immutable-collections   1.4.0       jar jds-"
+  "org.modelingvalue   dclare                  1.5.0       jar jds-"
+  "org.modelingvalue   immutable-collections   1.5.0       jar jds-"
+
+  "com.intellij        forms_rt                7.0.3       jar j---"
 
   "org.junit.jupiter   junit-jupiter-api       5.6.2       jar jdst"
   "org.junit.jupiter   junit-jupiter-engine    5.6.2       jar jdst"

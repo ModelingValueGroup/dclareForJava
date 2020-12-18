@@ -1,5 +1,5 @@
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-// (C) Copyright 2018-2019 Modeling Value Group B.V. (http://modelingvalue.org)                                        ~
+// (C) Copyright 2018-2020 Modeling Value Group B.V. (http://modelingvalue.org)                                        ~
 //                                                                                                                     ~
 // Licensed under the GNU Lesser General Public License v3.0 (the 'License'). You may not use this file except in      ~
 // compliance with the License. You may obtain a copy of the License at: https://choosealicense.com/licenses/lgpl-3.0  ~
@@ -15,23 +15,23 @@
 
 package org.modelingvalue.jdclare.swing;
 
+import static org.modelingvalue.jdclare.DClare.*;
+import static org.modelingvalue.jdclare.PropertyQualifier.*;
+
+import java.awt.*;
+import java.awt.event.*;
+
+import javax.swing.*;
+import javax.swing.event.*;
+import javax.swing.table.*;
+
 import org.modelingvalue.collections.List;
 import org.modelingvalue.collections.*;
 import org.modelingvalue.jdclare.*;
 import org.modelingvalue.jdclare.swing.Table.*;
 
-import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.table.*;
-import java.awt.*;
-import java.awt.event.*;
-
-import static org.modelingvalue.jdclare.DClare.*;
-import static org.modelingvalue.jdclare.PropertyQualifier.*;
-
 @Native(TableNative.class)
 public interface Table<R, C, V> extends DComponent {
-
     @Property(containment)
     default List<Row<R, C, V>> rows() {
         List<R> rowObjects = rowObjects();
@@ -83,8 +83,8 @@ public interface Table<R, C, V> extends DComponent {
         return dclare(Cell.class, this, row, column);
     }
 
+    @SuppressWarnings("unused")
     class TableNative<R, C, V> extends DComponentNative<Table<R, C, V>, JTable> implements ListSelectionListener {
-
         private ListSelectionModel selectionModel;
 
         public TableNative(Table<R, C, V> visible) {
@@ -99,8 +99,8 @@ public interface Table<R, C, V> extends DComponent {
                 @SuppressWarnings({"rawtypes", "unchecked"})
                 @Override
                 public TableCellEditor getCellEditor(int row, int column) {
-                    R r = visible.rows().get(row).object();
-                    C c = visible.columns().get(column).object();
+                    R       r     = visible.rows().get(row).object();
+                    C       c     = visible.columns().get(column).object();
                     List<V> scope = visible.scope(r, c);
                     if (scope != null) {
                         return new DefaultCellEditor(new JComboBox(scope.toArray()));
@@ -111,10 +111,10 @@ public interface Table<R, C, V> extends DComponent {
 
                 @Override
                 public String getToolTipText(MouseEvent e) {
-                    Point p = e.getPoint();
-                    int rowIndex = rowAtPoint(p);
-                    int colIndex = columnAtPoint(p);
-                    Object val = model.getValueAt(rowIndex, colIndex);
+                    Point  p        = e.getPoint();
+                    int    rowIndex = rowAtPoint(p);
+                    int    colIndex = columnAtPoint(p);
+                    Object val      = model.getValueAt(rowIndex, colIndex);
                     return val != null ? val.toString() : null;
                 }
             };
@@ -132,8 +132,8 @@ public interface Table<R, C, V> extends DComponent {
         @Override
         public void valueChanged(ListSelectionEvent e) {
             if (!e.getValueIsAdjusting()) {
-                int selected = selectionModel.getLeadSelectionIndex();
-                Object value = selected >= 0 ? visible.rows().get(selected) : null;
+                int    selected = selectionModel.getLeadSelectionIndex();
+                Object value    = selected >= 0 ? visible.rows().get(selected) : null;
                 set(Table::selectedRow, value);
             }
         }
@@ -153,7 +153,7 @@ public interface Table<R, C, V> extends DComponent {
                 int total = swing.getWidth();
                 if (total > 0) {
                     TableColumnModel cModel = swing.getColumnModel();
-                    int i = 0;
+                    int              i      = 0;
                     for (Column<R, C, V> c : visible.columns()) {
                         int width = total * visible.preferredWidth(c.object()) / 100;
                         cModel.getColumn(i++).setPreferredWidth(width);
@@ -204,7 +204,5 @@ public interface Table<R, C, V> extends DComponent {
             }
 
         }
-
     }
-
 }

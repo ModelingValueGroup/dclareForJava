@@ -16,6 +16,7 @@
     <pathelement location="${ext.output.dir}"/>
     <path refid="library.gen:_dclare.classpath"/>
     <path refid="library.gen:_immutable-collections.classpath"/>
+    <path refid="library.gen:_forms_rt.classpath"/>
   </path>
   <path id="examples.runtime.production.module.classpath">
     <pathelement location="${examples.output.dir}"/>
@@ -23,6 +24,7 @@
     <path refid="ext.runtime.production.module.classpath"/>
     <path refid="library.gen:_dclare.classpath"/>
     <path refid="library.gen:_immutable-collections.classpath"/>
+    <path refid="library.gen:_forms_rt.classpath"/>
   </path>
   <path id="examples.module.classpath">
     <path refid="${module.jdk.classpath.examples}"/>
@@ -33,6 +35,7 @@
     <pathelement location="${ext.output.dir}"/>
     <path refid="library.gen:_dclare.classpath"/>
     <path refid="library.gen:_immutable-collections.classpath"/>
+    <path refid="library.gen:_forms_rt.classpath"/>
   </path>
   <path id="examples.runtime.module.classpath">
     <pathelement location="${examples.testoutput.dir}"/>
@@ -41,6 +44,7 @@
     <path refid="ext.runtime.module.classpath"/>
     <path refid="library.gen:_dclare.classpath"/>
     <path refid="library.gen:_immutable-collections.classpath"/>
+    <path refid="library.gen:_forms_rt.classpath"/>
   </path>
   <patternset id="excluded.from.module.examples">
     <patternset refid="ignored.files"/>

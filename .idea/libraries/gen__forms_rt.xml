@@ -1,0 +1,13 @@
+<!--==============================================================-->
+<!-- WARNING: this file will be overwritten by the build scripts! -->
+<!--          change  project.sh  instead                         -->
+<!--==============================================================-->
+<component name="libraryTable">
+  <library name="gen: forms_rt">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/forms_rt.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

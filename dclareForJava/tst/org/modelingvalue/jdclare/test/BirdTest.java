@@ -1,5 +1,5 @@
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-// (C) Copyright 2018-2019 Modeling Value Group B.V. (http://modelingvalue.org)                                        ~
+// (C) Copyright 2018-2020 Modeling Value Group B.V. (http://modelingvalue.org)                                        ~
 //                                                                                                                     ~
 // Licensed under the GNU Lesser General Public License v3.0 (the 'License'). You may not use this file except in      ~
 // compliance with the License. You may obtain a copy of the License at: https://choosealicense.com/licenses/lgpl-3.0  ~
@@ -15,12 +15,18 @@
 
 package org.modelingvalue.jdclare.test;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.modelingvalue.jdclare.DClare.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+import static org.modelingvalue.jdclare.DClare.dclare;
+import static org.modelingvalue.jdclare.DClare.of;
+import static org.modelingvalue.jdclare.DClare.set;
 
 import java.util.HashSet;
 import java.util.function.Function;
 
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.modelingvalue.collections.Set;
 import org.modelingvalue.collections.util.NotMergeableException;
@@ -207,6 +213,7 @@ public class BirdTest {
     }
 
     @Test
+    @Disabled
     public void tooManyObserversException1() {
         try {
             DClare<BirdUniverse> dclare = of(BirdUniverse.class);
@@ -222,16 +229,17 @@ public class BirdTest {
 
     @Test
     public void tooManyObserversException2() {
-        try {
-            DClare<BirdUniverse> dclare = of(BirdUniverse.class);
-            start(dclare);
-            addBird(dclare, Sparrow.class, Pair.of("0", "black"));
-            stop(dclare);//.run(() -> dclare.universe().dDump(System.err));
-            fail();
-        } catch (Throwable t) {
-            Throwable cause = getCause(t);
-            assertThrowable(cause, TooManyObserversException.class, "Too many observers (xxxx) of 0.color", x -> ((TooManyObserversException) x).getSimpleMessage().replaceFirst("\\d\\d+", "xxxx"));
-        }
+        TooManyObserversException tmoe = Assertions.assertThrows(TooManyObserversException.class, () -> {
+            try {
+                DClare<BirdUniverse> dclare = of(BirdUniverse.class);
+                start(dclare);
+                addBird(dclare, Sparrow.class, Pair.of("0", "black"));
+                stop(dclare);//.run(() -> dclare.universe().dDump(System.err));
+            } catch (Throwable e) {
+                throw getCause(e);
+            }
+        });
+        assertEquals("Too many observers (xxxx) of 0.color", tmoe.getSimpleMessage().replaceFirst("\\d\\d+", "xxxx"));
     }
 
     @Test
@@ -353,7 +361,7 @@ public class BirdTest {
     }
 
     @Test
-    public void constantNotSetAndNotDerivedError() {
+    public void nonDeterministicException0() {
         try {
             DClare<BirdUniverse> dclare = of(BirdUniverse.class);
             start(dclare);
@@ -362,7 +370,7 @@ public class BirdTest {
             fail();
         } catch (Throwable t) {
             Throwable cause = getCause(t);
-            assertThrowable(cause, Error.class, "Constant headColor is not set and not derived");
+            assertThrowable(cause, NonDeterministicException.class, java.util.regex.Pattern.quote("Constant is not consistent 0.feetColor=orange!=black"));
         }
     }
 

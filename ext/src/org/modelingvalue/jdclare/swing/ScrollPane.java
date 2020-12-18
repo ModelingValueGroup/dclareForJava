@@ -1,5 +1,5 @@
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-// (C) Copyright 2018-2019 Modeling Value Group B.V. (http://modelingvalue.org)                                        ~
+// (C) Copyright 2018-2020 Modeling Value Group B.V. (http://modelingvalue.org)                                        ~
 //                                                                                                                     ~
 // Licensed under the GNU Lesser General Public License v3.0 (the 'License'). You may not use this file except in      ~
 // compliance with the License. You may obtain a copy of the License at: https://choosealicense.com/licenses/lgpl-3.0  ~
@@ -15,12 +15,12 @@
 
 package org.modelingvalue.jdclare.swing;
 
-import org.modelingvalue.jdclare.*;
-import org.modelingvalue.jdclare.swing.ScrollPane.*;
+import static org.modelingvalue.jdclare.PropertyQualifier.*;
 
 import javax.swing.*;
 
-import static org.modelingvalue.jdclare.PropertyQualifier.*;
+import org.modelingvalue.jdclare.*;
+import org.modelingvalue.jdclare.swing.ScrollPane.*;
 
 @Native(ScrollPaneNative.class)
 public interface ScrollPane extends DComponent {
@@ -45,6 +45,7 @@ public interface ScrollPane extends DComponent {
             super.exit(parent);
         }
 
+        @SuppressWarnings("unused")
         public void viewportView(DComponent pre, DComponent post) {
             DComponent vp = visible.viewportView();
             swing.setViewportView(vp != null ? swing(vp) : null);

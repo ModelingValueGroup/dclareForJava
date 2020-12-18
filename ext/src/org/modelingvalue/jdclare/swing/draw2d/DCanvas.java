@@ -1,5 +1,5 @@
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-// (C) Copyright 2018-2019 Modeling Value Group B.V. (http://modelingvalue.org)                                        ~
+// (C) Copyright 2018-2020 Modeling Value Group B.V. (http://modelingvalue.org)                                        ~
 //                                                                                                                     ~
 // Licensed under the GNU Lesser General Public License v3.0 (the 'License'). You may not use this file except in      ~
 // compliance with the License. You may obtain a copy of the License at: https://choosealicense.com/licenses/lgpl-3.0  ~
@@ -18,28 +18,20 @@ package org.modelingvalue.jdclare.swing.draw2d;
 import static org.modelingvalue.jdclare.DClare.*;
 import static org.modelingvalue.jdclare.PropertyQualifier.*;
 
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.RenderingHints;
-import java.util.UUID;
+import java.awt.*;
+import java.util.*;
 
-import javax.swing.JPanel;
+import javax.swing.*;
 
 import org.modelingvalue.collections.List;
 import org.modelingvalue.collections.Set;
-import org.modelingvalue.jdclare.DObject;
-import org.modelingvalue.jdclare.Default;
-import org.modelingvalue.jdclare.Native;
-import org.modelingvalue.jdclare.Property;
-import org.modelingvalue.jdclare.swing.DComponent;
-import org.modelingvalue.jdclare.swing.draw2d.DCanvas.DCanvasNative;
-import org.modelingvalue.jdclare.swing.draw2d.DShape.ShapeNative;
+import org.modelingvalue.jdclare.*;
+import org.modelingvalue.jdclare.swing.*;
+import org.modelingvalue.jdclare.swing.draw2d.DCanvas.*;
+import org.modelingvalue.jdclare.swing.draw2d.DShape.*;
 
 @Native(DCanvasNative.class)
 public interface DCanvas extends DComponent {
-
     UUID SELECTION_MODE = UUID.randomUUID();
 
     @Default
@@ -59,8 +51,8 @@ public interface DCanvas extends DComponent {
     @Property(containment)
     List<DShape> shapes();
 
+    @SuppressWarnings("unused")
     class DCanvasNative extends DComponentNative<DCanvas, JPanel> {
-
         public DCanvasNative(DCanvas visible) {
             super(visible);
         }
@@ -91,7 +83,5 @@ public interface DCanvas extends DComponent {
         public void shapes(List<DShape> pre, List<DShape> post) {
             swing.repaint();
         }
-
     }
-
 }

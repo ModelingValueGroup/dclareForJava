@@ -1,5 +1,5 @@
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-// (C) Copyright 2018-2019 Modeling Value Group B.V. (http://modelingvalue.org)                                        ~
+// (C) Copyright 2018-2020 Modeling Value Group B.V. (http://modelingvalue.org)                                        ~
 //                                                                                                                     ~
 // Licensed under the GNU Lesser General Public License v3.0 (the 'License'). You may not use this file except in      ~
 // compliance with the License. You may obtain a copy of the License at: https://choosealicense.com/licenses/lgpl-3.0  ~
@@ -15,17 +15,29 @@
 
 package org.modelingvalue.jdclare.swing.examples.newton;
 
+import static org.modelingvalue.jdclare.DClare.dclare;
+import static org.modelingvalue.jdclare.DClare.dclareUU;
+import static org.modelingvalue.jdclare.DClare.set;
+import static org.modelingvalue.jdclare.PropertyQualifier.constant;
+
+import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.util.function.Consumer;
+
 import org.modelingvalue.collections.List;
-import org.modelingvalue.jdclare.*;
-import org.modelingvalue.jdclare.swing.*;
-import org.modelingvalue.jdclare.swing.draw2d.*;
-
-import java.awt.*;
-import java.awt.event.*;
-import java.util.function.*;
-
-import static org.modelingvalue.jdclare.DClare.*;
-import static org.modelingvalue.jdclare.PropertyQualifier.*;
+import org.modelingvalue.jdclare.DStruct1;
+import org.modelingvalue.jdclare.Property;
+import org.modelingvalue.jdclare.swing.DComponent;
+import org.modelingvalue.jdclare.swing.DToolbar;
+import org.modelingvalue.jdclare.swing.DToolbarItem;
+import org.modelingvalue.jdclare.swing.InputDeviceData;
+import org.modelingvalue.jdclare.swing.SplitPane;
+import org.modelingvalue.jdclare.swing.draw2d.ClickMode;
+import org.modelingvalue.jdclare.swing.draw2d.DCanvas;
+import org.modelingvalue.jdclare.swing.draw2d.DDimension;
+import org.modelingvalue.jdclare.swing.draw2d.DImage;
+import org.modelingvalue.jdclare.swing.draw2d.DShape;
+import org.modelingvalue.jdclare.swing.draw2d.SelectionMode;
 
 public interface BilliardPane extends SplitPane, DStruct1<BilliardUniverse> {
 
@@ -75,7 +87,6 @@ public interface BilliardPane extends SplitPane, DStruct1<BilliardUniverse> {
         return dclareUU(Table.class, set(DCanvas::color, new Color(100, 200, 200)), set(DCanvas::mode, selectionMode()));
     }
 
-    @Property(constant)
     default ClickMode ballMode() {
         return dclareUU(ClickMode.class, set(ClickMode::action, c -> {
             InputDeviceData di = c.deviceInput();
@@ -84,14 +95,13 @@ public interface BilliardPane extends SplitPane, DStruct1<BilliardUniverse> {
         }));
     }
 
-    @Property(constant)
     default SelectionMode selectionMode() {
         return dclareUU(SelectionMode.class, DCanvas.SELECTION_MODE);
     }
 
     @Override
     @Property(constant)
-    default DComponent rigthComponent() {
+    default DComponent rightComponent() {
         return dclareUU(DToolbar.class, //
                 set(DToolbar::preferredSize, dclare(DDimension.class, 40.0, 100.0)), //
                 set(DToolbar::minimumSize, dclare(DDimension.class, 50.0, 100.0)), //

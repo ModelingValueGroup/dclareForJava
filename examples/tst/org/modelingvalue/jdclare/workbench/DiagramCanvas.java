@@ -1,5 +1,5 @@
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-// (C) Copyright 2018-2019 Modeling Value Group B.V. (http://modelingvalue.org)                                        ~
+// (C) Copyright 2018-2020 Modeling Value Group B.V. (http://modelingvalue.org)                                        ~
 //                                                                                                                     ~
 // Licensed under the GNU Lesser General Public License v3.0 (the 'License'). You may not use this file except in      ~
 // compliance with the License. You may obtain a copy of the License at: https://choosealicense.com/licenses/lgpl-3.0  ~
@@ -15,16 +15,27 @@
 
 package org.modelingvalue.jdclare.workbench;
 
+import static org.modelingvalue.jdclare.DClare.dclare;
+import static org.modelingvalue.jdclare.PropertyQualifier.constant;
+import static org.modelingvalue.jdclare.PropertyQualifier.containment;
+
+import java.awt.Color;
+
 import org.modelingvalue.collections.List;
-import org.modelingvalue.collections.*;
-import org.modelingvalue.jdclare.*;
-import org.modelingvalue.jdclare.meta.*;
-import org.modelingvalue.jdclare.swing.draw2d.*;
-
-import java.awt.*;
-
-import static org.modelingvalue.jdclare.DClare.*;
-import static org.modelingvalue.jdclare.PropertyQualifier.*;
+import org.modelingvalue.collections.QualifiedSet;
+import org.modelingvalue.collections.Set;
+import org.modelingvalue.jdclare.DObject;
+import org.modelingvalue.jdclare.DStruct1;
+import org.modelingvalue.jdclare.DStruct2;
+import org.modelingvalue.jdclare.DStruct3;
+import org.modelingvalue.jdclare.Property;
+import org.modelingvalue.jdclare.meta.DStructClass;
+import org.modelingvalue.jdclare.swing.draw2d.DCanvas;
+import org.modelingvalue.jdclare.swing.draw2d.DDimension;
+import org.modelingvalue.jdclare.swing.draw2d.DLine;
+import org.modelingvalue.jdclare.swing.draw2d.DPoint;
+import org.modelingvalue.jdclare.swing.draw2d.DRectangle;
+import org.modelingvalue.jdclare.swing.draw2d.DShape;
 
 public interface DiagramCanvas extends DStruct1<WBUniverse>, DCanvas {
 

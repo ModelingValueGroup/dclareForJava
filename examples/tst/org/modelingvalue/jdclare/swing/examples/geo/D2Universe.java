@@ -1,5 +1,5 @@
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-// (C) Copyright 2018-2019 Modeling Value Group B.V. (http://modelingvalue.org)                                        ~
+// (C) Copyright 2018-2020 Modeling Value Group B.V. (http://modelingvalue.org)                                        ~
 //                                                                                                                     ~
 // Licensed under the GNU Lesser General Public License v3.0 (the 'License'). You may not use this file except in      ~
 // compliance with the License. You may obtain a copy of the License at: https://choosealicense.com/licenses/lgpl-3.0  ~
@@ -13,28 +13,20 @@
 //     Arjan Kok, Carel Bast                                                                                           ~
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-package org.modelingvalue.jdclare.swing.examples;
+package org.modelingvalue.jdclare.swing.examples.geo;
 
 import static org.modelingvalue.jdclare.DClare.*;
 import static org.modelingvalue.jdclare.PropertyQualifier.*;
 
-import java.awt.BorderLayout;
-import java.awt.LayoutManager;
+import java.awt.*;
 
 import org.modelingvalue.collections.List;
-import org.modelingvalue.collections.Map;
-import org.modelingvalue.collections.Set;
-import org.modelingvalue.jdclare.DStruct1;
-import org.modelingvalue.jdclare.Default;
-import org.modelingvalue.jdclare.Property;
-import org.modelingvalue.jdclare.swing.DComponent;
-import org.modelingvalue.jdclare.swing.DMenu;
-import org.modelingvalue.jdclare.swing.DMenubar;
+import org.modelingvalue.collections.*;
+import org.modelingvalue.jdclare.*;
 import org.modelingvalue.jdclare.swing.Frame;
-import org.modelingvalue.jdclare.swing.GuiUniverse;
 import org.modelingvalue.jdclare.swing.Panel;
-import org.modelingvalue.jdclare.swing.draw2d.DDimension;
-import org.modelingvalue.jdclare.swing.draw2d.DPoint;
+import org.modelingvalue.jdclare.swing.*;
+import org.modelingvalue.jdclare.swing.draw2d.*;
 
 public interface D2Universe extends GuiUniverse {
 

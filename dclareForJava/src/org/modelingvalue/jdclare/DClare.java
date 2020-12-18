@@ -1,5 +1,5 @@
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-// (C) Copyright 2018-2019 Modeling Value Group B.V. (http://modelingvalue.org)                                        ~
+// (C) Copyright 2018-2020 Modeling Value Group B.V. (http://modelingvalue.org)                                        ~
 //                                                                                                                     ~
 // Licensed under the GNU Lesser General Public License v3.0 (the 'License'). You may not use this file except in      ~
 // compliance with the License. You may obtain a copy of the License at: https://choosealicense.com/licenses/lgpl-3.0  ~
@@ -413,11 +413,11 @@ public final class DClare<U extends DUniverse> extends UniverseTransaction {
         Method toMethod = method(to);
         state = state.set(fromMethod, OPPOSITE, toMethod);
         state = state.set(toMethod, OPPOSITE, fromMethod);
-        CLASS_INIT_STATE.set(state);
+        CLASS_INIT_STATE.setOnThread(state);
     }
 
     public static <O extends DObject, A, B> void SCOPE(SerializableFunction<O, A> property, SerializableFunction<O, Collection<B>> scope) {
-        CLASS_INIT_STATE.set(CLASS_INIT_STATE.get().set(method(property), SCOPE, method(scope)));
+        CLASS_INIT_STATE.setOnThread(CLASS_INIT_STATE.get().set(method(property), SCOPE, method(scope)));
     }
 
     public static <O extends DObject, V> void rule(O dObject, SerializableFunction<O, V> property, Function<O, V> value) {
@@ -432,7 +432,7 @@ public final class DClare<U extends DUniverse> extends UniverseTransaction {
         Setable<DObject, Set<DRule>> ors = setable(D_OBJECT_RULES);
         ors.set(dObject, Set::add, dclare(DObjectRule.class, dObject, name, //
                 set(DObjectRule::consumer, id(rule, dObject, name)), //
-                set(DObjectRule::initDirection, Direction.backward)));
+                set(DObjectRule::initDirection, Direction.forward)));
     }
 
     public static <O extends DObject, V> void set(O dObject, SerializableFunction<O, V> property, V value) {
@@ -540,11 +540,10 @@ public final class DClare<U extends DUniverse> extends UniverseTransaction {
     private State constraints(Class<? extends DStruct> cls) {
         for (Method method : cls.getDeclaredMethods()) {
             if (method.isAnnotationPresent(Constraints.class)) {
-                CLASS_INIT_STATE.set(emptyState());
-                run(dStruct(cls, CONSTRAINTS), method);
-                State state = CLASS_INIT_STATE.get();
-                CLASS_INIT_STATE.set(null);
-                return state;
+                return CLASS_INIT_STATE.get(emptyState(), () -> {
+                    run(dStruct(cls, CONSTRAINTS), method);
+                    return CLASS_INIT_STATE.get();
+                });
             }
         }
         return emptyState();
@@ -1082,7 +1081,7 @@ public final class DClare<U extends DUniverse> extends UniverseTransaction {
                                 }
                             } else if (Mutable.D_PARENT_CONTAINING.get(dObject) != null) {
                                 e0.getValue().forEachOrdered(e1 -> {
-                                    if (e1.getKey().id() instanceof DProperty) {
+                                    if (e1.getKey().id() instanceof DProperty && e1.getKey().getClass() == Observed.class) {
                                         DProperty<DStruct, Object> p = (DProperty) e1.getKey().id();
                                         ChangeHandler nch = p.nativeChangeHandler();
                                         if (nch != null) {
@@ -1312,11 +1311,16 @@ public final class DClare<U extends DUniverse> extends UniverseTransaction {
     @Override
     protected State post(State pre) {
         State post = super.post(pre);
-        if (checkFatals != null) {
-            post = trigger(post, universe(), checkFatals, Direction.backward);
+        if (isStopped(post)) {
+            return post;
+        } else {
+            if (checkFatals != null) {
+                post = trigger(post, universe(), checkFatals, Direction.forward);
+            }
+            post = trigger(post, universe(), printOutput, Direction.forward);
+            post = trigger(post, universe(), animate, Direction.forward);
+            return run(post);
         }
-        post = trigger(post, universe(), printOutput, Direction.backward);
-        return run(isStopped(post) ? post : trigger(post, universe(), animate, Direction.backward));
     }
 
     private static class KeyGetable extends Getable<DStruct, Object> {

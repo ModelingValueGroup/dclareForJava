@@ -1,5 +1,5 @@
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-// (C) Copyright 2018-2019 Modeling Value Group B.V. (http://modelingvalue.org)                                        ~
+// (C) Copyright 2018-2020 Modeling Value Group B.V. (http://modelingvalue.org)                                        ~
 //                                                                                                                     ~
 // Licensed under the GNU Lesser General Public License v3.0 (the 'License'). You may not use this file except in      ~
 // compliance with the License. You may obtain a copy of the License at: https://choosealicense.com/licenses/lgpl-3.0  ~
@@ -18,27 +18,18 @@ package org.modelingvalue.jdclare.swing;
 import static org.modelingvalue.jdclare.DClare.*;
 import static org.modelingvalue.jdclare.PropertyQualifier.*;
 
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Graphics;
-import java.util.Enumeration;
-import java.util.Iterator;
+import java.awt.*;
+import java.util.*;
 
-import javax.swing.Icon;
-import javax.swing.JTree;
-import javax.swing.tree.DefaultTreeCellRenderer;
-import javax.swing.tree.TreeNode;
-import javax.swing.tree.TreePath;
+import javax.swing.*;
+import javax.swing.tree.*;
 
 import org.modelingvalue.collections.Collection;
 import org.modelingvalue.collections.List;
-import org.modelingvalue.jdclare.DObject;
-import org.modelingvalue.jdclare.DStruct2;
-import org.modelingvalue.jdclare.Native;
-import org.modelingvalue.jdclare.Property;
-import org.modelingvalue.jdclare.swing.DTreeNode.DTreeNodeNative;
-import org.modelingvalue.jdclare.swing.Tree.TreeNative;
-import org.modelingvalue.jdclare.swing.draw2d.D2D;
+import org.modelingvalue.jdclare.*;
+import org.modelingvalue.jdclare.swing.DTreeNode.*;
+import org.modelingvalue.jdclare.swing.Tree.*;
+import org.modelingvalue.jdclare.swing.draw2d.*;
 
 @SuppressWarnings("rawtypes")
 @Native(DTreeNodeNative.class)
@@ -51,6 +42,7 @@ public interface DTreeNode<T> extends DVisible, DStruct2<DTreeNode, T> {
     @Property(key = 1)
     T object();
 
+    @SuppressWarnings("InfiniteRecursion")
     @Property
     default boolean wasExpanded() {
         return wasExpanded() || expanded();
@@ -82,8 +74,8 @@ public interface DTreeNode<T> extends DVisible, DStruct2<DTreeNode, T> {
     @Property({containment, optional})
     PopupMenu popupMenu();
 
+    @SuppressWarnings("unused")
     class DTreeNodeNative<T> extends VisibleNative<DTreeNode<T>> implements TreeNode {
-
         public DTreeNodeNative(DTreeNode<T> visible) {
             super(visible);
         }
@@ -169,11 +161,9 @@ public interface DTreeNode<T> extends DVisible, DStruct2<DTreeNode, T> {
             DTreeNode parent = visible.parent();
             return parent != null ? ((DTreeNodeNative) dNative(parent)).path().pathByAddingChild(this) : new TreePath(this);
         }
-
     }
 
     class DTreeCellRenderer extends DefaultTreeCellRenderer {
-
         private static final long serialVersionUID = -6152427263542859472L;
 
         @Override
@@ -187,7 +177,6 @@ public interface DTreeNode<T> extends DVisible, DStruct2<DTreeNode, T> {
     }
 
     class BoxIcon implements Icon {
-
         private static final Color NICE_BLUE = new Color(100, 100, 250);
 
         @Override
@@ -204,6 +193,5 @@ public interface DTreeNode<T> extends DVisible, DStruct2<DTreeNode, T> {
         public int getIconHeight() {
             return 9;
         }
-
     }
 }
