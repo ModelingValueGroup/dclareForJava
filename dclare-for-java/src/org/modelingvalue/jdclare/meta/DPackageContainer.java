@@ -13,42 +13,17 @@
 //     Arjan Kok, Carel Bast                                                                                           ~
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-package org.modelingvalue.jdclare;
+package org.modelingvalue.jdclare.meta;
 
-import java.lang.reflect.*;
+import static org.modelingvalue.jdclare.PropertyQualifier.containment;
 
-public interface DNative<T extends DObject> {
+import org.modelingvalue.collections.Set;
+import org.modelingvalue.jdclare.DObject;
+import org.modelingvalue.jdclare.Property;
 
-    default void init(DObject parent) {
-    }
+public interface DPackageContainer extends DObject {
 
-    default void exit(DObject parent) {
-    }
+    @Property(containment)
+    Set<DPackage> packages();
 
-    class ChangeHandler<O extends DObject, V> {
-
-        public static <D extends DObject, E> ChangeHandler<D, E> of(Method handler) {
-            return new ChangeHandler<>(handler);
-        }
-
-        private final Method  handler;
-        private final boolean deferred;
-
-        private ChangeHandler(Method handler) {
-            this.handler = handler;
-            this.deferred = handler.isAnnotationPresent(Deferred.class);
-        }
-
-        public boolean deferred() {
-            return deferred;
-        }
-
-        public void handle(DNative<O> nat, V pre, V post) {
-            try {
-                DClare.actualize(nat.getClass(), handler).invoke(nat, pre, post);
-            } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-                throw new Error(e);
-            }
-        }
-    }
 }

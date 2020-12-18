@@ -13,34 +13,14 @@
 //     Arjan Kok, Carel Bast                                                                                           ~
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-package org.modelingvalue.jdclare.meta;
+package org.modelingvalue.jdclare;
 
-import static org.modelingvalue.jdclare.PropertyQualifier.*;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-import java.util.function.Consumer;
-
-import org.modelingvalue.dclare.Direction;
-import org.modelingvalue.dclare.Observer;
-import org.modelingvalue.jdclare.Abstract;
-import org.modelingvalue.jdclare.DNamed;
-import org.modelingvalue.jdclare.DObject;
-import org.modelingvalue.jdclare.Property;
-
-@Abstract
-public interface DRule<O extends DObject> extends DNamed {
-
-    @Property
-    Consumer<O> consumer();
-
-    @Property(constant)
-    Direction initDirection();
-
-    @Property(constant)
-    default Observer<O> observer() {
-        return Observer.of(this, o -> consumer().accept(o), initDirection());
-    }
-
-    @Property
-    boolean validation();
-
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.METHOD)
+public @interface Constraints {
 }

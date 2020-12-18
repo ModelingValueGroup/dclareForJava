@@ -15,13 +15,15 @@
 
 package org.modelingvalue.jdclare.meta;
 
-import org.modelingvalue.collections.*;
-import org.modelingvalue.jdclare.DNative.*;
-import org.modelingvalue.jdclare.*;
+import static org.modelingvalue.jdclare.PropertyQualifier.constant;
 
-import java.util.function.*;
+import java.util.function.Function;
 
-import static org.modelingvalue.jdclare.PropertyQualifier.*;
+import org.modelingvalue.collections.Set;
+import org.modelingvalue.jdclare.DNative.ChangeHandler;
+import org.modelingvalue.jdclare.DObject;
+import org.modelingvalue.jdclare.DStruct1;
+import org.modelingvalue.jdclare.Property;
 
 public interface DOppositeProperty<O extends DObject, E extends DObject> extends DProperty<O, Set<E>>, DStruct1<DProperty<E, ?>> {
 

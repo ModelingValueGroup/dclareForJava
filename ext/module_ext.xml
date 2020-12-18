@@ -12,21 +12,21 @@
   </path>
   <path id="ext.module.production.classpath">
     <path refid="${module.jdk.classpath.ext}"/>
-    <pathelement location="${dclareforjava.output.dir}"/>
+    <pathelement location="${dclare-for-java.output.dir}"/>
     <path refid="library.gen:_dclare.classpath"/>
     <path refid="library.gen:_immutable-collections.classpath"/>
   </path>
   <path id="ext.runtime.production.module.classpath">
     <pathelement location="${ext.output.dir}"/>
-    <path refid="dclareforjava.runtime.production.module.classpath"/>
+    <path refid="dclare-for-java.runtime.production.module.classpath"/>
     <path refid="library.gen:_dclare.classpath"/>
     <path refid="library.gen:_immutable-collections.classpath"/>
   </path>
   <path id="ext.module.classpath">
     <path refid="${module.jdk.classpath.ext}"/>
     <pathelement location="${ext.output.dir}"/>
-    <pathelement location="${dclareforjava.testoutput.dir}"/>
-    <pathelement location="${dclareforjava.output.dir}"/>
+    <pathelement location="${dclare-for-java.testoutput.dir}"/>
+    <pathelement location="${dclare-for-java.output.dir}"/>
     <path refid="library.gen:_dclare.classpath"/>
     <path refid="library.gen:_immutable-collections.classpath"/>
     <path refid="library.gen:_junit-jupiter-api.classpath"/>
@@ -40,7 +40,7 @@
   <path id="ext.runtime.module.classpath">
     <pathelement location="${ext.testoutput.dir}"/>
     <pathelement location="${ext.output.dir}"/>
-    <path refid="dclareforjava.runtime.module.classpath"/>
+    <path refid="dclare-for-java.runtime.module.classpath"/>
     <path refid="library.gen:_dclare.classpath"/>
     <path refid="library.gen:_immutable-collections.classpath"/>
     <path refid="library.gen:_junit-jupiter-api.classpath"/>
@@ -68,7 +68,7 @@
     </dirset>
   </path>
   <target name="compile.module.ext" depends="compile.module.ext.production,compile.module.ext.tests" description="Compile module ext"/>
-  <target name="compile.module.ext.production" depends="compile.module.dclareforjava" description="Compile module ext; production classes">
+  <target name="compile.module.ext.production" depends="compile.module.dclare-for-java" description="Compile module ext; production classes">
     <mkdir dir="${ext.output.dir}"/>
     <javac includeantruntime="false" destdir="${ext.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.ext}/javac">
       <compilerarg line="${compiler.args.ext}"/>
