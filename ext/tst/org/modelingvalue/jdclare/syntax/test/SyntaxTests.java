@@ -43,19 +43,18 @@ public class SyntaxTests {
     public void manySyntax() {
         State prev = null;
         for (int i = 0; i < MANY_TIMES; i++) {
-            System.err.printf("# manySyntax %3d ", i);
+            // System.err.printf("# manySyntax %3d ", i);
             State next = doit();
             next.run(() -> test(next));
             if (prev != null) {
                 String diff = prev.diffString(next, o -> true, s -> Mutable.D_CHANGE_NR != s);
                 if (prev.equals(next)) {
-                    System.err.print("states equal" + ("".equals(diff) ? "" : " BUT DIFF != \"\""));
+                    //System.err.print("states equal" + ("".equals(diff) ? "" : " BUT DIFF != \"\""));
                 } else {
-                    System.err.print("states differ");
+                    //System.err.print("states differ");
                     assertEquals("", diff, "Diff: ");
                 }
             }
-            System.err.println();
             prev = next;
         }
     }

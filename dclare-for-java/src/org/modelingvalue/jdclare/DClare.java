@@ -74,6 +74,7 @@ import org.modelingvalue.dclare.LeafTransaction;
 import org.modelingvalue.dclare.Mutable;
 import org.modelingvalue.dclare.Observed;
 import org.modelingvalue.dclare.Setable;
+import org.modelingvalue.dclare.SetableModifier;
 import org.modelingvalue.dclare.State;
 import org.modelingvalue.dclare.Transaction;
 import org.modelingvalue.dclare.Universe;
@@ -173,17 +174,24 @@ public final class DClare<U extends DUniverse> extends UniverseTransaction {
                                                                                                      });
 
     private static final Constant<DProperty, Getable>                             GETABLE            = Constant.of("dGetable", p -> {
-                                                                                                         Object d = p.key() ? null : p.defaultValue();
-                                                                                                         boolean cc = p.checkConsistency();
-                                                                                                         boolean man = p.mandatory() && (d == null || d instanceof ContainingCollection);
+                                                                                                         Object def = p.key() ? null : p.defaultValue();
+                                                                                                         SetableModifier[] mods = new SetableModifier[0];
+                                                                                                         if (!p.checkConsistency()) {
+                                                                                                             mods = Setable.addModifier(mods, SetableModifier.doNotCheckConsistency);
+                                                                                                         }
+                                                                                                         if (p.mandatory() && (def == null || def instanceof ContainingCollection)) {
+                                                                                                             mods = Setable.addModifier(mods, SetableModifier.mandatory);
+                                                                                                         }
+                                                                                                         if (p.containment()) {
+                                                                                                             mods = Setable.addModifier(mods, SetableModifier.containment);
+                                                                                                         }
                                                                                                          Function der = p.derived() ? p.deriver() : null;
                                                                                                          DProperty oppos = p.opposite();
                                                                                                          DProperty scope = p.scopeProperty();
                                                                                                          Supplier<Setable<?, ?>> os = oppos != null ? () -> DClare.setable(oppos) : null;
                                                                                                          Supplier<Setable<DObject, Set<?>>> ss = scope != null ? () -> DClare.setable(scope) : null;
                                                                                                          return p.key() ? new KeyGetable(p, p.keyNr(), null) : p.constant() ?                                                                                           //
-                                                                                                         (p.containment() ? Constant.of(p, d, true, der, cc) : Constant.of(p, d, os, ss, der, cc)) :                                                                    //
-                                                                                                         (p.containment() ? Observed.of(p, man, d, true, cc) : Observed.of(p, man, d, os, ss, cc));
+                                                                                                         Constant.of(p, def, os, ss, der, mods) : Observed.of(p, def, os, ss, mods);
                                                                                                      });
 
     public static final Constant<Method, DMethodRule>                             RULE               = Constant.of("dRule", (Method m) -> {
@@ -1233,35 +1241,18 @@ public final class DClare<U extends DUniverse> extends UniverseTransaction {
         return getable;
     }
 
-    private static Constant cyclicConstant(Method method) {
+    private static Constant cyclicConstant(Method method, SetableModifier... modifiers) {
         DProperty property = dclare(extend(method, DMethodProperty.class), method);
         PROPERTY.force(method, property);
-        Constant setable = Constant.of(property, defaultValue(method, false), deriver(method));
+        Constant setable = Constant.of(property, defaultValue(method, false), deriver(method), modifiers);
         GETABLE.force(property, setable);
         return setable;
     }
 
-    private static Constant cyclicContainmentConstant(Method method) {
+    private static Observed cyclicObserved(Method method, SetableModifier... modifiers) {
         DProperty property = dclare(extend(method, DMethodProperty.class), method);
         PROPERTY.force(method, property);
-        Constant setable = Constant.of(property, defaultValue(method, false), true, deriver(method), true);
-        GETABLE.force(property, setable);
-        return setable;
-    }
-
-    private static Observed cyclicObserved(Method method) {
-        DProperty property = dclare(extend(method, DMethodProperty.class), method);
-        PROPERTY.force(method, property);
-        Observed setable = Observed.of(property, defaultValue(method, false));
-        GETABLE.force(property, setable);
-        return setable;
-    }
-
-    private static Observed cyclicContainment(Method method) {
-        DProperty property = dclare(extend(method, DMethodProperty.class), method);
-        PROPERTY.force(method, property);
-        Object defaultValue = defaultValue(method, false);
-        Observed setable = Observed.of(property, defaultValue, true, true);
+        Observed setable = Observed.of(property, defaultValue(method, false), modifiers);
         GETABLE.force(property, setable);
         return setable;
     }
@@ -1278,7 +1269,7 @@ public final class DClare<U extends DUniverse> extends UniverseTransaction {
             cyclicConstant(DClare.<DMethodProperty, Object> method(DMethodProperty::many));
             cyclicConstant(DClare.<DMethodProperty, Object> method(DMethodProperty::mandatory));
             cyclicConstant(DClare.<DMethodProperty, Object> method(DMethodProperty::defaultValue));
-            cyclicContainmentConstant(DClare.<DMethodProperty, DProperty> method(DMethodProperty::implicitOpposite));
+            cyclicConstant(DClare.<DMethodProperty, DProperty> method(DMethodProperty::implicitOpposite), SetableModifier.containment);
             cyclicConstant(DClare.<DMethodProperty, Boolean> method(DMethodProperty::containment));
             cyclicConstant(DClare.<DMethodProperty, DProperty> method(DMethodProperty::opposite));
             cyclicConstant(DClare.<DMethodProperty, Boolean> method(DMethodProperty::checkConsistency));
@@ -1286,8 +1277,8 @@ public final class DClare<U extends DUniverse> extends UniverseTransaction {
             cyclicConstant(DClare.<DMethodProperty, Boolean> method(DMethodProperty::constant));
             cyclicConstant(DClare.<DMethodProperty, Boolean> method(DMethodProperty::derived));
             cyclicConstant(DClare.<DMethodProperty, Function> method(DMethodProperty::deriver));
-            cyclicContainment(DClare.<DPackageContainer, Set> method(DPackageContainer::packages));
-            cyclicContainment(DClare.<DClassContainer, Set> method(DClassContainer::classes));
+            cyclicObserved(DClare.<DPackageContainer, Set> method(DPackageContainer::packages), SetableModifier.containment);
+            cyclicObserved(DClare.<DClassContainer, Set> method(DClassContainer::classes), SetableModifier.containment);
             dClass(DMethodProperty.class);
             dClass(DStructClass.class);
             dClass(DClass.class);
