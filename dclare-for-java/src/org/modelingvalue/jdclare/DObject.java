@@ -114,16 +114,6 @@ public interface DObject extends DStruct, Mutable {
     }
 
     @Override
-    default boolean dIsIdentified() {
-        return Mutable.super.dIsIdentified();
-    }
-
-    @Override
-    default boolean dIsObsolete() {
-        return Mutable.super.dIsObsolete();
-    }
-
-    @Override
     default Mutable resolve(Mutable self) {
         return this;
     }
