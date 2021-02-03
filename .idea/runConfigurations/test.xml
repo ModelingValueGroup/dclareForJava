@@ -1,8 +1,0 @@
-<component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="test" type="AntRunConfiguration">
-    <antsettings antfile="file://$PROJECT_DIR$/build.xml" target="test" />
-    <method v="2">
-      <option name="Make" enabled="true" />
-    </method>
-  </configuration>
-</component>
