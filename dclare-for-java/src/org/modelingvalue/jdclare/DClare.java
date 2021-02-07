@@ -1295,22 +1295,21 @@ public final class DClare<U extends DUniverse> extends UniverseTransaction {
     }
 
     @Override
-    protected State pre(State pre) {
-        return stopSetable != null ? run(trigger(pre, universe(), setTime, Direction.forward)) : pre;
+    protected State pre(State state) {
+        return stopSetable != null ? run(trigger(state, universe(), setTime, Direction.scheduled)) : state;
     }
 
     @Override
-    protected State post(State pre) {
-        State post = super.post(pre);
-        if (isStopped(post)) {
-            return post;
+    protected State post(State state) {
+        if (isStopped(state)) {
+            return state;
         } else {
             if (checkFatals != null) {
-                post = trigger(post, universe(), checkFatals, Direction.forward);
+                state = trigger(state, universe(), checkFatals, Direction.scheduled);
             }
-            post = trigger(post, universe(), printOutput, Direction.forward);
-            post = trigger(post, universe(), animate, Direction.forward);
-            return run(post);
+            state = trigger(state, universe(), printOutput, Direction.scheduled);
+            state = trigger(state, universe(), animate, Direction.scheduled);
+            return run(state);
         }
     }
 
