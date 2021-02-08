@@ -1288,29 +1288,16 @@ public final class DClare<U extends DUniverse> extends UniverseTransaction {
             dClass(DObject.class);
             dClass(DNamed.class);
             stopSetable = cyclicObserved(DClare.method(DUniverse::stop));
+            addPreAction(setTime);
+            if (checkFatals != null) {
+                addPostAction(checkFatals);
+            }
+            addPostAction(printOutput);
+            addPostAction(animate);
         });
         addTimeTravelingAction(bootstrap);
         put(bootstrap);
         super.init();
-    }
-
-    @Override
-    protected State pre(State state) {
-        return stopSetable != null ? run(trigger(state, universe(), setTime, Direction.scheduled)) : state;
-    }
-
-    @Override
-    protected State post(State state) {
-        if (isStopped(state)) {
-            return state;
-        } else {
-            if (checkFatals != null) {
-                state = trigger(state, universe(), checkFatals, Direction.scheduled);
-            }
-            state = trigger(state, universe(), printOutput, Direction.scheduled);
-            state = trigger(state, universe(), animate, Direction.scheduled);
-            return run(state);
-        }
     }
 
     private static class KeyGetable extends Getable<DStruct, Object> {
