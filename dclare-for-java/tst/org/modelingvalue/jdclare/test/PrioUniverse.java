@@ -64,7 +64,7 @@ public interface PrioUniverse extends DUniverse {
     interface PrioY extends Prio {
 
         @Rule
-        default void setY() {
+        default void setX() {
             set(this, Prio::x, "Y");
         }
 
