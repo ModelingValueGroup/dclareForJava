@@ -15,8 +15,13 @@
 
 package org.modelingvalue.jdclare.test;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.modelingvalue.jdclare.DClare.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+import static org.modelingvalue.jdclare.DClare.dNative;
+import static org.modelingvalue.jdclare.DClare.of;
 
 import java.time.Clock;
 import java.time.Instant;
@@ -28,6 +33,7 @@ import org.modelingvalue.collections.Collection;
 import org.modelingvalue.collections.Set;
 import org.modelingvalue.collections.util.Pair;
 import org.modelingvalue.dclare.Direction;
+import org.modelingvalue.dclare.Mutable;
 import org.modelingvalue.dclare.State;
 import org.modelingvalue.dclare.TransactionClass;
 import org.modelingvalue.dclare.ex.OutOfScopeException;
@@ -47,7 +53,7 @@ public class JDclareTests {
     public void manyUniverse() {
         for (int i = 0; i < MANY_TIMES; i++) {
             DClare<DUniverse> dClare = of(DUniverse.class);
-            State             result = dClare.run();
+            State result = dClare.run();
             result.run(() -> check(result));
         }
     }
@@ -55,7 +61,7 @@ public class JDclareTests {
     @Test
     public void universe() {
         DClare<DUniverse> dClare = of(DUniverse.class);
-        State             result = dClare.run();
+        State result = dClare.run();
         if (DUMP) {
             System.err.println("***************************** Begin DUniverse ***********************************");
             System.err.println(result.asString());
@@ -76,13 +82,13 @@ public class JDclareTests {
         State prev = null;
         for (int i = 0; i < MANY_TIMES; i++) {
             DClare<Orchestra> dClare = of(Orchestra.class, FIXED_CLOCK);
-            State             next   = dClare.run();
+            State next = dClare.run();
             next.run(() -> {
                 check(next);
                 checkOrchestra(next);
             });
             if (prev != null && !prev.equals(next)) {
-                String diff = prev.diffString(next);
+                String diff = prev.diffString(next, o -> true, s -> Mutable.D_CHANGE_NR != s && DClare.ROOT_RUN_NR != s);
                 assertEquals("", diff, "Diff: ");
             }
             prev = next;
@@ -92,7 +98,7 @@ public class JDclareTests {
     @Test
     public void orchestra() {
         DClare<Orchestra> dClare = of(Orchestra.class);
-        State             result = dClare.run();
+        State result = dClare.run();
         result.run(() -> {
             check(result);
             checkOrchestra(result);
@@ -137,7 +143,7 @@ public class JDclareTests {
     @Test
     public void testReparents() {
         DClare<Reparents> dClare = of(Reparents.class);
-        State             result = dClare.run();
+        State result = dClare.run();
         result.run(() -> check(result));
         if (DUMP) {
             result.run(() -> {
@@ -153,7 +159,7 @@ public class JDclareTests {
     @Test
     public void testPriorities() {
         DClare<PrioUniverse> dClare = of(PrioUniverse.class);
-        State                result = dClare.run();
+        State result = dClare.run();
         result.run(() -> {
             check(result);
             checkPriorities(result);
@@ -174,7 +180,7 @@ public class JDclareTests {
         State prev = null;
         for (int i = 0; i < MANY_TIMES; i++) {
             DClare<PrioUniverse> dClare = of(PrioUniverse.class, FIXED_CLOCK);
-            State                next   = dClare.run();
+            State next = dClare.run();
             next.run(() -> {
                 check(next);
                 checkPriorities(next);
