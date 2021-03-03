@@ -114,7 +114,7 @@ public interface DObject extends DStruct, Mutable {
     }
 
     @Override
-    default Mutable resolve(Mutable self) {
+    default Mutable resolve(Object self) {
         return this;
     }
 
