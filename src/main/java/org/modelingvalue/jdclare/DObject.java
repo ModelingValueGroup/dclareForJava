@@ -103,6 +103,17 @@ public interface DObject extends DStruct, Mutable {
         Mutable.super.dDeactivate(); // do not remove this! it seems unneccesarry but it is not; this has to do with how Proxy handles calls.
     }
 
+    @SuppressWarnings("rawtypes")
+    @Override
+    default boolean dToBeCleared(Setable setable) {
+        return Mutable.super.dToBeCleared(setable); // do not remove this! it seems unneccesarry but it is not; this has to do with how Proxy handles calls.
+    }
+
+    @Override
+    default boolean dIsObsolete() {
+        return Mutable.super.dIsObsolete(); // do not remove this! it seems unneccesarry but it is not; this has to do with how Proxy handles calls.
+    }
+
     @Override
     default MutableTransaction openTransaction(MutableTransaction parent) {
         return Mutable.super.openTransaction(parent);
