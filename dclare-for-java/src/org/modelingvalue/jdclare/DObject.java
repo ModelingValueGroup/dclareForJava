@@ -75,7 +75,7 @@ public interface DObject extends DStruct, Mutable {
     @SuppressWarnings({"unchecked", "rawtypes"})
     default Collection<? extends Observer<?>> dMutableObservers() {
         //noinspection RedundantCast
-        return (Collection) dObjectRules().map(DRule::observer);
+        return Collection.concat(Mutable.super.dMutableObservers(), (Collection) dObjectRules().map(DRule::observer));
     }
 
     @Override
