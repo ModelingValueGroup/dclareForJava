@@ -22,7 +22,7 @@ import static org.modelingvalue.jdclare.PropertyQualifier.validation;
 import java.lang.reflect.Method;
 import java.util.function.Consumer;
 
-import org.modelingvalue.dclare.Direction;
+import org.modelingvalue.dclare.Priority;
 import org.modelingvalue.jdclare.DClare;
 import org.modelingvalue.jdclare.DObject;
 import org.modelingvalue.jdclare.DStruct1;
@@ -62,8 +62,8 @@ public interface DMethodRule<O extends DObject, T> extends DRule<O>, DStruct1<Me
 
     @Override
     @Property(constant)
-    default Direction initDirection() {
-        return validation() ? Direction.backward : Direction.forward;
+    default Priority initPriority() {
+        return validation() ? Priority.backward : Priority.forward;
     }
 
 }

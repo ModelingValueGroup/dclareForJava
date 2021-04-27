@@ -29,6 +29,7 @@ import org.modelingvalue.collections.Map;
 import org.modelingvalue.collections.Set;
 import org.modelingvalue.collections.util.NonLockingPrintWriter;
 import org.modelingvalue.collections.util.StringUtil;
+import org.modelingvalue.dclare.Direction;
 import org.modelingvalue.dclare.Mutable;
 import org.modelingvalue.dclare.MutableTransaction;
 import org.modelingvalue.dclare.Observer;
@@ -46,8 +47,8 @@ import org.modelingvalue.jdclare.meta.DStructClass;
 public interface DObject extends DStruct, Mutable {
 
     @Override
-    default State run(State state, MutableTransaction parent) {
-        return Mutable.super.run(state, parent);
+    default State run(State state, Direction direction, MutableTransaction parent) {
+        return Mutable.super.run(state, direction, parent);
     }
 
     @Override
@@ -103,6 +104,11 @@ public interface DObject extends DStruct, Mutable {
         Mutable.super.dDeactivate(); // do not remove this! it seems unneccesarry but it is not; this has to do with how Proxy handles calls.
     }
 
+    @Override
+    default Direction dDirection() {
+        return Mutable.super.dDirection(); // do not remove this! it seems unneccesarry but it is not; this has to do with how Proxy handles calls.
+    }
+
     @SuppressWarnings("rawtypes")
     @Override
     default boolean dToBeCleared(Setable setable) {
@@ -115,8 +121,13 @@ public interface DObject extends DStruct, Mutable {
     }
 
     @Override
-    default MutableTransaction openTransaction(MutableTransaction parent) {
-        return Mutable.super.openTransaction(parent);
+    default Direction direction(MutableTransaction parent) {
+        return Mutable.super.direction(parent);
+    }
+
+    @Override
+    default MutableTransaction openTransaction(Direction direction, MutableTransaction parent) {
+        return Mutable.super.openTransaction(direction, parent);
     }
 
     @Override
@@ -125,7 +136,7 @@ public interface DObject extends DStruct, Mutable {
     }
 
     @Override
-    default Mutable resolve(Mutable self) {
+    default Mutable dResolve(Mutable self) {
         return this;
     }
 

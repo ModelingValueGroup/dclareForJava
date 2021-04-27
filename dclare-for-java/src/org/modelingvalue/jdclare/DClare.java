@@ -68,7 +68,7 @@ import org.modelingvalue.collections.util.TriConsumer;
 import org.modelingvalue.dclare.Action;
 import org.modelingvalue.dclare.ActionTransaction;
 import org.modelingvalue.dclare.Constant;
-import org.modelingvalue.dclare.Direction;
+import org.modelingvalue.dclare.Priority;
 import org.modelingvalue.dclare.Getable;
 import org.modelingvalue.dclare.LeafTransaction;
 import org.modelingvalue.dclare.Mutable;
@@ -433,14 +433,14 @@ public final class DClare<U extends DUniverse> extends UniverseTransaction {
         DProperty dProperty = dProperty(dObject, property);
         ors.set(dObject, Set::add, dclare(DObjectRule.class, dObject, dProperty.name(), //
                 set(DObjectRule::consumer, id((Consumer<O>) o -> dProperty.set(o, value.apply(o)), dObject, dProperty)), //
-                set(DObjectRule::initDirection, Direction.forward)));
+                set(DObjectRule::initPriority, Priority.forward)));
     }
 
     public static <O extends DObject, V> void rule(O dObject, String name, Consumer<O> rule) {
         Setable<DObject, Set<DRule>> ors = setable(D_OBJECT_RULES);
         ors.set(dObject, Set::add, dclare(DObjectRule.class, dObject, name, //
                 set(DObjectRule::consumer, id(rule, dObject, name)), //
-                set(DObjectRule::initDirection, Direction.forward)));
+                set(DObjectRule::initPriority, Priority.forward)));
     }
 
     public static <O extends DObject, V> void set(O dObject, SerializableFunction<O, V> property, V value) {

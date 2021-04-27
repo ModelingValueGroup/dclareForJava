@@ -32,7 +32,7 @@ import org.junit.jupiter.api.Test;
 import org.modelingvalue.collections.Collection;
 import org.modelingvalue.collections.Set;
 import org.modelingvalue.collections.util.Pair;
-import org.modelingvalue.dclare.Direction;
+import org.modelingvalue.dclare.Priority;
 import org.modelingvalue.dclare.Mutable;
 import org.modelingvalue.dclare.State;
 import org.modelingvalue.dclare.TransactionClass;
@@ -135,7 +135,7 @@ public class JDclareTests {
         assertEquals(Set.of(), result.getObjects(DNamed.class).filter(o -> o.name() == null).toSet(), "No name:");
         assertEquals(Set.of(), result.getObjects(DUniverse.class).flatMap(DObject::dAllProblems).toSet(), "Problems:");
         Set<Pair<DObject, Set<TransactionClass>>> scheduled = result.getObjects(DObject.class).map(o -> Pair.of(o, //
-                Collection.of(Direction.values()).flatMap(d -> Collection.concat(d.actions.get(o), d.children.get(o))).toSet())).filter(p -> !p.b().isEmpty()).toSet();
+                Collection.of(Priority.values()).flatMap(d -> Collection.concat(d.actions.get(o), d.children.get(o))).toSet())).filter(p -> !p.b().isEmpty()).toSet();
         // System.err.println(scheduled);
         assertEquals(Set.of(), scheduled, "Scheduled:");
     }

@@ -41,8 +41,8 @@ public interface SyntaxPropertyRule<O extends ObjectNode> extends DRule<O>, DStr
 
     @Override
     @Property(constant)
-    default Direction initDirection() {
-        return Direction.forward;
+    default Priority initPriority() {
+        return Priority.forward;
     }
 
 }
