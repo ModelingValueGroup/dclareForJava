@@ -68,11 +68,11 @@ import org.modelingvalue.collections.util.TriConsumer;
 import org.modelingvalue.dclare.Action;
 import org.modelingvalue.dclare.ActionTransaction;
 import org.modelingvalue.dclare.Constant;
-import org.modelingvalue.dclare.Priority;
 import org.modelingvalue.dclare.Getable;
 import org.modelingvalue.dclare.LeafTransaction;
 import org.modelingvalue.dclare.Mutable;
 import org.modelingvalue.dclare.Observed;
+import org.modelingvalue.dclare.Priority;
 import org.modelingvalue.dclare.Setable;
 import org.modelingvalue.dclare.SetableModifier;
 import org.modelingvalue.dclare.State;
@@ -1146,7 +1146,7 @@ public final class DClare<U extends DUniverse> extends UniverseTransaction {
     private final Action<Universe>      checkFatals;
 
     private DClare(Class<? extends DUniverse> universeClass, boolean checkFatals, Clock clock, int maxInInQueue) {
-        super(dStruct(universeClass), THE_POOL, null, maxInInQueue, true, MAX_TOTAL_NR_OF_CHANGES, MAX_NR_OF_CHANGES, MAX_NR_OF_FORWARD_CHANGES, MAX_NR_OF_OBSERVED, MAX_NR_OF_OBSERVERS, MAX_NR_OF_HISTORY, null);
+        super(dStruct(universeClass), THE_POOL, null, maxInInQueue, true, MAX_TOTAL_NR_OF_CHANGES, MAX_NR_OF_CHANGES, MAX_NR_OF_OBSERVED, MAX_NR_OF_OBSERVERS, MAX_NR_OF_HISTORY, null);
         this.checkFatals = checkFatals ? Action.of("$checkFatals", o -> checkFatals()) : null;
         this.clock = clock;
     }
