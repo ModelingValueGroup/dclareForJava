@@ -47,8 +47,8 @@ import org.modelingvalue.jdclare.meta.DStructClass;
 public interface DObject extends DStruct, Mutable {
 
     @Override
-    default State run(State state, Direction direction, MutableTransaction parent) {
-        return Mutable.super.run(state, direction, parent);
+    default State run(State state, MutableTransaction parent) {
+        return Mutable.super.run(state, parent);
     }
 
     @Override
@@ -121,13 +121,8 @@ public interface DObject extends DStruct, Mutable {
     }
 
     @Override
-    default Direction direction(MutableTransaction parent) {
-        return Mutable.super.direction(parent);
-    }
-
-    @Override
-    default MutableTransaction openTransaction(Direction direction, MutableTransaction parent) {
-        return Mutable.super.openTransaction(direction, parent);
+    default MutableTransaction openTransaction(MutableTransaction parent) {
+        return Mutable.super.openTransaction(parent);
     }
 
     @Override
