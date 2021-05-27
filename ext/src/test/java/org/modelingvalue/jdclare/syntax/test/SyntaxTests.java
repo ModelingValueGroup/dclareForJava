@@ -35,7 +35,7 @@ import org.modelingvalue.jdclare.syntax.test.MySyntax.Unit;
 
 public class SyntaxTests {
 
-    private static final int     MANY_TIMES  = 100;
+    private static final int     MANY_TIMES  = 32;
     private static final boolean DUMP        = Boolean.getBoolean("DUMP");
     private static final Clock   FIXED_CLOCK = Clock.fixed(Instant.EPOCH, ZoneId.systemDefault());
 

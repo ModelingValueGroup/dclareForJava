@@ -29,6 +29,7 @@ import org.modelingvalue.collections.Map;
 import org.modelingvalue.collections.Set;
 import org.modelingvalue.collections.util.NonLockingPrintWriter;
 import org.modelingvalue.collections.util.StringUtil;
+import org.modelingvalue.dclare.Direction;
 import org.modelingvalue.dclare.Mutable;
 import org.modelingvalue.dclare.MutableTransaction;
 import org.modelingvalue.dclare.Observer;
@@ -75,7 +76,7 @@ public interface DObject extends DStruct, Mutable {
     @SuppressWarnings({"unchecked", "rawtypes"})
     default Collection<? extends Observer<?>> dMutableObservers() {
         //noinspection RedundantCast
-        return (Collection) dObjectRules().map(DRule::observer);
+        return Collection.concat(Mutable.super.dMutableObservers(), (Collection) dObjectRules().map(DRule::observer));
     }
 
     @Override
@@ -103,6 +104,11 @@ public interface DObject extends DStruct, Mutable {
         Mutable.super.dDeactivate(); // do not remove this! it seems unneccesarry but it is not; this has to do with how Proxy handles calls.
     }
 
+    @Override
+    default Direction dDirection() {
+        return Mutable.super.dDirection(); // do not remove this! it seems unneccesarry but it is not; this has to do with how Proxy handles calls.
+    }
+
     @SuppressWarnings("rawtypes")
     @Override
     default boolean dToBeCleared(Setable setable) {
@@ -125,7 +131,7 @@ public interface DObject extends DStruct, Mutable {
     }
 
     @Override
-    default Mutable resolve(Object self) {
+    default Mutable dResolve(Mutable self) {
         return this;
     }
 
