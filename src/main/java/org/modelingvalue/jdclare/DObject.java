@@ -109,6 +109,16 @@ public interface DObject extends DStruct, Mutable {
         return Mutable.super.dDirection(); // do not remove this! it seems unneccesarry but it is not; this has to do with how Proxy handles calls.
     }
 
+    @Override
+    default boolean dHasAncestor(Mutable ancestor) {
+        return Mutable.super.dHasAncestor(ancestor); // do not remove this! it seems unneccesarry but it is not; this has to do with how Proxy handles calls.
+    }
+
+    @Override
+    default void dHandleRemoved(Mutable parent) {
+        Mutable.super.dHandleRemoved(parent); // do not remove this! it seems unneccesarry but it is not; this has to do with how Proxy handles calls.
+    }
+
     @SuppressWarnings("rawtypes")
     @Override
     default boolean dToBeCleared(Setable setable) {
