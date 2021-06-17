@@ -126,11 +126,6 @@ public interface DObject extends DStruct, Mutable {
     }
 
     @Override
-    default boolean dIsObsolete() {
-        return Mutable.super.dIsObsolete(); // do not remove this! it seems unneccesarry but it is not; this has to do with how Proxy handles calls.
-    }
-
-    @Override
     default MutableTransaction openTransaction(MutableTransaction parent) {
         return Mutable.super.openTransaction(parent);
     }
