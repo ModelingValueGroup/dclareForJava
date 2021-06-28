@@ -99,8 +99,8 @@ public interface DProperty<O extends DStruct, V> extends DNamed {
 
     @Default
     @Property
-    default boolean checkConsistency() {
-        return true;
+    default boolean softMandatory() {
+        return false;
     }
 
     default V get(O object) {

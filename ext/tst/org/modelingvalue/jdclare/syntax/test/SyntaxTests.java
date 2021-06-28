@@ -16,7 +16,6 @@
 package org.modelingvalue.jdclare.syntax.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.modelingvalue.jdclare.DClare.of;
 
 import java.time.Clock;
@@ -25,9 +24,11 @@ import java.time.ZoneId;
 
 import org.junit.jupiter.api.Test;
 import org.modelingvalue.collections.List;
+import org.modelingvalue.collections.Set;
 import org.modelingvalue.dclare.Mutable;
 import org.modelingvalue.dclare.State;
 import org.modelingvalue.jdclare.DClare;
+import org.modelingvalue.jdclare.DObject;
 import org.modelingvalue.jdclare.DUniverse;
 import org.modelingvalue.jdclare.syntax.Text;
 import org.modelingvalue.jdclare.syntax.meta.GrammarClass;
@@ -111,8 +112,8 @@ public class SyntaxTests {
     }
 
     private void test(State result) {
-        assertTrue(result.getObjects(TextUniverse.class).allMatch(t -> t.text().root() != null), "No Root");
-        assertTrue(result.getObjects(TextUniverse.class).allMatch(t -> t.dAllProblems().isEmpty()), "Problems");
+        assertEquals(Set.of(), result.getObjects(TextUniverse.class).filter(t -> t.text().root() == null).toSet(), "No Root");
+        assertEquals(Set.of(), result.getObjects(TextUniverse.class).flatMap(DObject::dAllProblems).toSet(), "Problems");
     }
 
 }
