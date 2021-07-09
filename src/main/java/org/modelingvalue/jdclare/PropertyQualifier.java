@@ -16,12 +16,12 @@
 package org.modelingvalue.jdclare;
 
 public enum PropertyQualifier {
-    mandatory,
-    optional,
-    containment,
-    constant,
-    visible,
-    unchecked,
-    hidden,
-    validation
+    mandatory(),
+    softMandatory(),
+    optional(),
+    containment(),
+    constant(),
+    visible(),
+    hidden(),
+    validation()
 }

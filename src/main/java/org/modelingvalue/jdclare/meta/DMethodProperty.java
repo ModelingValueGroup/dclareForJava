@@ -19,6 +19,7 @@ import static org.modelingvalue.jdclare.DClare.D_OBJECT_CLASS;
 import static org.modelingvalue.jdclare.DClare.OPPOSITE;
 import static org.modelingvalue.jdclare.DClare.SCOPE;
 import static org.modelingvalue.jdclare.DClare.ann;
+import static org.modelingvalue.jdclare.DClare.checkQualifiers;
 import static org.modelingvalue.jdclare.DClare.dProperty;
 import static org.modelingvalue.jdclare.DClare.dclare;
 import static org.modelingvalue.jdclare.DClare.getConstraints;
@@ -30,7 +31,7 @@ import static org.modelingvalue.jdclare.PropertyQualifier.containment;
 import static org.modelingvalue.jdclare.PropertyQualifier.hidden;
 import static org.modelingvalue.jdclare.PropertyQualifier.mandatory;
 import static org.modelingvalue.jdclare.PropertyQualifier.optional;
-import static org.modelingvalue.jdclare.PropertyQualifier.unchecked;
+import static org.modelingvalue.jdclare.PropertyQualifier.softMandatory;
 import static org.modelingvalue.jdclare.PropertyQualifier.validation;
 import static org.modelingvalue.jdclare.PropertyQualifier.visible;
 
@@ -113,13 +114,6 @@ public interface DMethodProperty<O extends DStruct, T> extends DProperty<O, T>, 
 
     @Override
     @Property(constant)
-    default boolean checkConsistency() {
-        Method method = method();
-        return !qual(method, unchecked);
-    }
-
-    @Override
-    @Property(constant)
     default DProperty<?, ?> opposite() {
         Method method = method();
         State constraints = getConstraints(method);
@@ -155,13 +149,20 @@ public interface DMethodProperty<O extends DStruct, T> extends DProperty<O, T>, 
     @Property(constant)
     default boolean mandatory() {
         Method method = method();
-        if (qual(method, mandatory)) {
+        checkQualifiers(method);
+        if (qual(method, mandatory) || qual(method, softMandatory)) {
             return true;
         } else if (qual(method, optional)) {
             return false;
         } else {
             return !many() && !validation();
         }
+    }
+
+    @Override
+    @Property(constant)
+    default boolean softMandatory() {
+        return qual(method(), softMandatory);
     }
 
     @Override

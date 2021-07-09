@@ -18,7 +18,7 @@ package org.modelingvalue.jdclare.syntax.test.simple;
 import static org.modelingvalue.jdclare.DClare.SCOPE;
 import static org.modelingvalue.jdclare.PropertyQualifier.containment;
 import static org.modelingvalue.jdclare.PropertyQualifier.optional;
-import static org.modelingvalue.jdclare.PropertyQualifier.unchecked;
+import static org.modelingvalue.jdclare.PropertyQualifier.softMandatory;
 
 import org.modelingvalue.collections.Set;
 import org.modelingvalue.jdclare.Constraints;
@@ -30,7 +30,7 @@ public interface AFieldCall extends AExpression {
     @Property({containment, optional})
     AExpression base();
 
-    @Property(unchecked)
+    @Property(softMandatory)
     AField field();
 
     @Override

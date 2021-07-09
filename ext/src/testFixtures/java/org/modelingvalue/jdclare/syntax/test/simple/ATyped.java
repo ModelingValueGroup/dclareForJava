@@ -15,7 +15,7 @@
 
 package org.modelingvalue.jdclare.syntax.test.simple;
 
-import static org.modelingvalue.jdclare.PropertyQualifier.unchecked;
+import static org.modelingvalue.jdclare.PropertyQualifier.softMandatory;
 
 import org.modelingvalue.jdclare.DObject;
 import org.modelingvalue.jdclare.Property;
@@ -23,7 +23,7 @@ import org.modelingvalue.jdclare.syntax.test.types.AType;
 
 public interface ATyped extends DObject {
 
-    @Property(unchecked)
+    @Property(softMandatory)
     AType type();
 
 }

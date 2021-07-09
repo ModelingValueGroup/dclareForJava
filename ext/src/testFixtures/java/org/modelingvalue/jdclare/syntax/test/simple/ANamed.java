@@ -17,7 +17,7 @@ package org.modelingvalue.jdclare.syntax.test.simple;
 
 import static org.modelingvalue.jdclare.DClare.dclare;
 import static org.modelingvalue.jdclare.PropertyQualifier.hidden;
-import static org.modelingvalue.jdclare.PropertyQualifier.unchecked;
+import static org.modelingvalue.jdclare.PropertyQualifier.softMandatory;
 import static org.modelingvalue.jdclare.PropertyQualifier.validation;
 
 import org.modelingvalue.jdclare.DNamed;
@@ -32,7 +32,7 @@ public interface ANamed extends DNamed {
 
     @Override
     @Default
-    @Property(unchecked)
+    @Property(softMandatory)
     default String name() {
         return NO_NAME;
     }

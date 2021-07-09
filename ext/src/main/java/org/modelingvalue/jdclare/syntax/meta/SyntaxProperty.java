@@ -230,8 +230,8 @@ public interface SyntaxProperty<O extends Node, V> extends DMethodProperty<O, V>
 
     @Override
     @Property(constant)
-    default boolean checkConsistency() {
-        return false;
+    default boolean softMandatory() {
+        return true;
     }
 
 }
