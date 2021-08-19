@@ -1,5 +1,5 @@
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-// (C) Copyright 2018-2020 Modeling Value Group B.V. (http://modelingvalue.org)                                        ~
+// (C) Copyright 2018-2021 Modeling Value Group B.V. (http://modelingvalue.org)                                        ~
 //                                                                                                                     ~
 // Licensed under the GNU Lesser General Public License v3.0 (the 'License'). You may not use this file except in      ~
 // compliance with the License. You may obtain a copy of the License at: https://choosealicense.com/licenses/lgpl-3.0  ~
@@ -19,7 +19,7 @@ import static org.modelingvalue.jdclare.PropertyQualifier.constant;
 
 import java.util.function.Consumer;
 
-import org.modelingvalue.dclare.Direction;
+import org.modelingvalue.dclare.Priority;
 import org.modelingvalue.dclare.NonInternableObserver;
 import org.modelingvalue.dclare.Observer;
 import org.modelingvalue.jdclare.DObject;
@@ -46,12 +46,12 @@ public interface DObjectRule<O extends DObject> extends DRule<O>, DStruct2<O, St
 
     @Override
     @Property(constant)
-    Direction initDirection();
+    Priority initPriority();
 
     @Override
     @Property(constant)
     default Observer<O> observer() {
-        return NonInternableObserver.of(this, o -> consumer().accept(o), initDirection());
+        return NonInternableObserver.of(this, o -> consumer().accept(o), initPriority());
     }
 
 }

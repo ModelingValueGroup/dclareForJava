@@ -1,5 +1,5 @@
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-// (C) Copyright 2018-2020 Modeling Value Group B.V. (http://modelingvalue.org)                                        ~
+// (C) Copyright 2018-2021 Modeling Value Group B.V. (http://modelingvalue.org)                                        ~
 //                                                                                                                     ~
 // Licensed under the GNU Lesser General Public License v3.0 (the 'License'). You may not use this file except in      ~
 // compliance with the License. You may obtain a copy of the License at: https://choosealicense.com/licenses/lgpl-3.0  ~
@@ -16,7 +16,6 @@
 package org.modelingvalue.jdclare.syntax.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.modelingvalue.jdclare.DClare.of;
 
 import java.time.Clock;
@@ -25,9 +24,11 @@ import java.time.ZoneId;
 
 import org.junit.jupiter.api.Test;
 import org.modelingvalue.collections.List;
+import org.modelingvalue.collections.Set;
 import org.modelingvalue.dclare.Mutable;
 import org.modelingvalue.dclare.State;
 import org.modelingvalue.jdclare.DClare;
+import org.modelingvalue.jdclare.DObject;
 import org.modelingvalue.jdclare.DUniverse;
 import org.modelingvalue.jdclare.syntax.Text;
 import org.modelingvalue.jdclare.syntax.meta.GrammarClass;
@@ -35,7 +36,7 @@ import org.modelingvalue.jdclare.syntax.test.MySyntax.Unit;
 
 public class SyntaxTests {
 
-    private static final int     MANY_TIMES  = 100;
+    private static final int     MANY_TIMES  = 32;
     private static final boolean DUMP        = Boolean.getBoolean("DUMP");
     private static final Clock   FIXED_CLOCK = Clock.fixed(Instant.EPOCH, ZoneId.systemDefault());
 
@@ -43,19 +44,18 @@ public class SyntaxTests {
     public void manySyntax() {
         State prev = null;
         for (int i = 0; i < MANY_TIMES; i++) {
-            System.err.printf("# manySyntax %3d ", i);
+            // System.err.printf("# manySyntax %3d ", i);
             State next = doit();
             next.run(() -> test(next));
             if (prev != null) {
                 String diff = prev.diffString(next, o -> true, s -> Mutable.D_CHANGE_NR != s);
                 if (prev.equals(next)) {
-                    System.err.print("states equal" + ("".equals(diff) ? "" : " BUT DIFF != \"\""));
+                    //System.err.print("states equal" + ("".equals(diff) ? "" : " BUT DIFF != \"\""));
                 } else {
-                    System.err.print("states differ");
+                    //System.err.print("states differ");
                     assertEquals("", diff, "Diff: ");
                 }
             }
-            System.err.println();
             prev = next;
         }
     }
@@ -112,8 +112,8 @@ public class SyntaxTests {
     }
 
     private void test(State result) {
-        assertTrue(result.getObjects(TextUniverse.class).allMatch(t -> t.text().root() != null), "No Root");
-        assertTrue(result.getObjects(TextUniverse.class).allMatch(t -> t.dAllProblems().isEmpty()), "Problems");
+        assertEquals(Set.of(), result.getObjects(TextUniverse.class).filter(t -> t.text().root() == null).toSet(), "No Root");
+        assertEquals(Set.of(), result.getObjects(TextUniverse.class).flatMap(DObject::dAllProblems).toSet(), "Problems");
     }
 
 }

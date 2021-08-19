@@ -1,5 +1,5 @@
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-// (C) Copyright 2018-2020 Modeling Value Group B.V. (http://modelingvalue.org)                                        ~
+// (C) Copyright 2018-2021 Modeling Value Group B.V. (http://modelingvalue.org)                                        ~
 //                                                                                                                     ~
 // Licensed under the GNU Lesser General Public License v3.0 (the 'License'). You may not use this file except in      ~
 // compliance with the License. You may obtain a copy of the License at: https://choosealicense.com/licenses/lgpl-3.0  ~
@@ -29,6 +29,7 @@ import org.modelingvalue.collections.Map;
 import org.modelingvalue.collections.Set;
 import org.modelingvalue.collections.util.NonLockingPrintWriter;
 import org.modelingvalue.collections.util.StringUtil;
+import org.modelingvalue.dclare.Direction;
 import org.modelingvalue.dclare.Mutable;
 import org.modelingvalue.dclare.MutableTransaction;
 import org.modelingvalue.dclare.Observer;
@@ -75,7 +76,7 @@ public interface DObject extends DStruct, Mutable {
     @SuppressWarnings({"unchecked", "rawtypes"})
     default Collection<? extends Observer<?>> dMutableObservers() {
         //noinspection RedundantCast
-        return (Collection) dObjectRules().map(DRule::observer);
+        return Collection.concat(Mutable.super.dMutableObservers(), (Collection) dObjectRules().map(DRule::observer));
     }
 
     @Override
@@ -104,6 +105,27 @@ public interface DObject extends DStruct, Mutable {
     }
 
     @Override
+    default Direction dDirection() {
+        return Mutable.super.dDirection(); // do not remove this! it seems unneccesarry but it is not; this has to do with how Proxy handles calls.
+    }
+
+    @Override
+    default boolean dHasAncestor(Mutable ancestor) {
+        return Mutable.super.dHasAncestor(ancestor); // do not remove this! it seems unneccesarry but it is not; this has to do with how Proxy handles calls.
+    }
+
+    @Override
+    default void dHandleRemoved(Mutable parent) {
+        Mutable.super.dHandleRemoved(parent); // do not remove this! it seems unneccesarry but it is not; this has to do with how Proxy handles calls.
+    }
+
+    @SuppressWarnings("rawtypes")
+    @Override
+    default boolean dToBeCleared(Setable setable) {
+        return Mutable.super.dToBeCleared(setable); // do not remove this! it seems unneccesarry but it is not; this has to do with how Proxy handles calls.
+    }
+
+    @Override
     default MutableTransaction openTransaction(MutableTransaction parent) {
         return Mutable.super.openTransaction(parent);
     }
@@ -114,7 +136,7 @@ public interface DObject extends DStruct, Mutable {
     }
 
     @Override
-    default Mutable resolve(Mutable self) {
+    default Mutable dResolve(Mutable self) {
         return this;
     }
 

@@ -36,6 +36,7 @@
     <path refid="library.gen:_apiguardian-api.classpath"/>
     <path refid="library.gen:_junit-jupiter-engine.classpath"/>
     <path refid="library.gen:_junit-platform-engine.classpath"/>
+    <path refid="library.gen:_junit-jupiter-params.classpath"/>
   </path>
   <path id="ext.runtime.module.classpath">
     <pathelement location="${ext.testoutput.dir}"/>
@@ -50,6 +51,7 @@
     <path refid="library.gen:_apiguardian-api.classpath"/>
     <path refid="library.gen:_junit-jupiter-engine.classpath"/>
     <path refid="library.gen:_junit-platform-engine.classpath"/>
+    <path refid="library.gen:_junit-jupiter-params.classpath"/>
   </path>
   <patternset id="excluded.from.module.ext">
     <patternset refid="ignored.files"/>

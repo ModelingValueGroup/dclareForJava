@@ -1,5 +1,5 @@
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-// (C) Copyright 2018-2020 Modeling Value Group B.V. (http://modelingvalue.org)                                        ~
+// (C) Copyright 2018-2021 Modeling Value Group B.V. (http://modelingvalue.org)                                        ~
 //                                                                                                                     ~
 // Licensed under the GNU Lesser General Public License v3.0 (the 'License'). You may not use this file except in      ~
 // compliance with the License. You may obtain a copy of the License at: https://choosealicense.com/licenses/lgpl-3.0  ~
@@ -207,8 +207,8 @@ public class BirdTest {
         DClare<BirdUniverse> dclare = of(BirdUniverse.class);
         start(dclare);
         addBird(dclare, Pigeon.class, Pair.of("0", "green"));
-        State     result = stop(dclare);
-        Set<Bird> birds  = result.getObjects(Bird.class).toSet();
+        State result = stop(dclare);
+        Set<Bird> birds = result.getObjects(Bird.class).toSet();
         assertEquals(1, birds.size(), "Unexpected Birds: " + birds);
     }
 
@@ -410,26 +410,26 @@ public class BirdTest {
         return t;
     }
 
-    private void assertThrowable(Throwable cause, Class<? extends Throwable> throwable) {
-        if (PRINT_STACK_TRACE || !throwable.equals(cause.getClass())) {
+    private void assertThrowable(Throwable cause, Class<? extends Throwable> expected) {
+        if (PRINT_STACK_TRACE || !expected.equals(cause.getClass())) {
             cause.printStackTrace();
         }
-        assertEquals(throwable, cause.getClass());
+        assertEquals(expected, cause.getClass());
     }
 
-    private void assertThrowable(Throwable cause, Class<? extends Throwable> throwable, String regex) {
-        if (PRINT_STACK_TRACE || !throwable.equals(cause.getClass())) {
+    private void assertThrowable(Throwable cause, Class<? extends Throwable> expected, String regex) {
+        if (PRINT_STACK_TRACE || !expected.equals(cause.getClass())) {
             cause.printStackTrace();
         }
-        assertEquals(throwable, cause.getClass());
+        assertEquals(expected, cause.getClass());
         assertTrue(cause.getMessage().matches(regex), cause.getMessage() + " != " + regex);
     }
 
-    private void assertThrowable(Throwable cause, Class<? extends Throwable> throwable, String message, Function<Throwable, String> f) {
-        if (PRINT_STACK_TRACE || !throwable.equals(cause.getClass())) {
+    private void assertThrowable(Throwable cause, Class<? extends Throwable> expected, String message, Function<Throwable, String> f) {
+        if (PRINT_STACK_TRACE || !expected.equals(cause.getClass())) {
             cause.printStackTrace();
         }
-        assertEquals(throwable, cause.getClass());
+        assertEquals(expected, cause.getClass());
         assertEquals(message, f.apply(cause));
     }
 

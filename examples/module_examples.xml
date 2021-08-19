@@ -54,8 +54,8 @@
   </patternset>
   <path id="examples.module.test.sourcepath">
     <dirset dir="${module.examples.basedir}">
-      <include name="tst"/>
       <include name="tstres"/>
+      <include name="tst"/>
     </dirset>
   </path>
   <target name="compile.module.examples" depends="compile.module.examples.production,compile.module.examples.tests" description="Compile module examples"/>
@@ -70,11 +70,11 @@
       <patternset refid="excluded.from.compilation.examples"/>
     </javac>
     <copy todir="${examples.testoutput.dir}">
-      <fileset dir="${module.examples.basedir}/tst">
+      <fileset dir="${module.examples.basedir}/tstres">
         <patternset refid="compiler.resources"/>
         <type type="file"/>
       </fileset>
-      <fileset dir="${module.examples.basedir}/tstres">
+      <fileset dir="${module.examples.basedir}/tst">
         <patternset refid="compiler.resources"/>
         <type type="file"/>
       </fileset>

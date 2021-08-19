@@ -32,6 +32,7 @@
     <path refid="library.gen:_apiguardian-api.classpath"/>
     <path refid="library.gen:_junit-jupiter-engine.classpath"/>
     <path refid="library.gen:_junit-platform-engine.classpath"/>
+    <path refid="library.gen:_junit-jupiter-params.classpath"/>
   </path>
   <path id="dclare-for-java.runtime.module.classpath">
     <pathelement location="${dclare-for-java.testoutput.dir}"/>
@@ -45,6 +46,7 @@
     <path refid="library.gen:_apiguardian-api.classpath"/>
     <path refid="library.gen:_junit-jupiter-engine.classpath"/>
     <path refid="library.gen:_junit-platform-engine.classpath"/>
+    <path refid="library.gen:_junit-jupiter-params.classpath"/>
   </path>
   <patternset id="excluded.from.module.dclare-for-java">
     <patternset refid="ignored.files"/>

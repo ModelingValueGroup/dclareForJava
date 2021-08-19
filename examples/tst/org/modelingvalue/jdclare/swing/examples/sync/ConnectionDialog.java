@@ -1,5 +1,5 @@
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-// (C) Copyright 2018-2020 Modeling Value Group B.V. (http://modelingvalue.org)                                        ~
+// (C) Copyright 2018-2021 Modeling Value Group B.V. (http://modelingvalue.org)                                        ~
 //                                                                                                                     ~
 // Licensed under the GNU Lesser General Public License v3.0 (the 'License'). You may not use this file except in      ~
 // compliance with the License. You may obtain a copy of the License at: https://choosealicense.com/licenses/lgpl-3.0  ~
@@ -15,54 +15,44 @@
 
 package org.modelingvalue.jdclare.swing.examples.sync;
 
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.Frame;
-import java.awt.Insets;
+import java.awt.*;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.BorderFactory;
-import javax.swing.JButton;
-import javax.swing.JComponent;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JSpinner;
-import javax.swing.JTable;
-import javax.swing.JTextField;
-import javax.swing.Timer;
-import javax.swing.UIManager;
+import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableCellRenderer;
 
-import com.intellij.uiDesigner.core.*;
+import com.intellij.uiDesigner.core.GridConstraints;
+import com.intellij.uiDesigner.core.GridLayoutManager;
+import com.intellij.uiDesigner.core.Spacer;
 
 public class ConnectionDialog {
-    private JButton                     clientConnectButton;
-    private JTextField                  clientHostField;
-    private JSpinner                    clientPortSpinner;
-    private JTable                      clientConnectionTable;
-    private JLabel                      clientInfoLabel;
+    private       JButton               clientConnectButton;
+    private       JTextField            clientHostField;
+    private       JSpinner              clientPortSpinner;
+    private       JTable                clientConnectionTable;
+    private       JLabel                clientInfoLabel;
     //
-    private JPanel                      root;
-    private JLabel                      clientHostLabel;
-    private JLabel                      clientPortLabel;
-    private JButton                     disconnectButton;
+    private       JPanel                root;
+    private       JLabel                clientHostLabel;
+    private       JLabel                clientPortLabel;
+    private       JButton               disconnectButton;
     //
     private final SyncConnectionHandler connectionHandler;
     private final ConnectionModel       connModel = new ConnectionModel();
-    private SocketSyncConnection        selectedConnection;
+    private       SocketSyncConnection  selectedConnection;
 
     @SuppressWarnings("serial")
     public static class ConnectionModel extends AbstractTableModel {
-        private final String[]                   columnNames = {"endpoint", "#rcv-bytes", "#send-bytes", "#rcv-∂", "#send-∂",};
+        private final String[]                   columnNames = {"endpoint",
+                "#rcv-bytes",
+                "#send-bytes",
+                "#rcv-∂",
+                "#send-∂",};
         private final List<SocketSyncConnection> connections = new ArrayList<>();
 
         @Override
@@ -121,32 +111,32 @@ public class ConnectionDialog {
 
     @SuppressWarnings("serial")
     DefaultTableCellRenderer headerRenderer = new DefaultTableCellRenderer() {
-                                                @Override
-                                                public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-                                                    super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-                                                    setHorizontalAlignment(1 <= column ? JLabel.RIGHT : JLabel.LEFT);
-                                                    setBackground(Color.lightGray);
-                                                    setFont(clientConnectionTable.getFont());
-                                                    return this;
-                                                }
-                                            };
+        @Override
+        public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+            super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+            setHorizontalAlignment(1 <= column ? JLabel.RIGHT : JLabel.LEFT);
+            setBackground(Color.lightGray);
+            setFont(clientConnectionTable.getFont());
+            return this;
+        }
+    };
 
     @SuppressWarnings("serial")
-    DefaultTableCellRenderer cellRenderer   = new DefaultTableCellRenderer() {
-                                                @Override
-                                                public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-                                                    if (value instanceof Integer) {
-                                                        value = String.format("%,d", value);
-                                                    }
-                                                    super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-                                                    setHorizontalAlignment(1 <= column ? JLabel.RIGHT : JLabel.LEFT);
-                                                    if (row == -1) {
-                                                        super.setBackground(Color.lightGray);
-                                                    }
-                                                    setFont(clientConnectionTable.getFont());
-                                                    return this;
-                                                }
-                                            };
+    DefaultTableCellRenderer cellRenderer = new DefaultTableCellRenderer() {
+        @Override
+        public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+            if (value instanceof Integer) {
+                value = String.format("%,d", value);
+            }
+            super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+            setHorizontalAlignment(1 <= column ? JLabel.RIGHT : JLabel.LEFT);
+            if (row == -1) {
+                super.setBackground(Color.lightGray);
+            }
+            setFont(clientConnectionTable.getFont());
+            return this;
+        }
+    };
 
     public ConnectionDialog(SyncConnectionHandler connectionHandler) {
         this.connectionHandler = connectionHandler;
@@ -193,7 +183,7 @@ public class ConnectionDialog {
     }
 
     private void connectClient() {
-        String host = clientHostField.getText();
+        String  host = clientHostField.getText();
         Integer port = (Integer) clientPortSpinner.getValue();
         connectionHandler.connect(host, port);
         update();
@@ -254,8 +244,8 @@ public class ConnectionDialog {
         panel1.setLayout(new GridLayoutManager(1, 1, new Insets(0, 0, 0, 0), -1, -1));
         root.add(panel1, new GridConstraints(2, 0, 1, 5, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, new Dimension(-1, 100), null, null, 0, false));
         panel1.setBorder(BorderFactory.createTitledBorder(null, "connections", TitledBorder.LEFT, TitledBorder.DEFAULT_POSITION, null, null));
-        final JScrollPane scrollPane1 = new JScrollPane();
-        Font scrollPane1Font = UIManager.getFont("TableHeader.font");
+        final JScrollPane scrollPane1     = new JScrollPane();
+        Font              scrollPane1Font = UIManager.getFont("TableHeader.font");
         if (scrollPane1Font != null) {
             scrollPane1.setFont(scrollPane1Font);
         }
