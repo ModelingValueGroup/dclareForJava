@@ -1,117 +1,25 @@
 name: build
 
-on: [push, workflow_dispatch]
+on: [ push, workflow_dispatch ]
 
 jobs:
   build:
     runs-on: ubuntu-20.04
+    if: "!contains(github.event.head_commit.message, '[no-ci]')"
     env:
-      GITHUB_TOKEN: "${{secrets.GITHUB_TOKEN}}"
       ALLREP_TOKEN: "${{secrets.ALLREP_TOKEN}}"
+      TOKEN: "${{secrets.ALLREP_TOKEN}}"
+      CI: "true"
     steps:
-      - name: "checkout"
-        uses: actions/checkout@v1
+      - uses: actions/checkout@v2.3.4
+        with:
+          fetch-depth: 0
 
-      - name: "attach git head"
-        run: git checkout "${GITHUB_REF#refs/heads/}"
-
-      - name: "setup JDK"
-        uses: actions/setup-java@v1
+      - uses: actions/setup-java@v2
         with:
           java-version: 11
+          distribution: zulu
 
-      - name: "get generic mvg-info"
-        uses: ModelingValueGroup/generic-info@master
-
-      - name: "get buildtools"
-        uses: ModelingValueGroup/buildtools@master
-
-      - name: "if master: fail if there is already a tag for this version"
-        if: github.ref == 'refs/heads/master'
-        run:  |
-          . <(java -jar ~/buildtools.jar)
-          errorIfVersionTagExists
-
-      - name: "prepare ant"
-        run:  |
-          cat <<EOF >build.properties
-          jdk.home.11=$JAVA_HOME
-          path.variable.maven_repository=$HOME/.m2/repository
-          EOF
-
-      - name: "(re)generate some files"
-        run:  |
-          . <(java -jar ~/buildtools.jar)
-          generateAll
-          correctEols
-          correctHeaders header
-
-      - name: "push changes back to github"
-        run:  |
-          . <(java -jar ~/buildtools.jar)
-          pushBackToGithub
-
-      - name: "download dependencies (as mentioned in pom)"
-        run:  |
-          . <(java -jar ~/buildtools.jar)
-          getAllDependencies
-          installJunitlauncher
-
+      ################################################################################
       - name: "build"
-        run:  ant
-
-      - name: "test"
-        run:  |
-          if ! ant test; then
-            for i in TEST-*.xml; do
-              echo "=============== $i"
-              sed "s/^/>> /" $i
-            done
-            exit 42
-          fi
-
-      - name: "generate javadoc"
-        run:  ant javadoc
-
-      - name: "if master: tag with version"
-        if: github.ref == 'refs/heads/master'
-        run:  |
-          . <(java -jar ~/buildtools.jar)
-          setVersionTag
-
-      - name: "publish action-artifact jar"
-        uses: actions/upload-artifact@v1
-        with:
-          name: dclare-for-java.jar
-          path: out/artifacts/dclare-for-java.jar
-
-      - name: "publish action-artifact sources"
-        uses: actions/upload-artifact@v1
-        with:
-          name: dclare-for-java-sources.jar
-          path: out/artifacts/dclare-for-java-sources.jar
-
-      - name: "publish action-artifact javadoc"
-        uses: actions/upload-artifact@v1
-        with:
-          name: dclare-for-java-javadoc.jar
-          path: out/artifacts/dclare-for-java-javadoc.jar
-
-      - name: "publish action-artifact test-results"
-        uses: actions/upload-artifact@v1
-        with:
-          name: dclare-for-java-testresults.jar
-          path: out/artifacts/dclare-for-java-testresults.jar
-
-      - name: "if NOT master: saving snapshots for other projects on this branch"
-        if: github.ref != 'refs/heads/master'
-        run: |
-          . <(java -jar ~/buildtools.jar)
-          storeMyBranchSnapshots
-
-      - name: "if master: publish maven-artifacts (jar/pom/sources/javadoc)"
-        uses: ModelingValueGroup/upload-maven-package-action@master
-        if  : github.ref == 'refs/heads/master'
-        with:
-          file : "out/artifacts/dclare-for-java.jar"
-
+        run: ./gradlew --info --scan

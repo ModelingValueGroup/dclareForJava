@@ -6,6 +6,7 @@
     <option name="numChars" value="15" />
     <option name="caseSensitive" value="false" />
   </component>
+  <component name="ExternalStorageConfigurationManager" enabled="true" />
   <component name="IntelliTail">
     <property name="buffer-wrap" value="false" />
     <property name="buffer-size" value="50" />
@@ -40,9 +41,7 @@
   <component name="NodePackageJsonFileManager">
     <packageJsonPaths />
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="false" project-jdk-name="11" project-jdk-type="JavaSDK">
-    <output url="file://$PROJECT_DIR$/out" />
-  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" project-jdk-name="15" project-jdk-type="JavaSDK" />
   <component name="SvnConfiguration" maxAnnotateRevisions="500">
     <option name="USER" value="" />
     <option name="PASSWORD" value="" />
