@@ -15,11 +15,14 @@
 
 package org.modelingvalue.jdclare;
 
-import org.modelingvalue.dclare.*;
-import org.modelingvalue.jdclare.meta.*;
+import static org.modelingvalue.jdclare.DClare.dclare;
+import static org.modelingvalue.jdclare.PropertyQualifier.constant;
+import static org.modelingvalue.jdclare.PropertyQualifier.containment;
+import static org.modelingvalue.jdclare.PropertyQualifier.hidden;
 
-import static org.modelingvalue.jdclare.DClare.*;
-import static org.modelingvalue.jdclare.PropertyQualifier.*;
+import org.modelingvalue.dclare.State;
+import org.modelingvalue.dclare.Universe;
+import org.modelingvalue.jdclare.meta.DPackageContainer;
 
 public interface DUniverse extends DPackageContainer, DStruct0, Universe {
 
@@ -57,6 +60,11 @@ public interface DUniverse extends DPackageContainer, DStruct0, Universe {
     @Override
     default boolean isInternable() {
         return Universe.super.isInternable(); // do not remove this! it seems unneccesarry but it is not; this has to do with how Proxy handles calls.
+    }
+
+    @Override
+    default boolean dIsOrphan(State state) {
+        return Universe.super.dIsOrphan(state);
     }
 
 }

@@ -131,6 +131,11 @@ public interface DObject extends DStruct, Mutable {
     }
 
     @Override
+    default boolean dIsOrphan(State state) {
+        return Mutable.super.dIsOrphan(state); // do not remove this! it seems unneccesarry but it is not; this has to do with how Proxy handles calls.
+    }
+
+    @Override
     default MutableTransaction openTransaction(MutableTransaction parent) {
         return Mutable.super.openTransaction(parent);
     }
