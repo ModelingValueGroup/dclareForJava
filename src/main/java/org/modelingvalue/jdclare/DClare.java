@@ -16,8 +16,8 @@
 package org.modelingvalue.jdclare;
 
 import static org.modelingvalue.dclare.CoreSetableModifier.containment;
-import static org.modelingvalue.dclare.CoreSetableModifier.softMandatory;
 import static org.modelingvalue.dclare.CoreSetableModifier.mandatory;
+import static org.modelingvalue.dclare.CoreSetableModifier.softMandatory;
 import static org.modelingvalue.jdclare.PropertyQualifier.constant;
 
 import java.lang.annotation.Annotation;
@@ -1170,7 +1170,7 @@ public final class DClare<U extends DUniverse> extends UniverseTransaction {
                 timer.schedule(new TimerTask() {
                     @Override
                     public void run() {
-                        put(restart);
+                        DClare.super.put(restart);
                     }
                 }, ANIMATE_DELAY_TIME);
             }
