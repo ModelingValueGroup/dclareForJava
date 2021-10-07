@@ -15,13 +15,15 @@
 
 package org.modelingvalue.jdclare.swing.examples.sync;
 
-import org.modelingvalue.dclare.sync.*;
-import org.modelingvalue.jdclare.*;
+import org.modelingvalue.dclare.sync.DeltaAdaptor;
+import org.modelingvalue.dclare.sync.SupplierAndConsumer;
+import org.modelingvalue.dclare.sync.SyncConnectionHandler;
+import org.modelingvalue.jdclare.DClare;
 
 public class Main {
     public static void main(String[] args) {
-        DClare<D2Universe>          dclare = DClare.start(D2Universe.class, false);
-        SupplierAndConsumer<String> a      = new DeltaAdaptor<>("sync", dclare.universeTransaction(), new SyncSerializationHelper());
+        DClare<D2Universe> dclare = DClare.start(D2Universe.class, false);
+        SupplierAndConsumer<String> a = new DeltaAdaptor<>("sync", dclare.universeTransaction(), new SyncSerializationHelper());
         @SuppressWarnings("unused")
         ConnectionDialog dia = new ConnectionDialog(new SyncConnectionHandler(a));
         dclare.waitForEnd();

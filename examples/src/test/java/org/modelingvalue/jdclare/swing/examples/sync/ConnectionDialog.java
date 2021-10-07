@@ -26,6 +26,9 @@ import javax.swing.border.TitledBorder;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableCellRenderer;
 
+import org.modelingvalue.dclare.sync.SocketSyncConnection;
+import org.modelingvalue.dclare.sync.SyncConnectionHandler;
+
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.intellij.uiDesigner.core.Spacer;
