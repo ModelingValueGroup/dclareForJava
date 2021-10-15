@@ -23,3 +23,7 @@ dependencies {
     testImplementation("org.modelingvalue:immutable-collections:1.6.1-BRANCHED")
     testImplementation("com.intellij:forms_rt:7.0.3")
 }
+tasks.withType(JavaCompile::class) {
+    options.compilerArgs.add("-Xlint:unchecked")
+    options.compilerArgs.add("-Xlint:deprecation")
+}

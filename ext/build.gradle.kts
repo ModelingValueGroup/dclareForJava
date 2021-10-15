@@ -26,3 +26,7 @@ dependencies {
     testFixturesImplementation("org.modelingvalue:immutable-collections:1.6.1-BRANCHED")
     testFixturesImplementation("org.modelingvalue:dclare:1.6.1-BRANCHED")
 }
+tasks.withType(JavaCompile::class) {
+    options.compilerArgs.add("-Xlint:unchecked")
+    options.compilerArgs.add("-Xlint:deprecation")
+}

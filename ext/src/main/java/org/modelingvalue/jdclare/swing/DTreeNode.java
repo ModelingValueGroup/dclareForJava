@@ -15,8 +15,12 @@
 
 package org.modelingvalue.jdclare.swing;
 
-import static org.modelingvalue.jdclare.DClare.*;
-import static org.modelingvalue.jdclare.PropertyQualifier.*;
+import org.modelingvalue.collections.Collection;
+import org.modelingvalue.collections.List;
+import org.modelingvalue.jdclare.*;
+import org.modelingvalue.jdclare.swing.DTreeNode.*;
+import org.modelingvalue.jdclare.swing.Tree.*;
+import org.modelingvalue.jdclare.swing.draw2d.*;
 
 import java.awt.*;
 import java.util.*;
@@ -24,12 +28,8 @@ import java.util.*;
 import javax.swing.*;
 import javax.swing.tree.*;
 
-import org.modelingvalue.collections.Collection;
-import org.modelingvalue.collections.List;
-import org.modelingvalue.jdclare.*;
-import org.modelingvalue.jdclare.swing.DTreeNode.*;
-import org.modelingvalue.jdclare.swing.Tree.*;
-import org.modelingvalue.jdclare.swing.draw2d.*;
+import static org.modelingvalue.jdclare.DClare.*;
+import static org.modelingvalue.jdclare.PropertyQualifier.*;
 
 @SuppressWarnings("rawtypes")
 @Native(DTreeNodeNative.class)
@@ -132,7 +132,7 @@ public interface DTreeNode<T> extends DVisible, DStruct2<DTreeNode, T> {
 
         @SuppressWarnings("unchecked")
         @Override
-        public Enumeration children() {
+        public Enumeration<? extends TreeNode> children() {
             Iterator<DTreeNode> it = visible.childNodes().iterator();
             return new Enumeration() {
                 @Override

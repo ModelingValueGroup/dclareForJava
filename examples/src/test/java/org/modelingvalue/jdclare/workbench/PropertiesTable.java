@@ -71,16 +71,16 @@ public interface PropertiesTable extends Table<DProperty<DObject, ?>, Properties
         ((DProperty) p).set(object(), value);
     }
 
-    @SuppressWarnings({"rawtypes", "unchecked"})
+    @SuppressWarnings({"unchecked"})
     @Override
-    default List scope(DProperty<DObject, ?> p, PropertiesTableColumn ct) {
+    default List<Object> scope(DProperty<DObject, ?> p, PropertiesTableColumn ct) {
         DProperty<DObject, Set<?>> scopeProperty = p.scopeProperty();
-        return scopeProperty != null ? scopeProperty.get(object()).sorted().toList() : null;
+        return scopeProperty == null ? null : (List<Object>) scopeProperty.get(object()).sorted().toList();
     }
 
-    @SuppressWarnings({"rawtypes", "unchecked"})
+    @SuppressWarnings({"unchecked"})
     @Override
-    default Class type(DProperty<DObject, ?> p, PropertiesTableColumn ct) {
+    default Class<Object> type(DProperty<DObject, ?> p, PropertiesTableColumn ct) {
         return p.type();
     }
 
