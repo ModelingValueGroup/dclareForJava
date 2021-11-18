@@ -15,32 +15,16 @@
 
 package org.modelingvalue.jdclare;
 
-import static org.modelingvalue.jdclare.PropertyQualifier.constant;
-import static org.modelingvalue.jdclare.PropertyQualifier.containment;
-import static org.modelingvalue.jdclare.PropertyQualifier.hidden;
+import static org.modelingvalue.jdclare.PropertyQualifier.*;
 
 import java.io.PrintStream;
 import java.io.PrintWriter;
 
-import org.modelingvalue.collections.Collection;
-import org.modelingvalue.collections.Entry;
-import org.modelingvalue.collections.List;
-import org.modelingvalue.collections.Map;
-import org.modelingvalue.collections.Set;
+import org.modelingvalue.collections.*;
 import org.modelingvalue.collections.util.NonLockingPrintWriter;
 import org.modelingvalue.collections.util.StringUtil;
-import org.modelingvalue.dclare.Direction;
-import org.modelingvalue.dclare.Mutable;
-import org.modelingvalue.dclare.MutableTransaction;
-import org.modelingvalue.dclare.Observer;
-import org.modelingvalue.dclare.Setable;
-import org.modelingvalue.dclare.State;
-import org.modelingvalue.dclare.Transaction;
-import org.modelingvalue.dclare.UniverseTransaction;
-import org.modelingvalue.jdclare.meta.DClass;
-import org.modelingvalue.jdclare.meta.DProperty;
-import org.modelingvalue.jdclare.meta.DRule;
-import org.modelingvalue.jdclare.meta.DStructClass;
+import org.modelingvalue.dclare.*;
+import org.modelingvalue.jdclare.meta.*;
 
 @SuppressWarnings("unused")
 @Extend(DClass.class)
@@ -72,11 +56,12 @@ public interface DObject extends DStruct, Mutable {
         return (Collection<DObject>) Mutable.super.dChildren(state);
     }
 
-    @Override
     @SuppressWarnings({"unchecked", "rawtypes"})
-    default Collection<? extends Observer<?>> dMutableObservers() {
-        //noinspection RedundantCast
-        return Collection.concat(Mutable.super.dMutableObservers(), (Collection) dObjectRules().map(DRule::observer));
+    @Override
+    default Collection<? extends Observer<?>> dAllObservers() {
+        Collection<? extends Observer<?>> classObservers = Mutable.super.dAllObservers();
+        Collection<? extends Observer<?>> objectObservers = (Collection) dObjectRules().map(DRule::observer);
+        return Collection.concat(classObservers, objectObservers);
     }
 
     @Override
@@ -119,12 +104,6 @@ public interface DObject extends DStruct, Mutable {
         Mutable.super.dHandleRemoved(parent); // do not remove this! it seems unneccesarry but it is not; this has to do with how Proxy handles calls.
     }
 
-    @SuppressWarnings("rawtypes")
-    @Override
-    default boolean dToBeCleared(Setable setable) {
-        return Mutable.super.dToBeCleared(setable); // do not remove this! it seems unneccesarry but it is not; this has to do with how Proxy handles calls.
-    }
-
     @Override
     default boolean dCheckConsistency() {
         return Mutable.super.dCheckConsistency(); // do not remove this! it seems unneccesarry but it is not; this has to do with how Proxy handles calls.
@@ -133,6 +112,12 @@ public interface DObject extends DStruct, Mutable {
     @Override
     default boolean dIsOrphan(State state) {
         return Mutable.super.dIsOrphan(state); // do not remove this! it seems unneccesarry but it is not; this has to do with how Proxy handles calls.
+    }
+
+    @SuppressWarnings("rawtypes")
+    @Override
+    default boolean dToBeCleared(Setable setable) {
+        return Mutable.super.dToBeCleared(setable); // do not remove this! it seems unneccesarry but it is not; this has to do with how Proxy handles calls.
     }
 
     @Override
