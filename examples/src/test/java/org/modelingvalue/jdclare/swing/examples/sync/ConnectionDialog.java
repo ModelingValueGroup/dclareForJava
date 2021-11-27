@@ -15,19 +15,20 @@
 
 package org.modelingvalue.jdclare.swing.examples.sync;
 
+import org.modelingvalue.dclare.sync.SocketSyncConnection;
+import org.modelingvalue.dclare.sync.SyncConnectionHandler;
+
 import java.awt.*;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableCellRenderer;
-
-import org.modelingvalue.dclare.sync.SocketSyncConnection;
-import org.modelingvalue.dclare.sync.SyncConnectionHandler;
 
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
@@ -49,7 +50,6 @@ public class ConnectionDialog {
     private final ConnectionModel       connModel = new ConnectionModel();
     private       SocketSyncConnection  selectedConnection;
 
-    @SuppressWarnings("serial")
     public static class ConnectionModel extends AbstractTableModel {
         private final String[]                   columnNames = {"endpoint",
                 "#rcv-bytes",
@@ -112,7 +112,6 @@ public class ConnectionDialog {
         }
     }
 
-    @SuppressWarnings("serial")
     DefaultTableCellRenderer headerRenderer = new DefaultTableCellRenderer() {
         @Override
         public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
@@ -124,7 +123,6 @@ public class ConnectionDialog {
         }
     };
 
-    @SuppressWarnings("serial")
     DefaultTableCellRenderer cellRenderer = new DefaultTableCellRenderer() {
         @Override
         public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
@@ -198,7 +196,7 @@ public class ConnectionDialog {
     }
 
     private void update() {
-        List<SocketSyncConnection> connections = connectionHandler.getConnections();
+        List<SocketSyncConnection> connections = connectionHandler.getConnections().collect(Collectors.toList());
         connModel.updateRows(connections);
 
         boolean busy = connections.stream().anyMatch(SocketSyncConnection::isConnecting);
