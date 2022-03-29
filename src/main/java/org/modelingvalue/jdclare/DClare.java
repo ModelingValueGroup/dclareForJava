@@ -1,5 +1,5 @@
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-// (C) Copyright 2018-2021 Modeling Value Group B.V. (http://modelingvalue.org)                                        ~
+// (C) Copyright 2018-2022 Modeling Value Group B.V. (http://modelingvalue.org)                                        ~
 //                                                                                                                     ~
 // Licensed under the GNU Lesser General Public License v3.0 (the 'License'). You may not use this file except in      ~
 // compliance with the License. You may obtain a copy of the License at: https://choosealicense.com/licenses/lgpl-3.0  ~
@@ -16,7 +16,6 @@
 package org.modelingvalue.jdclare;
 
 import static org.modelingvalue.dclare.CoreSetableModifier.containment;
-import static org.modelingvalue.dclare.CoreSetableModifier.softMandatory;
 import static org.modelingvalue.dclare.CoreSetableModifier.mandatory;
 import static org.modelingvalue.jdclare.PropertyQualifier.constant;
 
@@ -24,76 +23,21 @@ import java.lang.annotation.Annotation;
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodHandles.Lookup;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationHandler;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Proxy;
-import java.lang.reflect.Type;
+import java.lang.reflect.*;
 import java.time.Clock;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.Scanner;
-import java.util.Timer;
-import java.util.TimerTask;
-import java.util.UUID;
-import java.util.function.BiFunction;
-import java.util.function.Consumer;
-import java.util.function.Function;
-import java.util.function.Supplier;
+import java.util.*;
+import java.util.function.*;
 
+import org.modelingvalue.collections.*;
 import org.modelingvalue.collections.Collection;
-import org.modelingvalue.collections.ContainingCollection;
-import org.modelingvalue.collections.Entry;
 import org.modelingvalue.collections.List;
 import org.modelingvalue.collections.Map;
-import org.modelingvalue.collections.QualifiedSet;
 import org.modelingvalue.collections.Set;
-import org.modelingvalue.collections.util.Age;
-import org.modelingvalue.collections.util.Concurrent;
-import org.modelingvalue.collections.util.Context;
-import org.modelingvalue.collections.util.ContextThread;
+import org.modelingvalue.collections.util.*;
 import org.modelingvalue.collections.util.ContextThread.ContextPool;
-import org.modelingvalue.collections.util.LambdaReflection;
-import org.modelingvalue.collections.util.Pair;
-import org.modelingvalue.collections.util.QuadConsumer;
-import org.modelingvalue.collections.util.SerializableBiConsumer;
-import org.modelingvalue.collections.util.SerializableBiFunction;
-import org.modelingvalue.collections.util.SerializableConsumer;
-import org.modelingvalue.collections.util.SerializableFunction;
-import org.modelingvalue.collections.util.SerializableRunnable;
-import org.modelingvalue.collections.util.SerializableTriConsumer;
-import org.modelingvalue.collections.util.SerializableTriFunction;
-import org.modelingvalue.collections.util.StringUtil;
-import org.modelingvalue.collections.util.TriConsumer;
-import org.modelingvalue.dclare.Action;
-import org.modelingvalue.dclare.ActionTransaction;
-import org.modelingvalue.dclare.Constant;
-import org.modelingvalue.dclare.DclareConfig;
-import org.modelingvalue.dclare.Getable;
-import org.modelingvalue.dclare.LeafTransaction;
-import org.modelingvalue.dclare.Mutable;
-import org.modelingvalue.dclare.Observed;
-import org.modelingvalue.dclare.Priority;
-import org.modelingvalue.dclare.Setable;
-import org.modelingvalue.dclare.SetableModifier;
-import org.modelingvalue.dclare.State;
-import org.modelingvalue.dclare.Transaction;
-import org.modelingvalue.dclare.Universe;
-import org.modelingvalue.dclare.UniverseTransaction;
+import org.modelingvalue.dclare.*;
 import org.modelingvalue.jdclare.DNative.ChangeHandler;
-import org.modelingvalue.jdclare.meta.DClass;
-import org.modelingvalue.jdclare.meta.DClassContainer;
-import org.modelingvalue.jdclare.meta.DMethodProperty;
-import org.modelingvalue.jdclare.meta.DMethodRule;
-import org.modelingvalue.jdclare.meta.DObjectRule;
-import org.modelingvalue.jdclare.meta.DPackage;
-import org.modelingvalue.jdclare.meta.DPackageContainer;
-import org.modelingvalue.jdclare.meta.DProperty;
-import org.modelingvalue.jdclare.meta.DRule;
-import org.modelingvalue.jdclare.meta.DStructClass;
+import org.modelingvalue.jdclare.meta.*;
 
 @SuppressWarnings({"unchecked", "rawtypes", "unused"})
 public final class DClare<U extends DUniverse> extends UniverseTransaction {
@@ -169,8 +113,7 @@ public final class DClare<U extends DUniverse> extends UniverseTransaction {
                                                                                                      });
     private static final Constant<DProperty, Getable>                             GETABLE            = Constant.of("dGetable", p -> {
                                                                                                          Object def = p.key() ? null : p.defaultValue();
-                                                                                                         SetableModifier[] mods = {
-                                                                                                                 softMandatory.iff(p.softMandatory()),                                                                                                                                         //
+                                                                                                         SetableModifier[] mods = {                                                                                                                                                            //
                                                                                                                  mandatory.iff(p.mandatory()),                                                                                                                                                 //
                                                                                                                  containment.iff(p.containment())};
                                                                                                          Function der = p.derived() ? p.deriver() : null;
@@ -1170,7 +1113,7 @@ public final class DClare<U extends DUniverse> extends UniverseTransaction {
                 timer.schedule(new TimerTask() {
                     @Override
                     public void run() {
-                        put(restart);
+                        DClare.super.put(restart);
                     }
                 }, ANIMATE_DELAY_TIME);
             }

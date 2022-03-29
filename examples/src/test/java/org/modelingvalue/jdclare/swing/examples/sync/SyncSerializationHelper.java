@@ -1,5 +1,5 @@
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-// (C) Copyright 2018-2021 Modeling Value Group B.V. (http://modelingvalue.org)                                        ~
+// (C) Copyright 2018-2022 Modeling Value Group B.V. (http://modelingvalue.org)                                        ~
 //                                                                                                                     ~
 // Licensed under the GNU Lesser General Public License v3.0 (the 'License'). You may not use this file except in      ~
 // compliance with the License. You may obtain a copy of the License at: https://choosealicense.com/licenses/lgpl-3.0  ~
@@ -68,12 +68,12 @@ class SyncSerializationHelper implements SerializationHelper<DClass<DObject>, DO
         };
     }
 
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     @Override
-    public String serializeClass(DClass<DObject> clazz) {
-        System.err.println("serializeClass " + clazz);
-        return null;
+    public DClass<DObject> getMutableClass(DObject s) {
+        return s.dClass();
     }
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     @Override
     public String serializeSetable(Setable<DObject, Object> setable) {
@@ -102,12 +102,7 @@ class SyncSerializationHelper implements SerializationHelper<DClass<DObject>, DO
         }
     }
 
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    @Override
-    public DClass<DObject> deserializeClass(String s) {
-        //System.err.println("deserializeClass " + s);
-        return null;
-    }
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     @SuppressWarnings("unchecked")
     @Override
@@ -169,4 +164,5 @@ class SyncSerializationHelper implements SerializationHelper<DClass<DObject>, DO
         }
     }
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 }

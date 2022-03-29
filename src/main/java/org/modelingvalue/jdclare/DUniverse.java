@@ -1,5 +1,5 @@
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-// (C) Copyright 2018-2021 Modeling Value Group B.V. (http://modelingvalue.org)                                        ~
+// (C) Copyright 2018-2022 Modeling Value Group B.V. (http://modelingvalue.org)                                        ~
 //                                                                                                                     ~
 // Licensed under the GNU Lesser General Public License v3.0 (the 'License'). You may not use this file except in      ~
 // compliance with the License. You may obtain a copy of the License at: https://choosealicense.com/licenses/lgpl-3.0  ~
@@ -15,11 +15,14 @@
 
 package org.modelingvalue.jdclare;
 
-import org.modelingvalue.dclare.*;
-import org.modelingvalue.jdclare.meta.*;
+import static org.modelingvalue.jdclare.DClare.dclare;
+import static org.modelingvalue.jdclare.PropertyQualifier.constant;
+import static org.modelingvalue.jdclare.PropertyQualifier.containment;
+import static org.modelingvalue.jdclare.PropertyQualifier.hidden;
 
-import static org.modelingvalue.jdclare.DClare.*;
-import static org.modelingvalue.jdclare.PropertyQualifier.*;
+import org.modelingvalue.dclare.State;
+import org.modelingvalue.dclare.Universe;
+import org.modelingvalue.jdclare.meta.DPackageContainer;
 
 public interface DUniverse extends DPackageContainer, DStruct0, Universe {
 
@@ -55,8 +58,18 @@ public interface DUniverse extends DPackageContainer, DStruct0, Universe {
     }
 
     @Override
+    default void exit() {
+        Universe.super.exit(); // do not remove this! it seems unneccesarry but it is not; this has to do with how Proxy handles calls.
+    }
+
+    @Override
     default boolean isInternable() {
         return Universe.super.isInternable(); // do not remove this! it seems unneccesarry but it is not; this has to do with how Proxy handles calls.
+    }
+
+    @Override
+    default boolean dIsOrphan(State state) {
+        return Universe.super.dIsOrphan(state);
     }
 
 }

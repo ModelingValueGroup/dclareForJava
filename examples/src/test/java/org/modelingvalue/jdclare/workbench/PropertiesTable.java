@@ -1,5 +1,5 @@
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-// (C) Copyright 2018-2021 Modeling Value Group B.V. (http://modelingvalue.org)                                        ~
+// (C) Copyright 2018-2022 Modeling Value Group B.V. (http://modelingvalue.org)                                        ~
 //                                                                                                                     ~
 // Licensed under the GNU Lesser General Public License v3.0 (the 'License'). You may not use this file except in      ~
 // compliance with the License. You may obtain a copy of the License at: https://choosealicense.com/licenses/lgpl-3.0  ~
@@ -71,16 +71,16 @@ public interface PropertiesTable extends Table<DProperty<DObject, ?>, Properties
         ((DProperty) p).set(object(), value);
     }
 
-    @SuppressWarnings({"rawtypes", "unchecked"})
+    @SuppressWarnings({"unchecked"})
     @Override
-    default List scope(DProperty<DObject, ?> p, PropertiesTableColumn ct) {
+    default List<Object> scope(DProperty<DObject, ?> p, PropertiesTableColumn ct) {
         DProperty<DObject, Set<?>> scopeProperty = p.scopeProperty();
-        return scopeProperty != null ? scopeProperty.get(object()).sorted().toList() : null;
+        return scopeProperty == null ? null : (List<Object>) scopeProperty.get(object()).sorted().toList();
     }
 
-    @SuppressWarnings({"rawtypes", "unchecked"})
+    @SuppressWarnings({"unchecked"})
     @Override
-    default Class type(DProperty<DObject, ?> p, PropertiesTableColumn ct) {
+    default Class<Object> type(DProperty<DObject, ?> p, PropertiesTableColumn ct) {
         return p.type();
     }
 
