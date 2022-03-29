@@ -21,8 +21,8 @@ plugins {
     id("org.modelingvalue.gradle.mvgplugin") version "1.1.1"
 }
 dependencies {
-    implementation("org.modelingvalue:dclare:1.6.1-BRANCHED")
-    implementation("org.modelingvalue:immutable-collections:1.6.1-BRANCHED")
+    implementation("org.modelingvalue:dclare:1.7.0-BRANCHED")
+    implementation("org.modelingvalue:immutable-collections:1.7.0-BRANCHED")
     implementation("com.intellij:forms_rt:7.0.3")
 }
 publishing {
