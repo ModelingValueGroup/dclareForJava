@@ -25,14 +25,18 @@ import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodHandles.Lookup;
 import java.lang.reflect.*;
 import java.time.Clock;
-import java.util.*;
-import java.util.function.*;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.Scanner;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.UUID;
+import java.util.function.BiFunction;
+import java.util.function.Consumer;
+import java.util.function.Function;
+import java.util.function.Supplier;
 
 import org.modelingvalue.collections.*;
-import org.modelingvalue.collections.Collection;
-import org.modelingvalue.collections.List;
-import org.modelingvalue.collections.Map;
-import org.modelingvalue.collections.Set;
 import org.modelingvalue.collections.util.*;
 import org.modelingvalue.collections.util.ContextThread.ContextPool;
 import org.modelingvalue.dclare.*;
@@ -89,7 +93,7 @@ public final class DClare<U extends DUniverse> extends UniverseTransaction {
                                                                                                      });
     private static final Constant<Method, DProperty>                              PROPERTY           = Constant.<Method, DProperty> of("dProperty", (Method m) -> {
                                                                                                          if (m.getReturnType() != Void.TYPE && !m.isSynthetic() && m.getParameterCount() == 0 &&                                                                                               //
-                                                                                                         (ann(m, Property.class) != null || extend(m, DMethodProperty.class) != DMethodProperty.class)) {
+                                                                                                                 (ann(m, Property.class) != null || extend(m, DMethodProperty.class) != DMethodProperty.class)) {
                                                                                                              return dclare(extend(m, DMethodProperty.class), m);
                                                                                                          } else {
                                                                                                              return null;
@@ -125,9 +129,9 @@ public final class DClare<U extends DUniverse> extends UniverseTransaction {
                                                                                                      });
     public static final Constant<Method, DMethodRule>                             RULE               = Constant.of("dRule", (Method m) -> {
                                                                                                          if (m.getParameterCount() == 0 && !m.isSynthetic() && (m.isDefault() || Modifier.isPrivate(m.getModifiers())) &&                                                                      //
-                                                                                                         (ann(m, Property.class) != null || ann(m, Rule.class) != null ||                                                                                                                      //
-                                                                                                         extend(m, DMethodProperty.class) != DMethodProperty.class || extend(m, DMethodRule.class) != DMethodRule.class) &&                                                                    //
-                                                                                                         !m.isAnnotationPresent(Default.class) && !qual(m, constant)) {
+                                                                                                                 (ann(m, Property.class) != null || ann(m, Rule.class) != null ||                                                                                                              //
+                                                                                                                         extend(m, DMethodProperty.class) != DMethodProperty.class || extend(m, DMethodRule.class) != DMethodRule.class) &&                                                    //
+                                                                                                                 !m.isAnnotationPresent(Default.class) && !qual(m, constant)) {
                                                                                                              return dclare(extend(m, DMethodRule.class), m);
                                                                                                          } else {
                                                                                                              return null;
@@ -1001,14 +1005,14 @@ public final class DClare<U extends DUniverse> extends UniverseTransaction {
         }
     }
 
-    public static TriConsumer<State, State, Boolean> callNativesOfClass(Class<? extends DObject> filterClass) {
-        return new TriConsumer<>() {
+    public static StateDeltaHandler callNativesOfClass(Class<? extends DObject> filterClass) {
+        return new StateDeltaHandler() {
 
             private final Concurrent<Map<Pair<DNative, ChangeHandler>, Pair<Object, Object>>> deferred = Concurrent.of(Map.of());
             private final Concurrent<Map<Pair<DNative, ChangeHandler>, Pair<Object, Object>>> queue    = Concurrent.of(Map.of());
 
             @Override
-            public void accept(State pre, State post, Boolean last) {
+            public void handleDelta(State pre, State post, boolean last, DefaultMap<Object, Set<Setable>> setted) {
                 pre.diff(post, //
                         filterClass::isInstance, p -> true).forEachOrdered(e0 -> {
                             DObject dObject = (DObject) e0.getKey();
