@@ -15,11 +15,7 @@
 
 package org.modelingvalue.jdclare.test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.modelingvalue.jdclare.DClare.dNative;
 import static org.modelingvalue.jdclare.DClare.of;
 
@@ -32,8 +28,8 @@ import org.junit.jupiter.api.Test;
 import org.modelingvalue.collections.Collection;
 import org.modelingvalue.collections.Set;
 import org.modelingvalue.collections.util.Pair;
-import org.modelingvalue.dclare.Priority;
 import org.modelingvalue.dclare.Mutable;
+import org.modelingvalue.dclare.Priority;
 import org.modelingvalue.dclare.State;
 import org.modelingvalue.dclare.TransactionClass;
 import org.modelingvalue.dclare.ex.OutOfScopeException;
@@ -88,7 +84,7 @@ public class JDclareTests {
                 checkOrchestra(next);
             });
             if (prev != null && !prev.equals(next)) {
-                String diff = prev.diffString(next, o -> true, s -> Mutable.D_CHANGE_NR != s && DClare.ROOT_RUN_NR != s);
+                String diff = prev.diffString(next, o -> true, s -> Mutable.D_CHANGE_ID != s && DClare.ROOT_RUN_NR != s);
                 assertEquals("", diff, "Diff: ");
             }
             prev = next;

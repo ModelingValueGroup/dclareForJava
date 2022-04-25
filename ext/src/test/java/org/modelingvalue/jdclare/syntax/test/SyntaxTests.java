@@ -48,7 +48,7 @@ public class SyntaxTests {
             State next = doit();
             next.run(() -> test(next));
             if (prev != null) {
-                String diff = prev.diffString(next, o -> true, s -> Mutable.D_CHANGE_NR != s);
+                String diff = prev.diffString(next, o -> true, s -> Mutable.D_CHANGE_ID != s);
                 if (prev.equals(next)) {
                     //System.err.print("states equal" + ("".equals(diff) ? "" : " BUT DIFF != \"\""));
                 } else {
