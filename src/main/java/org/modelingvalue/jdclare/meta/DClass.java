@@ -98,7 +98,7 @@ public interface DClass<T extends DObject> extends DStructClass<T>, MutableClass
     @SuppressWarnings("rawtypes")
     @Override
     default Collection<Observer> dDerivers(Setable setable) {
-        return DStructClass.super.dDerivers(setable);
+        return MutableClass.super.dDerivers(setable);
     }
 
     @SuppressWarnings("unchecked")
