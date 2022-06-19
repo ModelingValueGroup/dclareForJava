@@ -15,8 +15,8 @@
 
 package org.modelingvalue.jdclare;
 
-import static org.modelingvalue.dclare.CoreSetableModifier.containment;
-import static org.modelingvalue.dclare.CoreSetableModifier.mandatory;
+import static org.modelingvalue.dclare.SetableModifier.containment;
+import static org.modelingvalue.dclare.SetableModifier.mandatory;
 import static org.modelingvalue.jdclare.PropertyQualifier.constant;
 
 import java.lang.annotation.Annotation;
