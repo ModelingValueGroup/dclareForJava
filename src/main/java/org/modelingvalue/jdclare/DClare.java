@@ -359,14 +359,14 @@ public final class DClare<U extends DUniverse> extends UniverseTransaction {
         DProperty dProperty = dProperty(dObject, property);
         ors.set(dObject, Set::add, dclare(DObjectRule.class, dObject, dProperty.name(), //
                 set(DObjectRule::consumer, id((Consumer<O>) o -> dProperty.set(o, value.apply(o)), dObject, dProperty)), //
-                set(DObjectRule::initPriority, Priority.forward)));
+                set(DObjectRule::initPriority, Priority.immediate)));
     }
 
     public static <O extends DObject, V> void rule(O dObject, String name, Consumer<O> rule) {
         Setable<DObject, Set<DRule>> ors = setable(D_OBJECT_RULES);
         ors.set(dObject, Set::add, dclare(DObjectRule.class, dObject, name, //
                 set(DObjectRule::consumer, id(rule, dObject, name)), //
-                set(DObjectRule::initPriority, Priority.forward)));
+                set(DObjectRule::initPriority, Priority.immediate)));
     }
 
     public static <O extends DObject, V> void set(O dObject, SerializableFunction<O, V> property, V value) {
