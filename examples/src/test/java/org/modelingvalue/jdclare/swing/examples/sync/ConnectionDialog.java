@@ -193,7 +193,7 @@ public class ConnectionDialog {
     }
 
     private void update() {
-        List<SocketSyncConnection> connections = connectionHandler.getConnections().collect(Collectors.toList());
+        List<SocketSyncConnection> connections = connectionHandler.getConnections().toMutable();
         connModel.updateRows(connections);
 
         boolean busy = connections.stream().anyMatch(SocketSyncConnection::isConnecting);
