@@ -18,7 +18,7 @@ defaultTasks("mvgCorrector", "test", "publish", "mvgTagger")
 plugins {
     `java-library`
     `maven-publish`
-    id("org.modelingvalue.gradle.mvgplugin") version "1.1.1"
+    id("org.modelingvalue.gradle.mvgplugin") version "1.1.3"
 }
 dependencies {
     implementation("org.modelingvalue:dclare:1.7.0-BRANCHED")

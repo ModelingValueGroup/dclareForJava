@@ -15,9 +15,7 @@
 
 package org.modelingvalue.jdclare.swing;
 
-import static org.modelingvalue.jdclare.DClare.callNativesOfClass;
-import static org.modelingvalue.jdclare.DClare.dClare;
-import static org.modelingvalue.jdclare.DClare.pre;
+import static org.modelingvalue.jdclare.DClare.*;
 import static org.modelingvalue.jdclare.PropertyQualifier.containment;
 import static org.modelingvalue.jdclare.PropertyQualifier.hidden;
 
@@ -47,7 +45,7 @@ public interface GuiUniverse extends DUniverse {
     @Override
     default void init() {
         DUniverse.super.init();
-        ImperativeTransaction itx = dClare().addImperative("swingNative", callNativesOfClass(DVisible.class), SwingUtilities::invokeLater, true);
+        ImperativeTransaction itx = dClare().addImperative("SWING", callNativesOfClass(DVisible.class), SwingUtilities::invokeLater, true);
         SwingUtilities.invokeLater(() -> LeafTransaction.getContext().setOnThread(itx));
         KeyboardFocusManager kfm = KeyboardFocusManager.getCurrentKeyboardFocusManager();
         kfm.addKeyEventDispatcher(e -> {

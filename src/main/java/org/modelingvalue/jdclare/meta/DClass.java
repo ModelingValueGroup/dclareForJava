@@ -15,13 +15,23 @@
 
 package org.modelingvalue.jdclare.meta;
 
-import org.modelingvalue.collections.*;
-import org.modelingvalue.dclare.*;
-import org.modelingvalue.jdclare.*;
+import static org.modelingvalue.jdclare.PropertyQualifier.constant;
+import static org.modelingvalue.jdclare.PropertyQualifier.containment;
 
-import java.lang.reflect.*;
+import java.lang.reflect.Method;
 
-import static org.modelingvalue.jdclare.PropertyQualifier.*;
+import org.modelingvalue.collections.Collection;
+import org.modelingvalue.collections.ContainingCollection;
+import org.modelingvalue.collections.Entry;
+import org.modelingvalue.collections.Map;
+import org.modelingvalue.collections.Set;
+import org.modelingvalue.dclare.Mutable;
+import org.modelingvalue.dclare.MutableClass;
+import org.modelingvalue.dclare.Observer;
+import org.modelingvalue.dclare.Setable;
+import org.modelingvalue.jdclare.DClare;
+import org.modelingvalue.jdclare.DObject;
+import org.modelingvalue.jdclare.Property;
 
 public interface DClass<T extends DObject> extends DStructClass<T>, MutableClass {
 
@@ -83,6 +93,12 @@ public interface DClass<T extends DObject> extends DStructClass<T>, MutableClass
     default Collection<? extends Observer<?>> dObservers() {
         //noinspection RedundantCast
         return (Collection) allRules().map(DRule::observer);
+    }
+
+    @SuppressWarnings("rawtypes")
+    @Override
+    default Collection<Observer> dDerivers(Setable setable) {
+        return MutableClass.super.dDerivers(setable);
     }
 
     @SuppressWarnings("unchecked")

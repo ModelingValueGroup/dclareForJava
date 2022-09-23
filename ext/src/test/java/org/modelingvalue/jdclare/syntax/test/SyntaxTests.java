@@ -15,13 +15,6 @@
 
 package org.modelingvalue.jdclare.syntax.test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.modelingvalue.jdclare.DClare.of;
-
-import java.time.Clock;
-import java.time.Instant;
-import java.time.ZoneId;
-
 import org.junit.jupiter.api.Test;
 import org.modelingvalue.collections.List;
 import org.modelingvalue.collections.Set;
@@ -34,13 +27,20 @@ import org.modelingvalue.jdclare.syntax.Text;
 import org.modelingvalue.jdclare.syntax.meta.GrammarClass;
 import org.modelingvalue.jdclare.syntax.test.MySyntax.Unit;
 
+import java.time.Clock;
+import java.time.Instant;
+import java.time.ZoneId;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.modelingvalue.jdclare.DClare.of;
+
 public class SyntaxTests {
 
     private static final int     MANY_TIMES  = 32;
     private static final boolean DUMP        = Boolean.getBoolean("DUMP");
     private static final Clock   FIXED_CLOCK = Clock.fixed(Instant.EPOCH, ZoneId.systemDefault());
 
-    @Test
+    //@Test
     public void manySyntax() {
         State prev = null;
         for (int i = 0; i < MANY_TIMES; i++) {
@@ -48,7 +48,7 @@ public class SyntaxTests {
             State next = doit();
             next.run(() -> test(next));
             if (prev != null) {
-                String diff = prev.diffString(next, o -> true, s -> Mutable.D_CHANGE_NR != s);
+                String diff = prev.diffString(next, o -> true, s -> Mutable.D_CHANGE_ID != s);
                 if (prev.equals(next)) {
                     //System.err.print("states equal" + ("".equals(diff) ? "" : " BUT DIFF != \"\""));
                 } else {

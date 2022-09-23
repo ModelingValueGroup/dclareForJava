@@ -20,11 +20,24 @@ import static org.modelingvalue.jdclare.PropertyQualifier.*;
 import java.io.PrintStream;
 import java.io.PrintWriter;
 
-import org.modelingvalue.collections.*;
+import org.modelingvalue.collections.Collection;
+import org.modelingvalue.collections.Entry;
+import org.modelingvalue.collections.List;
+import org.modelingvalue.collections.Map;
+import org.modelingvalue.collections.Set;
 import org.modelingvalue.collections.util.NonLockingPrintWriter;
 import org.modelingvalue.collections.util.StringUtil;
-import org.modelingvalue.dclare.*;
-import org.modelingvalue.jdclare.meta.*;
+import org.modelingvalue.dclare.Mutable;
+import org.modelingvalue.dclare.MutableTransaction;
+import org.modelingvalue.dclare.Observer;
+import org.modelingvalue.dclare.Setable;
+import org.modelingvalue.dclare.State;
+import org.modelingvalue.dclare.Transaction;
+import org.modelingvalue.dclare.UniverseTransaction;
+import org.modelingvalue.jdclare.meta.DClass;
+import org.modelingvalue.jdclare.meta.DProperty;
+import org.modelingvalue.jdclare.meta.DRule;
+import org.modelingvalue.jdclare.meta.DStructClass;
 
 @SuppressWarnings("unused")
 @Extend(DClass.class)
@@ -90,11 +103,6 @@ public interface DObject extends DStruct, Mutable {
     }
 
     @Override
-    default Direction dDirection() {
-        return Mutable.super.dDirection(); // do not remove this! it seems unneccesarry but it is not; this has to do with how Proxy handles calls.
-    }
-
-    @Override
     default boolean dHasAncestor(Mutable ancestor) {
         return Mutable.super.dHasAncestor(ancestor); // do not remove this! it seems unneccesarry but it is not; this has to do with how Proxy handles calls.
     }
@@ -110,14 +118,13 @@ public interface DObject extends DStruct, Mutable {
     }
 
     @Override
-    default boolean dIsOrphan(State state) {
-        return Mutable.super.dIsOrphan(state); // do not remove this! it seems unneccesarry but it is not; this has to do with how Proxy handles calls.
+    default boolean dIsConstant() {
+        return Mutable.super.dIsConstant(); // do not remove this! it seems unneccesarry but it is not; this has to do with how Proxy handles calls.
     }
 
-    @SuppressWarnings("rawtypes")
     @Override
-    default boolean dToBeCleared(Setable setable) {
-        return Mutable.super.dToBeCleared(setable); // do not remove this! it seems unneccesarry but it is not; this has to do with how Proxy handles calls.
+    default boolean dIsOrphan(State state) {
+        return Mutable.super.dIsOrphan(state); // do not remove this! it seems unneccesarry but it is not; this has to do with how Proxy handles calls.
     }
 
     @Override
