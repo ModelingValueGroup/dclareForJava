@@ -27,13 +27,7 @@ import org.modelingvalue.collections.Map;
 import org.modelingvalue.collections.Set;
 import org.modelingvalue.collections.util.NonLockingPrintWriter;
 import org.modelingvalue.collections.util.StringUtil;
-import org.modelingvalue.dclare.Mutable;
-import org.modelingvalue.dclare.MutableTransaction;
-import org.modelingvalue.dclare.Observer;
-import org.modelingvalue.dclare.Setable;
-import org.modelingvalue.dclare.State;
-import org.modelingvalue.dclare.Transaction;
-import org.modelingvalue.dclare.UniverseTransaction;
+import org.modelingvalue.dclare.*;
 import org.modelingvalue.jdclare.meta.DClass;
 import org.modelingvalue.jdclare.meta.DProperty;
 import org.modelingvalue.jdclare.meta.DRule;
@@ -118,8 +112,8 @@ public interface DObject extends DStruct, Mutable {
     }
 
     @Override
-    default boolean dIsConstant() {
-        return Mutable.super.dIsConstant(); // do not remove this! it seems unneccesarry but it is not; this has to do with how Proxy handles calls.
+    default ConstantState dMemoization(AbstractDerivationTransaction tx) {
+        return Mutable.super.dMemoization(tx); // do not remove this! it seems unneccesarry but it is not; this has to do with how Proxy handles calls.
     }
 
     @Override
