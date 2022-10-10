@@ -175,19 +175,27 @@ public final class DClare<U extends DUniverse> extends UniverseTransaction {
                                                                                                      });
 
     public static <U extends DUniverse> DClare<U> of(Class<U> universeClass) {
-        return new DClare<>(universeClass, true, Clock.systemDefaultZone(), 100);
+        return new DClare<>(universeClass, true, Clock.systemDefaultZone(), new DclareConfig().withMaxInInQueue(100).withDevMode(true));
+    }
+
+    public static <U extends DUniverse> DClare<U> of(Class<U> universeClass, DclareConfig config) {
+        return new DClare<>(universeClass, true, Clock.systemDefaultZone(), config);
     }
 
     public static <U extends DUniverse> DClare<U> of(Class<U> universeClass, Clock clock) {
-        return new DClare<>(universeClass, true, clock, 100);
+        return new DClare<>(universeClass, true, clock, new DclareConfig().withMaxInInQueue(100).withDevMode(true));
+    }
+
+    public static <U extends DUniverse> DClare<U> of(Class<U> universeClass, Clock clock, DclareConfig config) {
+        return new DClare<>(universeClass, true, clock, config);
     }
 
     public static <U extends DUniverse> DClare<U> of(Class<U> universeClass, boolean checkFatals) {
-        return new DClare<>(universeClass, checkFatals, Clock.systemDefaultZone(), 100);
+        return new DClare<>(universeClass, checkFatals, Clock.systemDefaultZone(), new DclareConfig().withMaxInInQueue(100).withDevMode(true));
     }
 
-    public static <U extends DUniverse> DClare<U> of(Class<U> universeClass, boolean checkFatals, int maxInInQueue) {
-        return new DClare<>(universeClass, checkFatals, Clock.systemDefaultZone(), maxInInQueue);
+    public static <U extends DUniverse> DClare<U> of(Class<U> universeClass, boolean checkFatals, DclareConfig config) {
+        return new DClare<>(universeClass, checkFatals, Clock.systemDefaultZone(), config);
     }
 
     @SafeVarargs
@@ -1088,8 +1096,8 @@ public final class DClare<U extends DUniverse> extends UniverseTransaction {
     private final Action<Universe>      restart     = Action.of("$restart", o -> restart());
     private final Action<Universe>      checkFatals;
 
-    private DClare(Class<? extends DUniverse> universeClass, boolean checkFatals, Clock clock, int maxInInQueue) {
-        super(dStruct(universeClass), THE_POOL, new DclareConfig().withMaxInInQueue(maxInInQueue).withDevMode(true));
+    private DClare(Class<? extends DUniverse> universeClass, boolean checkFatals, Clock clock, DclareConfig config) {
+        super(dStruct(universeClass), THE_POOL, config);
         this.checkFatals = checkFatals ? Action.of("$checkFatals", o -> checkFatals()) : null;
         this.clock = clock;
     }
