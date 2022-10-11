@@ -1038,7 +1038,7 @@ public final class DClare<U extends DUniverse> extends UniverseTransaction {
                                 } else if (diff.b() == null) {
                                     no.exit((DObject) diff.a().a());
                                 }
-                            } else if (Mutable.D_PARENT_CONTAINING.get(dObject) != null) {
+                            } else if (dObject.dParentContaining() != null) {
                                 e0.getValue().forEachOrdered(e1 -> {
                                     if (e1.getKey().id() instanceof DProperty && e1.getKey().getClass() == Observed.class) {
                                         DProperty<DStruct, Object> p = (DProperty) e1.getKey().id();
