@@ -26,6 +26,7 @@ import org.modelingvalue.collections.List;
 import org.modelingvalue.collections.Map;
 import org.modelingvalue.collections.Set;
 import org.modelingvalue.collections.util.NonLockingPrintWriter;
+import org.modelingvalue.collections.util.Pair;
 import org.modelingvalue.collections.util.StringUtil;
 import org.modelingvalue.dclare.*;
 import org.modelingvalue.jdclare.meta.DClass;
@@ -114,6 +115,11 @@ public interface DObject extends DStruct, Mutable {
     @Override
     default ConstantState dMemoization(AbstractDerivationTransaction tx) {
         return Mutable.super.dMemoization(tx); // do not remove this! it seems unneccesarry but it is not; this has to do with how Proxy handles calls.
+    }
+
+    @Override
+    default Pair<Mutable, Setable<Mutable, ?>> dParentContaining() {
+        return Mutable.super.dParentContaining();
     }
 
     @Override
