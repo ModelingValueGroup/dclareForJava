@@ -123,8 +123,8 @@ public interface DObject extends DStruct, Mutable {
     }
 
     @Override
-    default Pair<Mutable, Setable<Mutable, ?>> dSetParentContaining(Pair<Mutable, Setable<Mutable, ?>> pc) {
-        return Mutable.super.dSetParentContaining(pc); // do not remove this! it seems unneccesarry but it is not; this has to do with how Proxy handles calls.
+    default void dChangedParentContaining(Pair<Mutable, Setable<Mutable, ?>> pre, Pair<Mutable, Setable<Mutable, ?>> post) {
+        Mutable.super.dChangedParentContaining(pre, post); // do not remove this! it seems unneccesarry but it is not; this has to do with how Proxy handles calls.
     }
 
     @Override
