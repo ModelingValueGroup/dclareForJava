@@ -15,12 +15,8 @@
 
 package org.modelingvalue.jdclare.test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
-import static org.modelingvalue.jdclare.DClare.dclare;
-import static org.modelingvalue.jdclare.DClare.of;
-import static org.modelingvalue.jdclare.DClare.set;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.modelingvalue.jdclare.DClare.*;
 
 import java.util.HashSet;
 import java.util.function.Function;
@@ -228,6 +224,7 @@ public class BirdTest {
     }
 
     @Test
+    @Disabled
     public void tooManyObserversException2() {
         TooManyObserversException tmoe = Assertions.assertThrows(TooManyObserversException.class, () -> {
             try {
