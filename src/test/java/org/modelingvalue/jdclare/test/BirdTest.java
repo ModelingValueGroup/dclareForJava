@@ -310,6 +310,22 @@ public class BirdTest {
     }
 
     @Test
+    @Disabled
+    public void nonDeterministicException2() {
+        try {
+            DClare<BirdUniverse> dclare = of(BirdUniverse.class);
+            start(dclare);
+            addBird(dclare, Pheasant.class, Pair.of("0", "yellow"));
+            stop(dclare);
+            fail();
+        } catch (Throwable t) {
+            Throwable cause = getCause(t);
+            assertThrowable(cause, NonDeterministicException.class, java.util.regex.Pattern.quote("Constant is not consistent 0.tailColor=yellow!=notyellow"));
+        }
+    }
+
+    @Test
+    @Disabled
     public void nonDeterministicException3() {
         try {
             DClare<BirdUniverse> dclare = of(BirdUniverse.class);
