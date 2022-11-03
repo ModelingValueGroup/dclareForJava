@@ -18,6 +18,7 @@ package org.modelingvalue.jdclare.swing.examples.newton;
 import static org.modelingvalue.jdclare.DClare.*;
 import static org.modelingvalue.jdclare.PropertyQualifier.*;
 
+import java.time.Instant;
 import java.util.Comparator;
 
 import org.modelingvalue.collections.List;
@@ -109,7 +110,7 @@ public interface Table extends DCanvas {
     default CollisionPair firstCollision() {
         if (moving()) {
             double timeWindow = dUniverse().clock().passSeconds() * 2;
-            return collisionPairs().filter(c -> c.preCollisionTime() > 0.0 && c.preCollisionTime() <= timeWindow).min(Comparator.comparingDouble(CollisionPair::preCollisionTime)).orElse(null);
+            return collisionPairs().filter(c -> c.preCollisionTime() > 0.0 && c.preCollisionTime() <= timeWindow && c.postCollisionTime() != Double.MAX_VALUE).min(Comparator.comparingDouble(CollisionPair::preCollisionTime)).orElse(null);
         } else {
             return null;
         }
@@ -125,9 +126,13 @@ public interface Table extends DCanvas {
     default void setCollisionTime() {
         CollisionPair firstCollision = firstCollision();
         if (firstCollision != null && collision() == null) {
-            double passNanos = (passSeconds() + firstCollision.postCollisionTime()) * DClock.BILLION;
-            DClock clock = dUniverse().clock();
-            set(clock, DClock::time, pre(clock, DClock::time).plusNanos((long) passNanos));
+            double postCollisionTime = firstCollision.postCollisionTime();
+            if (postCollisionTime != Double.MAX_VALUE) {
+                double passNanos = (passSeconds() + postCollisionTime) * DClock.BILLION;
+                DClock clock = dUniverse().clock();
+                Instant plusNanos = pre(clock, DClock::time).plusNanos((long) passNanos);
+                set(clock, DClock::time, plusNanos);
+            }
         }
     }
 }
