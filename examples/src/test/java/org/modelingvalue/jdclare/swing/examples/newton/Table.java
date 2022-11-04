@@ -18,6 +18,7 @@ package org.modelingvalue.jdclare.swing.examples.newton;
 import static org.modelingvalue.jdclare.DClare.*;
 import static org.modelingvalue.jdclare.PropertyQualifier.*;
 
+import java.time.Instant;
 import java.util.Comparator;
 
 import org.modelingvalue.collections.List;
@@ -125,9 +126,11 @@ public interface Table extends DCanvas {
     default void setCollisionTime() {
         CollisionPair firstCollision = firstCollision();
         if (firstCollision != null && collision() == null) {
-            double passNanos = (passSeconds() + firstCollision.postCollisionTime()) * DClock.BILLION;
+            double postCollisionTime = firstCollision.postCollisionTime();
+            double passNanos = (passSeconds() + postCollisionTime) * DClock.BILLION;
             DClock clock = dUniverse().clock();
-            set(clock, DClock::time, pre(clock, DClock::time).plusNanos((long) passNanos));
+            Instant plusNanos = pre(clock, DClock::time).plusNanos((long) passNanos);
+            set(clock, DClock::time, plusNanos);
         }
     }
 }
