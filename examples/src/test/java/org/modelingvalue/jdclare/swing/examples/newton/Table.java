@@ -110,7 +110,7 @@ public interface Table extends DCanvas {
     default CollisionPair firstCollision() {
         if (moving()) {
             double timeWindow = dUniverse().clock().passSeconds() * 2;
-            return collisionPairs().filter(c -> c.preCollisionTime() > 0.0 && c.preCollisionTime() <= timeWindow && c.postCollisionTime() != Double.MAX_VALUE).min(Comparator.comparingDouble(CollisionPair::preCollisionTime)).orElse(null);
+            return collisionPairs().filter(c -> c.preCollisionTime() > 0.0 && c.preCollisionTime() <= timeWindow).min(Comparator.comparingDouble(CollisionPair::preCollisionTime)).orElse(null);
         } else {
             return null;
         }
@@ -127,12 +127,10 @@ public interface Table extends DCanvas {
         CollisionPair firstCollision = firstCollision();
         if (firstCollision != null && collision() == null) {
             double postCollisionTime = firstCollision.postCollisionTime();
-            if (postCollisionTime != Double.MAX_VALUE) {
-                double passNanos = (passSeconds() + postCollisionTime) * DClock.BILLION;
-                DClock clock = dUniverse().clock();
-                Instant plusNanos = pre(clock, DClock::time).plusNanos((long) passNanos);
-                set(clock, DClock::time, plusNanos);
-            }
+            double passNanos = (passSeconds() + postCollisionTime) * DClock.BILLION;
+            DClock clock = dUniverse().clock();
+            Instant plusNanos = pre(clock, DClock::time).plusNanos((long) passNanos);
+            set(clock, DClock::time, plusNanos);
         }
     }
 }
