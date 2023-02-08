@@ -353,13 +353,14 @@ public final class DClare<U extends DUniverse> extends UniverseTransaction {
         State state = CLASS_INIT_STATE.get();
         Method fromMethod = method(from);
         Method toMethod = method(to);
-        state = state.set(fromMethod, OPPOSITE, toMethod);
-        state = state.set(toMethod, OPPOSITE, fromMethod);
+        state = state.set(fromMethod, OPPOSITE, toMethod, state.previous());
+        state = state.set(toMethod, OPPOSITE, fromMethod, state.previous());
         CLASS_INIT_STATE.setOnThread(state);
     }
 
     public static <O extends DObject, A, B> void SCOPE(SerializableFunction<O, A> property, SerializableFunction<O, Collection<B>> scope) {
-        CLASS_INIT_STATE.setOnThread(CLASS_INIT_STATE.get().set(method(property), SCOPE, method(scope)));
+        State state = CLASS_INIT_STATE.get();
+        CLASS_INIT_STATE.setOnThread(state.set(method(property), SCOPE, method(scope), state.previous()));
     }
 
     public static <O extends DObject, V> void rule(O dObject, SerializableFunction<O, V> property, Function<O, V> value) {
