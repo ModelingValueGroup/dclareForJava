@@ -182,7 +182,7 @@ public class JDclareTests {
                 checkPriorities(next);
             });
             if (prev != null && !prev.equals(next)) {
-                String diff = prev.diffString(next);
+                String diff = prev.diffString(next, o -> true, s -> Mutable.D_CHANGE_ID != s);
                 assertEquals("", diff, "Diff: ");
             }
             prev = next;
