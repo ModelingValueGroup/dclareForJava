@@ -63,7 +63,7 @@ public interface DMethodRule<O extends DObject, T> extends DRule<O>, DStruct1<Me
     @Override
     @Property(constant)
     default Priority initPriority() {
-        return validation() ? Priority.outer : Priority.immediate;
+        return validation() ? Priority.OUTER : Priority.one;
     }
 
 }
