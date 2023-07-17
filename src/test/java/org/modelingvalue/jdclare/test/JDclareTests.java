@@ -131,7 +131,7 @@ public class JDclareTests {
         assertEquals(Set.of(), result.getObjects(DNamed.class).filter(o -> o.name() == null).toSet(), "No name:");
         assertEquals(Set.of(), result.getObjects(DUniverse.class).flatMap(DObject::dAllProblems).toSet(), "Problems:");
         Set<Pair<DObject, Set<TransactionClass>>> scheduled = result.getObjects(DObject.class).map(o -> Pair.of(o, //
-                Collection.of(Priority.ALL).flatMap(d -> Collection.concat(d.actions.get(o), d.children.get(o))).toSet())).filter(p -> !p.b().isEmpty()).toSet();
+                Collection.of(Priority.ALL).flatMap(prio -> Collection.concat(result.actions(prio).get(o), result.children(prio).get(o))).toSet())).filter(p -> !p.b().isEmpty()).toSet();
         // System.err.println(scheduled);
         assertEquals(Set.of(), scheduled, "Scheduled:");
     }
