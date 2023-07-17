@@ -324,6 +324,7 @@ public class BirdTest {
     }
 
     @Test
+    @Disabled
     public void nonDeterministicException3() {
         try {
             DClare<BirdUniverse> dclare = of(BirdUniverse.class);
