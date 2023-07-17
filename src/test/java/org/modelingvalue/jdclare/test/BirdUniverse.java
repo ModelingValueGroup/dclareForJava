@@ -15,22 +15,11 @@
 
 package org.modelingvalue.jdclare.test;
 
-import static org.modelingvalue.jdclare.DClare.dUniverse;
-import static org.modelingvalue.jdclare.DClare.dclare;
-import static org.modelingvalue.jdclare.DClare.set;
-import static org.modelingvalue.jdclare.PropertyQualifier.constant;
-import static org.modelingvalue.jdclare.PropertyQualifier.containment;
-import static org.modelingvalue.jdclare.PropertyQualifier.optional;
+import static org.modelingvalue.jdclare.DClare.*;
+import static org.modelingvalue.jdclare.PropertyQualifier.*;
 
 import org.modelingvalue.collections.Set;
-import org.modelingvalue.jdclare.DClare;
-import org.modelingvalue.jdclare.DNamed;
-import org.modelingvalue.jdclare.DObject;
-import org.modelingvalue.jdclare.DStruct2;
-import org.modelingvalue.jdclare.DUniverse;
-import org.modelingvalue.jdclare.Default;
-import org.modelingvalue.jdclare.Property;
-import org.modelingvalue.jdclare.Rule;
+import org.modelingvalue.jdclare.*;
 
 @SuppressWarnings("unused")
 public interface BirdUniverse extends DUniverse {
@@ -207,11 +196,11 @@ public interface BirdUniverse extends DUniverse {
         default void addChildren2() {
             if ("yellow".equals(color())) {
                 for (int i = 0; i < 400; i++) {
-                    Sparrow child = dclare(Sparrow.class, this, name() + i);
+                    Bird child = dclare(Bird.class, this, name() + i);
                     set(child, Bird::color, "notyellow");
                     set(this, Bird::children, Set::add, child);
                     for (int j = 0; j < 10; j++) {
-                        Sparrow grandChild = dclare(Sparrow.class, child, name() + j + "gc"); //
+                        Bird grandChild = dclare(Bird.class, child, name() + j + "gc"); //
                         set(grandChild, Bird::color, "notyellow");
                         set(child, Bird::children, Set::add, grandChild);
                     }
@@ -262,7 +251,7 @@ public interface BirdUniverse extends DUniverse {
         @Rule
         default void addChildren() {
             if ("black".equals(color())) {
-                for (int i = 0; i < 500; i++) {
+                for (int i = 0; i < 2000; i++) {
                     Sparrow child = dclare(Sparrow.class, this, name() + i);
                     set(child, Bird::color, "noblack");
                     set(this, Bird::children, Set::add, child);
