@@ -73,12 +73,12 @@ public interface Table extends DCanvas {
 
     @Property(containment)
     default Set<CollisionPair> collisionPairs() {
-        return balls().flatMap(Ball::collisionPairs).toSet();
+        return balls().flatMap(Ball::collisionPairs).asSet();
     }
 
     @Property()
     default List<Ball> balls() {
-        return shapes().filter(Ball.class).toList();
+        return shapes().filter(Ball.class).asList();
     }
 
     @Property

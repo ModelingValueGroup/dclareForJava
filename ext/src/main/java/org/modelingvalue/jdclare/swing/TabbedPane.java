@@ -32,7 +32,7 @@ public interface TabbedPane extends DComponent {
 
     @Property(containment)
     default Set<DComponent> containedTabs() {
-        return tabs().toValues().toSet();
+        return tabs().toValues().asSet();
     }
 
     class TabbedPaneNative extends DComponentNative<TabbedPane, JTabbedPane> {

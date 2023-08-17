@@ -33,7 +33,7 @@ public interface DMultiMatcher extends DStruct2<List<DPattern>, CharSequence> {
 
     default List<Matcher> matchers() {
         CharSequence string = string();
-        return patterns().map(p -> p.pattern().matcher(string == null ? "" : string)).toList();
+        return patterns().map(p -> p.pattern().matcher(string == null ? "" : string)).asList();
     }
 
     default Collection<DMatch> matches() {

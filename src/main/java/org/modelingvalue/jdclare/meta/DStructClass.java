@@ -44,13 +44,13 @@ public interface DStructClass<T extends DStruct> extends DClassContainer, DStruc
     @SuppressWarnings({"rawtypes", "unchecked"})
     @Property(constant)
     default Set<DStructClass> allSupers() {
-        return Collection.concat(this, supers().flatMap(DStructClass::allSupers)).toSet();
+        return Collection.concat(this, supers().flatMap(DStructClass::allSupers)).asSet();
     }
 
     @SuppressWarnings("rawtypes")
     @Property(constant)
     default List<DStructClass> sortedSupers() {
-        return allSupers().sorted((a, b) -> a.equals(b) ? 0 : b.isSubOf(a) ? 1 : a.isSubOf(b) ? -1 : 0).toList();
+        return allSupers().sorted((a, b) -> a.equals(b) ? 0 : b.isSubOf(a) ? 1 : a.isSubOf(b) ? -1 : 0).asList();
     }
 
     @SuppressWarnings("rawtypes")
@@ -107,7 +107,7 @@ public interface DStructClass<T extends DStruct> extends DClassContainer, DStruc
 
     @Property(constant)
     default List<DProperty<T, ?>> keys() {
-        return allProperties().filter(DProperty::key).sorted(Comparator.comparingInt(DProperty::keyNr)).toList();
+        return allProperties().filter(DProperty::key).sorted(Comparator.comparingInt(DProperty::keyNr)).asList();
     }
 
     @SuppressWarnings({"rawtypes", "unchecked"})

@@ -33,7 +33,7 @@ public interface Tokenizer<S extends Grammar> extends DStruct1<Text<S, ?>>, DObj
 
     @Property
     default List<DMatch> matches() {
-        return text().grammar().newLinePattern().matcher(text().string()).matches(true).toList();
+        return text().grammar().newLinePattern().matcher(text().string()).matches(true).asList();
     }
 
     @Property(containment)
@@ -44,7 +44,7 @@ public interface Tokenizer<S extends Grammar> extends DStruct1<Text<S, ?>>, DObj
         }, Line::id, (l, m) -> true, (i, m) -> dclare(Line.class, text(), i)).linked((p, l, n) -> {
             set(l, Line::next, n);
             return l;
-        }).toList();
+        }).asList();
     }
 
     @Rule

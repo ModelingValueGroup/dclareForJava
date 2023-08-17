@@ -45,7 +45,7 @@ public interface DCanvas extends DComponent {
 
     @Property
     default Set<DShape> selected() {
-        return shapes().filter(DShape::selected).toSet();
+        return shapes().filter(DShape::selected).asSet();
     }
 
     @Property(containment)

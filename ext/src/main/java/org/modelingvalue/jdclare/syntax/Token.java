@@ -48,7 +48,7 @@ public interface Token extends DObject, DStruct2<Line, Long> {
     @Property
     default Set<TerminalParser> terminals() {
         TokenType type = type();
-        return type != null ? type.terminals().map(s -> dclare(TerminalParser.class, s, this)).toSet() : Set.of();
+        return type != null ? type.terminals().map(s -> dclare(TerminalParser.class, s, this)).asSet() : Set.of();
     }
 
     @Property(constant)

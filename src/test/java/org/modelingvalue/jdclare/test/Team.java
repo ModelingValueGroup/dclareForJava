@@ -54,7 +54,7 @@ public interface Team extends DUUObject, DNamed {
 
     @Property
     default List<Person> teamMembers() {
-        List<Person> result = developers().toList();
+        List<Person> result = developers().asList();
         Person       master = scrumMaster();
         if (master != null) {
             result = result.append(master);

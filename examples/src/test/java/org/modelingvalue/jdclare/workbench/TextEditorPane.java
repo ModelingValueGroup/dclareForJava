@@ -66,7 +66,7 @@ public interface TextEditorPane extends DTextPane<TokenTextElement>, DStruct1<WB
             int len = token.value().length();
             TextStyle style = style(wb.problemTokens().contains(token) ? null : token.type());
             return dclare(TokenTextElement.class, start, len, style, token);
-        })).toList();
+        })).asList();
     }
 
     default TextStyle style(TokenType type) {

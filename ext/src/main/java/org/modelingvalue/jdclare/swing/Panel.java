@@ -36,7 +36,7 @@ public interface Panel extends DComponent {
 
     @Property(containment)
     default Set<DComponent> components() {
-        return content().toKeys().toSet();
+        return content().toKeys().asSet();
     }
 
     class PanelNative extends DComponentNative<Panel, JPanel> {

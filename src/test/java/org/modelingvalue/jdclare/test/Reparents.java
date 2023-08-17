@@ -29,7 +29,7 @@ public interface Reparents extends DUniverse {
     @Override
     default void init() {
         DUniverse.super.init();
-        set(this, Reparents::tree, Collection.range(0, 100).map(nr -> dclare(Node.class, nr)).toSet());
+        set(this, Reparents::tree, Collection.range(0, 100).map(nr -> dclare(Node.class, nr)).asSet());
     }
 
     interface Node extends DObject, DStruct1<Integer> {
@@ -46,12 +46,12 @@ public interface Reparents extends DUniverse {
                 if (nr() < 100 && nr() % 10 == 0) {
                     int g = nr() / 10 + 1;
                     Node parent = dclare(Node.class, g * 100);
-                    Set<Node> children = Collection.range(nr(), nr() + 10).map(nr -> dclare(Node.class, nr)).toSet();
+                    Set<Node> children = Collection.range(nr(), nr() + 10).map(nr -> dclare(Node.class, nr)).asSet();
                     reparent(parent, children);
                 }
                 if (nr() == 100) {
                     Node parent = dclare(Node.class, 10000);
-                    Set<Node> children = Collection.range(1, 11).map(nr -> dclare(Node.class, nr * 100)).toSet();
+                    Set<Node> children = Collection.range(1, 11).map(nr -> dclare(Node.class, nr * 100)).asSet();
                     reparent(parent, children);
                 }
             }

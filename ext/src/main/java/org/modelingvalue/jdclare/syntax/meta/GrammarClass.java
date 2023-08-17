@@ -35,36 +35,36 @@ public interface GrammarClass<T extends Grammar> extends DClass<T> {
     @Property(constant)
     default Set<TokenType> skipped() {
         Skipped skipped = ann(jClass(), Skipped.class);
-        return skipped == null ? Set.of() : Collection.of(skipped.value()).map(r -> dclare(TokenType.class, GrammarClass.this, r, null, set(TokenType::skipped, true))).toSet();
+        return skipped == null ? Set.of() : Collection.of(skipped.value()).map(r -> dclare(TokenType.class, GrammarClass.this, r, null, set(TokenType::skipped, true))).asSet();
     }
 
     @SuppressWarnings("rawtypes")
     @Property(constant)
     default Set<NodeClass> syntaxNodes() {
-        return classes().filter(NodeClass.class).toSet();
+        return classes().filter(NodeClass.class).asSet();
     }
 
     @SuppressWarnings({"rawtypes", "unchecked"})
     @Property(constant)
     default Set<SequenceType> sequences() {
         Collection<SequenceClass<Node>> sequences = (Collection) syntaxNodes().filter(SequenceClass.class);
-        return sequences.flatMap(s -> Collection.concat(s, s.syntaxProperties().flatMap(SyntaxProperty::anonymousSequenceTypes))).toSet();
+        return sequences.flatMap(s -> Collection.concat(s, s.syntaxProperties().flatMap(SyntaxProperty::anonymousSequenceTypes))).asSet();
     }
 
     @SuppressWarnings("rawtypes")
     @Property(constant)
     default Set<TerminalClass> terminals() {
-        return syntaxNodes().filter(TerminalClass.class).toSet();
+        return syntaxNodes().filter(TerminalClass.class).asSet();
     }
 
     @Property({constant, containment})
     default List<TokenType> tokens() {
-        return Collection.concat(terminals().map(TerminalClass::token), skipped()).sorted(TokenType::compare).toList();
+        return Collection.concat(terminals().map(TerminalClass::token), skipped()).sorted(TokenType::compare).asList();
     }
 
     @Property(constant)
     default List<DPattern> tokenPatterns() {
-        return tokens().map(TokenType::pattern).toList();
+        return tokens().map(TokenType::pattern).asList();
     }
 
 }
