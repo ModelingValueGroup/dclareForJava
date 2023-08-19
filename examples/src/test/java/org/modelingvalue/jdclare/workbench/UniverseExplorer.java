@@ -159,7 +159,7 @@ public interface UniverseExplorer extends Tree, DStruct1<WBUniverse> {
                                 }), this);
                                 return dclare(MenuItem.class, this, "create " + c.name(), action);
                             })//
-                            .toList();
+                            .asList();
 
                 }
             }

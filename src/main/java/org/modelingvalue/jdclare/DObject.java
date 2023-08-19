@@ -167,7 +167,7 @@ public interface DObject extends DStruct, Mutable {
     @Property(hidden)
     default Set<DProblem> dProblems() {
         return Collection.concat(dClass().allValidations().flatMap(p -> (Collection<DProblem>) p.getCollection(this)), //
-                dProblemsMap().flatMap(Entry::getValue)).toSet();
+                dProblemsMap().flatMap(Entry::getValue)).asSet();
     }
 
     @Property(hidden)

@@ -35,13 +35,13 @@ public interface Table<R, C, V> extends DComponent {
     @Property(containment)
     default List<Row<R, C, V>> rows() {
         List<R> rowObjects = rowObjects();
-        return Collection.range(0, rowObjects.size()).map(i -> row(rowObjects.get(i), i)).toList();
+        return Collection.range(0, rowObjects.size()).map(i -> row(rowObjects.get(i), i)).asList();
     }
 
     @Property(containment)
     default List<Column<R, C, V>> columns() {
         List<C> columnObjects = columnObjects();
-        return Collection.range(0, columnObjects.size()).map(i -> column(columnObjects.get(i), i)).toList();
+        return Collection.range(0, columnObjects.size()).map(i -> column(columnObjects.get(i), i)).asList();
     }
 
     List<R> rowObjects();

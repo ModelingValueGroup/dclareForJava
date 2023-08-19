@@ -50,7 +50,7 @@ public interface DTreeNode<T> extends DVisible, DStruct2<DTreeNode, T> {
 
     @Property(containment)
     default List<DTreeNode> childNodes() {
-        return wasExpanded() ? children(object()).toList() : List.of();
+        return wasExpanded() ? children(object()).asList() : List.of();
     }
 
     @Property

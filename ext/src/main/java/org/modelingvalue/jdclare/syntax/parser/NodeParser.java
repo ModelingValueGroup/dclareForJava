@@ -70,7 +70,7 @@ public interface NodeParser extends DObject {
 
     @Property
     default Set<NodeParser> sequences() {
-        return matched() ? type().possibleParents().map(s -> (NodeParser) dclare(SequenceParser.class, this, s)).flatMap(NodeParser::parsers).toSet() : Set.of();
+        return matched() ? type().possibleParents().map(s -> (NodeParser) dclare(SequenceParser.class, this, s)).flatMap(NodeParser::parsers).asSet() : Set.of();
     }
 
     NodeParser nextMatch(NodeType pattern, SequenceParser upper);
@@ -122,7 +122,7 @@ public interface NodeParser extends DObject {
 
     @Property
     default Set<SequenceParser> uppersToRoot() {
-        return matchedUppers().filter(NodeParser::resolvedToRoot).toSet();
+        return matchedUppers().filter(NodeParser::resolvedToRoot).asSet();
     }
 
     @Property
@@ -137,7 +137,7 @@ public interface NodeParser extends DObject {
 
     @Property
     default Set<SequenceParser> matchedUppers() {
-        return uppers().filter(SequenceParser::matched).toSet();
+        return uppers().filter(SequenceParser::matched).asSet();
     }
 
     TerminalParser firstTerminal();

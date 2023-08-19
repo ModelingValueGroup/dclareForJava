@@ -30,7 +30,7 @@ public interface ProblemsTable extends Table<DProblem, ProblemsTableColumn, Obje
 
     @Override
     default List<DProblem> rowObjects() {
-        return wb().dAllProblems().toList();
+        return wb().dAllProblems().asList();
     }
 
     @Override

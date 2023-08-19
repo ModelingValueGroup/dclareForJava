@@ -112,8 +112,8 @@ public class SyntaxTests {
     }
 
     private void test(State result) {
-        assertEquals(Set.of(), result.getObjects(TextUniverse.class).filter(t -> t.text().root() == null).toSet(), "No Root");
-        assertEquals(Set.of(), result.getObjects(TextUniverse.class).flatMap(DObject::dAllProblems).toSet(), "Problems");
+        assertEquals(Set.of(), result.getObjects(TextUniverse.class).filter(t -> t.text().root() == null).asSet(), "No Root");
+        assertEquals(Set.of(), result.getObjects(TextUniverse.class).flatMap(DObject::dAllProblems).asSet(), "Problems");
     }
 
 }

@@ -90,7 +90,7 @@ class SyncSerializationHelper implements SerializationHelper<DClass<DObject>, DO
             return serializeMutable((DObject) value);
         } else if (value instanceof DStruct) {
             //System.err.println("SEND value DSTRUCT: " + value);
-            return Collection.range(0, ((DStruct) value).getKeySize()).map(((DStruct) value)::getKey).toList();
+            return Collection.range(0, ((DStruct) value).getKeySize()).map(((DStruct) value)::getKey).asList();
         } else if (value instanceof Color) {
             //System.err.println("SEND value COLOR  : " + value);
             return ((Color) value).getRGB();
@@ -147,11 +147,11 @@ class SyncSerializationHelper implements SerializationHelper<DClass<DObject>, DO
             //System.err.println("RECV value Color     : " + s + "  " + setable.id() + "   " + type.getName() + "  =>  " + color);
             return color;
         } else if (s instanceof org.modelingvalue.collections.List && type.equals(org.modelingvalue.collections.List.class)) {
-            org.modelingvalue.collections.List l = ((org.modelingvalue.collections.List) s).map(ss -> deserializeMutable((String) ss)).toList();
+            org.modelingvalue.collections.List l = ((org.modelingvalue.collections.List) s).map(ss -> deserializeMutable((String) ss)).asList();
             //System.err.println("RECV value MutList   : " + s + "  " + setable.id() + "   " + type.getName() + "  =>  " + l);
             return l;
         } else if (s instanceof org.modelingvalue.collections.List && type.equals(Set.class)) {
-            Set l = ((List) s).map(ss -> deserializeMutable((String) ss)).toSet();
+            Set l = ((List) s).map(ss -> deserializeMutable((String) ss)).asSet();
             //System.err.println("RECV value MutSet    : " + s + "  " + setable.id() + "   " + type.getName() + "  =>  " + l);
             return l;
         } else {

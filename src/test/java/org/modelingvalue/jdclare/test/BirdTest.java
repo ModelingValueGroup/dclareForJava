@@ -204,7 +204,7 @@ public class BirdTest {
         start(dclare);
         addBird(dclare, Pigeon.class, Pair.of("0", "green"));
         State result = stop(dclare);
-        Set<Bird> birds = result.getObjects(Bird.class).toSet();
+        Set<Bird> birds = result.getObjects(Bird.class).asSet();
         assertEquals(1, birds.size(), "Unexpected Birds: " + birds);
     }
 

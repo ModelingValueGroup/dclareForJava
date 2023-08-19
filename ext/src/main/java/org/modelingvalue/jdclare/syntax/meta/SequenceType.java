@@ -27,7 +27,7 @@ public interface SequenceType extends NodeType {
 
     @Property(constant)
     default SequenceElement startElement() {
-        List<SequenceElement> singletons = sequenceElements().filter(e -> !e.many() && e.mandatory()).toList();
+        List<SequenceElement> singletons = sequenceElements().filter(e -> !e.many() && e.mandatory()).asList();
         return singletons.filter(e -> e.nodeType() instanceof TerminalClass && ((TerminalClass<?>) e.nodeType()).token().literal() != null).findFirst().orElse(singletons.first());
     }
 
