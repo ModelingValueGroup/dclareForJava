@@ -42,7 +42,7 @@ public interface SyntaxPropertyRule<O extends ObjectNode> extends DRule<O>, DStr
     @Override
     @Property(constant)
     default Priority initPriority() {
-        return Priority.immediate;
+        return Priority.one;
     }
 
 }

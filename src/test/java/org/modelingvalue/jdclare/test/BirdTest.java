@@ -209,7 +209,6 @@ public class BirdTest {
     }
 
     @Test
-    @Disabled
     public void tooManyObserversException1() {
         try {
             DClare<BirdUniverse> dclare = of(BirdUniverse.class);
@@ -224,14 +223,14 @@ public class BirdTest {
     }
 
     @Test
-    @Disabled
     public void tooManyObserversException2() {
         TooManyObserversException tmoe = Assertions.assertThrows(TooManyObserversException.class, () -> {
             try {
                 DClare<BirdUniverse> dclare = of(BirdUniverse.class);
                 start(dclare);
-                addBird(dclare, Sparrow.class, Pair.of("0", "black"));
-                stop(dclare);//.run(() -> dclare.universe().dDump(System.err));
+                addBird(dclare, Sparrow.class, Pair.of("1", "black"));
+                stop(dclare);
+                fail();
             } catch (Throwable e) {
                 throw getCause(e);
             }

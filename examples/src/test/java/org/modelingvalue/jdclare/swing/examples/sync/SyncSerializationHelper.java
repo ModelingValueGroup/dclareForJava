@@ -15,9 +15,7 @@
 
 package org.modelingvalue.jdclare.swing.examples.sync;
 
-import static org.modelingvalue.jdclare.DClare.dclare;
-import static org.modelingvalue.jdclare.DClare.dclareUU;
-import static org.modelingvalue.jdclare.DClare.handler;
+import static org.modelingvalue.jdclare.DClare.*;
 
 import java.awt.Color;
 import java.lang.reflect.Method;
@@ -86,7 +84,7 @@ class SyncSerializationHelper implements SerializationHelper<DClass<DObject>, DO
     }
 
     @Override
-    public Object serializeValue(Setable<DObject, Object> setable, Object value) {
+    public Object serializeValue(DObject dObject, Setable<DObject, Object> setable, Object value) {
         if (value instanceof DObject) {
             //System.err.println("SEND value DOBJECT: " + value);
             return serializeMutable((DObject) value);
@@ -129,7 +127,7 @@ class SyncSerializationHelper implements SerializationHelper<DClass<DObject>, DO
 
     @SuppressWarnings({"rawtypes", "unchecked"})
     @Override
-    public Object deserializeValue(Setable<DObject, Object> setable, Object s) {
+    public Object deserializeValue(DObject dObject, Setable<DObject, Object> setable, Object s) {
         DStruct id = (DStruct) setable.id();
         Method o = (Method) handler(id).key[0];
         Class<?> type = o.getReturnType();

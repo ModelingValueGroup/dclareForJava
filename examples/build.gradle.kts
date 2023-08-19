@@ -19,8 +19,8 @@ plugins {
 dependencies {
     testImplementation(rootProject)
     testImplementation(testFixtures(project(":ext")))
-    testImplementation("org.modelingvalue:dclare:3.0.0-BRANCHED")
-    testImplementation("org.modelingvalue:immutable-collections:3.0.0-BRANCHED")
+    testImplementation("org.modelingvalue:dclare:3.1.0-BRANCHED")
+    testImplementation("org.modelingvalue:immutable-collections:3.1.0-BRANCHED")
     testImplementation("com.intellij:forms_rt:7.0.3")
 }
 tasks.withType(JavaCompile::class) {

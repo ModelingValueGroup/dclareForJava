@@ -13,25 +13,56 @@
 //     Arjan Kok, Carel Bast                                                                                           ~
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-defaultTasks("mvgCorrector", "test", "publish", "mvgTagger")
+package org.modelingvalue.jdclare.test;
 
-plugins {
-    `java-library`
-    `maven-publish`
-    id("org.modelingvalue.gradle.mvgplugin") version "1.1.3"
-}
-dependencies {
-    implementation("org.modelingvalue:dclare:3.1.0-BRANCHED")
-    implementation("org.modelingvalue:immutable-collections:3.1.0-BRANCHED")
-}
-publishing {
-    publications {
-        create<MavenPublication>("dclare-for-java") {
-            from(components["java"])
+import static org.modelingvalue.jdclare.DClare.dStruct;
+import static org.modelingvalue.jdclare.DClare.set;
+import static org.modelingvalue.jdclare.PropertyQualifier.containment;
+import static org.modelingvalue.jdclare.PropertyQualifier.optional;
+
+import org.modelingvalue.jdclare.*;
+
+public interface GregTest extends DUniverse {
+
+    public static void main(String[] args) {
+        DClare.runAndStop(GregTest.class);
+    }
+
+    @Property(containment)
+    default MyCount count() {
+        return dStruct(MyCount.class, this);
+    }
+
+    interface MyCount extends DStruct1<GregTest>, DObject {
+        @Property(key = 0)
+        GregTest universe();
+
+        @Property()
+        @Default
+        default long val() {
+            return 0;
+        }
+
+        @Property({optional, containment})
+        default MySetter setter() {
+            if (val() > 10) {
+                return null;
+            }
+            return dStruct(MySetter.class, this, this.val());
+        }
+
+    }
+
+    interface MySetter extends DStruct2<MyCount, Long>, DObject {
+        @Property(key = 0)
+        MyCount count();
+
+        @Property(key = 1)
+        long value();
+
+        @Rule
+        default void rule() {
+            set(count(), MyCount::val, count().val() + 1);
         }
     }
-}
-tasks.withType(JavaCompile::class) {
-    options.compilerArgs.add("-Xlint:unchecked")
-    options.compilerArgs.add("-Xlint:deprecation")
 }
