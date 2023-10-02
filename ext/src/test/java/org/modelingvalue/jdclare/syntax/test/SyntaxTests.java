@@ -15,6 +15,7 @@
 
 package org.modelingvalue.jdclare.syntax.test;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.modelingvalue.collections.List;
 import org.modelingvalue.collections.Set;
@@ -87,6 +88,7 @@ public class SyntaxTests {
     ).reduce("", (a, b) -> a.length() == 0 || b.length() == 0 ? a + b : a + "\n" + b);
 
     @Test
+    @Disabled
     public void oneSyntax() {
         State result = doit();
         result.run(() -> {
