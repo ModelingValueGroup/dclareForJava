@@ -15,12 +15,16 @@
 
 package org.modelingvalue.jdclare.swing.examples.sync;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.Frame;
+import java.awt.Insets;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
@@ -30,7 +34,9 @@ import javax.swing.table.DefaultTableCellRenderer;
 import org.modelingvalue.dclare.sync.SocketSyncConnection;
 import org.modelingvalue.dclare.sync.SyncConnectionHandler;
 
-import com.intellij.uiDesigner.core.*;
+import com.intellij.uiDesigner.core.GridConstraints;
+import com.intellij.uiDesigner.core.GridLayoutManager;
+import com.intellij.uiDesigner.core.Spacer;
 
 public class ConnectionDialog {
     private JButton                     clientConnectButton;
