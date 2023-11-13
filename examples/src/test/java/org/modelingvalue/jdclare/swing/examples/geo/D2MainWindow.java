@@ -222,22 +222,22 @@ public interface D2MainWindow extends SplitPane, DStruct1<D2Universe> {
 
         @Rule
         default void mapFromTriangles() {
-            set(this, ExampleMapping1::mappings, triangles().shapes().map(r -> dclare(MappingData.class, ((DUUObject) r).uuid())).toSet());
+            set(this, ExampleMapping1::mappings, triangles().shapes().map(r -> dclare(MappingData.class, ((DUUObject) r).uuid())).asSet());
         }
 
         @Rule
         default void mapFromRectangles() {
-            set(this, ExampleMapping1::mappings, rectanglesAndCircles().shapes().filter(DRectangle.class).map(r -> dclare(MappingData.class, ((DUUObject) r).uuid())).toSet());
+            set(this, ExampleMapping1::mappings, rectanglesAndCircles().shapes().filter(DRectangle.class).map(r -> dclare(MappingData.class, ((DUUObject) r).uuid())).asSet());
         }
 
         @Rule
         default void mapToTriangles() {
-            set(triangles(), DCanvas::shapes, mappings().map(MappingData::triangle).toList());
+            set(triangles(), DCanvas::shapes, mappings().map(MappingData::triangle).asList());
         }
 
         @Rule
         default void mapToRectangles() {
-            List<DShape> circlesAndLines = rectanglesAndCircles().shapes().filter(s -> !(s instanceof DRectangle)).toList();
+            List<DShape> circlesAndLines = rectanglesAndCircles().shapes().filter(s -> !(s instanceof DRectangle)).asList();
             set(rectanglesAndCircles(), DCanvas::shapes, circlesAndLines.addAll(mappings().map(MappingData::rectangle)));
         }
     }

@@ -30,12 +30,12 @@ public interface Parser<S extends Grammar, R extends Node> extends DStruct1<Text
 
     @Property
     default Set<NodeParser> roots() {
-        return lines().flatMap(LineParser::roots).toSet();
+        return lines().flatMap(LineParser::roots).asSet();
     }
 
     @Property(containment)
     default Set<LineParser> lines() {
-        return text().tokenizer().lines().map(l -> dclare(LineParser.class, this, l)).toSet();
+        return text().tokenizer().lines().map(l -> dclare(LineParser.class, this, l)).asSet();
     }
 
     interface LineParser extends DStruct2<Parser<?, ?>, Line>, DObject {
@@ -47,12 +47,12 @@ public interface Parser<S extends Grammar, R extends Node> extends DStruct1<Text
 
         @Property(containment)
         default Set<TokenParser> tokens() {
-            return line().tokens().map(t -> dclare(TokenParser.class, this, t)).toSet();
+            return line().tokens().map(t -> dclare(TokenParser.class, this, t)).asSet();
         }
 
         @Property
         default Set<NodeParser> roots() {
-            return tokens().flatMap(TokenParser::roots).toSet();
+            return tokens().flatMap(TokenParser::roots).asSet();
         }
 
         interface TokenParser extends DStruct2<LineParser, Token>, DObject {
@@ -65,12 +65,12 @@ public interface Parser<S extends Grammar, R extends Node> extends DStruct1<Text
 
             @Property(containment)
             default Set<NodeParser> parsers() {
-                return token().terminals().flatMap(NodeParser::parsers).toSet();
+                return token().terminals().flatMap(NodeParser::parsers).asSet();
             }
 
             @Property
             default Set<NodeParser> roots() {
-                return parsers().filter(p -> p.root() && p.matched()).toSet();
+                return parsers().filter(p -> p.root() && p.matched()).asSet();
             }
 
         }

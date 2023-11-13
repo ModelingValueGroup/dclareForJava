@@ -32,6 +32,6 @@ public interface Row<R, C, V> extends DStruct3<Table<R, C, V>, R, Integer>, DVis
 
     @Property(containment)
     default List<Cell<R, C, V>> cells() {
-        return table().columns().map(c -> table().cell(this, c)).toList();
+        return table().columns().map(c -> table().cell(this, c)).asList();
     }
 }

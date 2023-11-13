@@ -58,12 +58,12 @@ public interface SequenceParser extends NodeParser, DStruct2<NodeParser, Sequenc
             set(e, SequenceElementParser::pre, p);
             set(e, SequenceElementParser::post, n);
             return e;
-        }).toList();
+        }).asList();
     }
 
     @Property
     default List<NodeParser> downs() {
-        return sequenceElementParsers().flatMap(SequenceElementParser::nodes).toList();
+        return sequenceElementParsers().flatMap(SequenceElementParser::nodes).asList();
     }
 
     @Override

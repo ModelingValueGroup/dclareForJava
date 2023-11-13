@@ -164,7 +164,7 @@ public interface SyntaxProperty<O extends Node, V> extends DMethodProperty<O, V>
             nodes = nodes.addAll(parser.post().nodes().filter(SequenceParser.class).flatMap(p -> p.sequenceElementParsers().get(1).nodes()));
         }
         if (prefix.length > 0 || postfix.length > 0) {
-            nodes = nodes.filter(SequenceParser.class).flatMap(n -> n.sequenceElementParsers().get(prefix.length).nodes()).toList();
+            nodes = nodes.filter(SequenceParser.class).flatMap(n -> n.sequenceElementParsers().get(prefix.length).nodes()).asList();
         }
         List list = List.of();
         Set scope = null;
@@ -195,9 +195,9 @@ public interface SyntaxProperty<O extends Node, V> extends DMethodProperty<O, V>
                     list = list.append(Boolean.parseBoolean(name));
                 } else {
                     if (scope == null) {
-                        scope = scopeProperty().get((O) instance).toSet();
+                        scope = scopeProperty().get((O) instance).asSet();
                     }
-                    Set found = scope.filter(v -> name.equals(v.toString())).toSet();
+                    Set found = scope.filter(v -> name.equals(v.toString())).asSet();
                     if (found.size() != 1) {
                         problems = problems.add(dclare(DProblem.class, node.firstTerminal().token(), //
                                 "REFERENCE", DSeverity.error, "'" + name + "' cannot be resolved to a " + cls.getSimpleName() + //
@@ -208,7 +208,7 @@ public interface SyntaxProperty<O extends Node, V> extends DMethodProperty<O, V>
                 }
             }
         }
-        setter.accept(many() ? Set.class.isAssignableFrom(rawType()) ? (V) list.toSet() : (V) list : list.isEmpty() ? defaultValue() : (V) list.get(0));
+        setter.accept(many() ? Set.class.isAssignableFrom(rawType()) ? (V) list.asSet() : (V) list : list.isEmpty() ? defaultValue() : (V) list.get(0));
         return problems;
     }
 

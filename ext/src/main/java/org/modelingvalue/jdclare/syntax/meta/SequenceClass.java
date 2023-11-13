@@ -30,7 +30,7 @@ public interface SequenceClass<T extends Node> extends NodeClass<T>, SequenceTyp
     @SuppressWarnings("resource")
     @Override
     default List<SequenceElement> sequenceElements() {
-        Set<SequenceElement> elements = syntaxProperties().flatMap(SyntaxProperty::elements).toSet();
+        Set<SequenceElement> elements = syntaxProperties().flatMap(SyntaxProperty::elements).asSet();
         int[] nr = new int[1];
         for (Class<? extends Node> cls : DClare.ann(jClass(), Sequence.class).value()) {
             while (elements.anyMatch(e -> e.nr() == nr[0] * SyntaxProperty.STEP_SIZE)) {
@@ -38,7 +38,7 @@ public interface SequenceClass<T extends Node> extends NodeClass<T>, SequenceTyp
             }
             elements = elements.add(dclare(SequenceElement.class, SyntaxProperty.STEP_SIZE * nr[0]++, (NodeClass<?>) DClare.dClass(cls), true, false, null));
         }
-        return elements.sorted(Comparator.comparingInt(SequenceElement::nr)).toList();
+        return elements.sorted(Comparator.comparingInt(SequenceElement::nr)).asList();
     }
 
     @Override

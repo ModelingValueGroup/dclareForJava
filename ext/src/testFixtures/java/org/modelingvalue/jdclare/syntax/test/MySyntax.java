@@ -39,7 +39,7 @@ public interface MySyntax extends Grammar, DStruct0 {
         @Rule
         default void addClasses() {
             set(cPackages().last().aPackage(), APackage::classes, //
-                    (o, a) -> o.filter(c -> !fromEqualText(c)).toSet().addAll(a), cClasses());
+                    (o, a) -> o.filter(c -> !fromEqualText(c)).asSet().addAll(a), cClasses());
         }
     }
 

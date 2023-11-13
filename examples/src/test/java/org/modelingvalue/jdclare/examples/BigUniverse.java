@@ -36,7 +36,7 @@ public interface BigUniverse extends DUniverse {
 
     @Property(containment)
     default Set<Element> elements() {
-        return Collection.range(size()).map(i -> dclare(Element.class, i)).toSet();
+        return Collection.range(size()).map(i -> dclare(Element.class, i)).asSet();
     }
 
     interface Element extends DNamed, DStruct1<Integer> {

@@ -25,7 +25,7 @@ public interface NodeType extends DObject {
 
     @Property()
     default Set<SequenceType> possibleParents() {
-        return grammar().sequences().filter(c -> equals(c.startClass())).toSet();
+        return grammar().sequences().filter(c -> equals(c.startClass())).asSet();
     }
 
     boolean match(NodeType synt);

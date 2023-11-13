@@ -38,27 +38,27 @@ public interface DClass<T extends DObject> extends DStructClass<T>, MutableClass
     @SuppressWarnings({"rawtypes", "unchecked", "RedundantSuppression"})
     @Property(constant)
     default Set<DRule> allRules() {
-        return allSupers().filter(DClass.class).<DRule> flatMap(DClass::rules).toSet();
+        return allSupers().filter(DClass.class).<DRule> flatMap(DClass::rules).asSet();
     }
 
     @Property(constant)
     default Set<DProperty<T, ?>> allContainments() {
-        return allProperties().filter(DProperty::containment).toSet();
+        return allProperties().filter(DProperty::containment).asSet();
     }
 
     @Property(constant)
     default Set<DProperty<T, ?>> allConstants() {
-        return allProperties().filter(DProperty::constant).toSet();
+        return allProperties().filter(DProperty::constant).asSet();
     }
 
     @Property(constant)
     default Set<DProperty<T, ?>> allValidations() {
-        return allProperties().filter(DProperty::validation).toSet();
+        return allProperties().filter(DProperty::validation).asSet();
     }
 
     @Property(constant)
     default Set<DProperty<T, ?>> allNonContainments() {
-        return allProperties().filter(p -> !p.containment()).toSet();
+        return allProperties().filter(p -> !p.containment()).asSet();
     }
 
     @Property(constant)
@@ -66,13 +66,13 @@ public interface DClass<T extends DObject> extends DStructClass<T>, MutableClass
         return allProperties().map(p -> {
             DProperty<T, Set<?>> scope = p.scopeProperty();
             return scope != null ? Entry.<DProperty<T, ?>, DProperty<T, Set<?>>> of(p, scope) : null;
-        }).notNull().toMap(e -> e);
+        }).notNull().asMap(e -> e);
     }
 
     @Property(constant)
     default Set<DProperty<T, ?>> mandatoryProperties() {
         return allProperties().filter(p -> !p.constant() && p.mandatory() && //
-                (p.defaultValue() == null || p.defaultValue() instanceof ContainingCollection)).toSet();
+                (p.defaultValue() == null || p.defaultValue() instanceof ContainingCollection)).asSet();
     }
 
     @SuppressWarnings({"unchecked", "rawtypes"})

@@ -56,7 +56,7 @@ public interface Line extends DObject, DStruct2<Text<?, ?>, Long> {
 
     @Property
     default List<DMatch> matches() {
-        return dclare(DMultiMatcher.class, text().grammar().tokenPatterns(), string()).matches().toList();
+        return dclare(DMultiMatcher.class, text().grammar().tokenPatterns(), string()).matches().asList();
     }
 
     @Property(containment)
@@ -71,7 +71,7 @@ public interface Line extends DObject, DStruct2<Text<?, ?>, Long> {
                 set(t, Token::nextToken, n);
             }
             return t;
-        }).toList();
+        }).asList();
     }
 
     private TokenType type(List<TokenType> tokens, DMatch m) {

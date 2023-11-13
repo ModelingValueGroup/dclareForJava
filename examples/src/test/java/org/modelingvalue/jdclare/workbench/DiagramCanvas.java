@@ -61,7 +61,7 @@ public interface DiagramCanvas extends DStruct1<WBUniverse>, DCanvas {
 
     @Property
     default Set<SuperLine> supers() {
-        return classes().flatMap(c -> c.supers().map(s -> dclare(SuperLine.class, this, c, s))).toSet();
+        return classes().flatMap(c -> c.supers().map(s -> dclare(SuperLine.class, this, c, s))).asSet();
     }
 
     @SuppressWarnings({"unchecked", "rawtypes"})
@@ -71,7 +71,7 @@ public interface DiagramCanvas extends DStruct1<WBUniverse>, DCanvas {
         if (sel instanceof DStructClass) {
             Set<DStructClass> all = ((DStructClass) sel).allSubs();
             all = all.addAll(all.flatMap(DStructClass::allSupers));
-            return all.map(c -> dclare(ClassRectangle.class, this, c)).toSet();
+            return all.map(c -> dclare(ClassRectangle.class, this, c)).asSet();
         } else {
             return Set.of();
         }
@@ -79,7 +79,7 @@ public interface DiagramCanvas extends DStruct1<WBUniverse>, DCanvas {
 
     @Property(containment)
     default QualifiedSet<Integer, Level> levels() {
-        return classes().map(ClassRectangle::level).distinct().map(l -> dclare(Level.class, this, l)).toQualifiedSet(Level::level);
+        return classes().map(ClassRectangle::level).distinct().map(l -> dclare(Level.class, this, l)).asQualifiedSet(Level::level);
     }
 
     interface Level extends DObject, DStruct2<DiagramCanvas, Integer> {
@@ -92,7 +92,7 @@ public interface DiagramCanvas extends DStruct1<WBUniverse>, DCanvas {
         @Property
         default Set<ClassRectangle> classes() {
             int l = level();
-            return diagram().classes().filter(c -> c.level() == l).toSet();
+            return diagram().classes().filter(c -> c.level() == l).asSet();
         }
 
         @Property
@@ -100,7 +100,7 @@ public interface DiagramCanvas extends DStruct1<WBUniverse>, DCanvas {
             return classes().sorted((a, b) -> {
                 int c = Integer.compare(a.upper(), b.upper());
                 return c == 0 && !a.equals(b) ? a.compareTo(b) : c;
-            }).toList();
+            }).asList();
         }
     }
 
@@ -153,7 +153,7 @@ public interface DiagramCanvas extends DStruct1<WBUniverse>, DCanvas {
         @Property
         default Set<ClassRectangle> supers() {
             //noinspection unchecked
-            return cls().supers().map(s -> dclare(ClassRectangle.class, diagram(), s)).toSet();
+            return cls().supers().map(s -> dclare(ClassRectangle.class, diagram(), s)).asSet();
         }
 
         @Property

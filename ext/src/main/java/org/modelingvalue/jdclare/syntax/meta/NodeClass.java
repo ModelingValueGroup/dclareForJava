@@ -40,7 +40,7 @@ public interface NodeClass<T extends Node> extends DStructClass<T>, NodeType {
     default Set<NodeType> options() {
         Class cls = jClass();
         return Collection.of(cls.getDeclaringClass().getClasses()).filter(cls::isAssignableFrom).map(c -> (NodeType) DClare.dClass(c)).//
-                filter(c -> c instanceof TerminalClass || c instanceof SequenceType).toSet();
+                filter(c -> c instanceof TerminalClass || c instanceof SequenceType).asSet();
     }
 
     @Override
@@ -50,12 +50,12 @@ public interface NodeClass<T extends Node> extends DStructClass<T>, NodeType {
 
     @Override
     default Set<TerminalClass<?>> firstTerminals(Set<NodeType> done) {
-        return options().filter(t -> !done.contains(t)).flatMap(t -> t.firstTerminals(done.add(t))).toSet();
+        return options().filter(t -> !done.contains(t)).flatMap(t -> t.firstTerminals(done.add(t))).asSet();
     }
 
     @Override
     default Set<TerminalClass<?>> lastTerminals(Set<NodeType> done) {
-        return options().filter(t -> !done.contains(t)).flatMap(t -> t.lastTerminals(done.add(t))).toSet();
+        return options().filter(t -> !done.contains(t)).flatMap(t -> t.lastTerminals(done.add(t))).asSet();
     }
 
     T create(NodeParser nodeParser, Set<DProblem>[] problems);
@@ -64,7 +64,7 @@ public interface NodeClass<T extends Node> extends DStructClass<T>, NodeType {
     @Property(constant)
     default Set<SyntaxProperty<Node, Object>> syntaxProperties() {
         //REVIEW: this gives an error in IntelliJ but compiles ok with javac => report to Jetbrains
-        return properties().filter(SyntaxProperty.class).toSet();
+        return properties().filter(SyntaxProperty.class).asSet();
     }
 
 }

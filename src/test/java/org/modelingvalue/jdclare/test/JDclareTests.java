@@ -107,7 +107,7 @@ public class JDclareTests {
     }
 
     private void checkOrchestra(State result) {
-        Set<Piano> pianos = result.getObjects(Piano.class).toSet();
+        Set<Piano> pianos = result.getObjects(Piano.class).asSet();
         assertEquals(3, pianos.size(), "Unexpected Pianos: " + pianos);
         pianos.forEachOrdered(p -> {
             assertTrue(p.size() > 0, "No Keys");
@@ -125,13 +125,13 @@ public class JDclareTests {
     }
 
     private void check(State result) {
-        assertEquals(Set.of(), result.getObjects(DObject.class).filter(o -> !(o instanceof DUniverse) && o.dParent() == null).toSet(), "No Parent:");
-        assertEquals(Set.of(), result.getObjects(DStruct.class).filter(o -> o.dStructClass() == null).toSet(), "No dStructType:");
-        assertEquals(Set.of(), result.getObjects(DObject.class).filter(o -> o.dClass() == null).toSet(), "No dClass:");
-        assertEquals(Set.of(), result.getObjects(DNamed.class).filter(o -> o.name() == null).toSet(), "No name:");
-        assertEquals(Set.of(), result.getObjects(DUniverse.class).flatMap(DObject::dAllProblems).toSet(), "Problems:");
+        assertEquals(Set.of(), result.getObjects(DObject.class).filter(o -> !(o instanceof DUniverse) && o.dParent() == null).asSet(), "No Parent:");
+        assertEquals(Set.of(), result.getObjects(DStruct.class).filter(o -> o.dStructClass() == null).asSet(), "No dStructType:");
+        assertEquals(Set.of(), result.getObjects(DObject.class).filter(o -> o.dClass() == null).asSet(), "No dClass:");
+        assertEquals(Set.of(), result.getObjects(DNamed.class).filter(o -> o.name() == null).asSet(), "No name:");
+        assertEquals(Set.of(), result.getObjects(DUniverse.class).flatMap(DObject::dAllProblems).asSet(), "Problems:");
         Set<Pair<DObject, Set<TransactionClass>>> scheduled = result.getObjects(DObject.class).map(o -> Pair.of(o, //
-                Collection.of(Priority.ALL).flatMap(prio -> Collection.concat(result.actions(prio).get(o), result.children(prio).get(o))).toSet())).filter(p -> !p.b().isEmpty()).toSet();
+                Collection.of(Priority.ALL).flatMap(prio -> Collection.concat(result.actions(prio).get(o), result.children(prio).get(o))).asSet())).filter(p -> !p.b().isEmpty()).asSet();
         // System.err.println(scheduled);
         assertEquals(Set.of(), scheduled, "Scheduled:");
     }
@@ -190,7 +190,7 @@ public class JDclareTests {
     }
 
     private void checkPriorities(State result) {
-        Set<Prio> prios = result.getObjects(Prio.class).toSet();
+        Set<Prio> prios = result.getObjects(Prio.class).asSet();
         assertEquals(3, prios.size(), "Unexpected Priorities: " + prios);
         prios.forEachOrdered(p -> {
             String target = p.dClass().name();

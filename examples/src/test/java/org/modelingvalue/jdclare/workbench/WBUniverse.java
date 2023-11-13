@@ -48,7 +48,7 @@ public interface WBUniverse extends GuiUniverse, TextUniverse {
     @Property
     default Set<Token> problemTokens() {
         return dAllProblems().map(DProblem::context).flatMap(c -> c instanceof Token ? Set.of((Token) c) : //
-                c instanceof ObjectNode ? Set.of(((ObjectNode) c).sParserNode().firstTerminal().token()) : Set.of()).toSet();
+                c instanceof ObjectNode ? Set.of(((ObjectNode) c).sParserNode().firstTerminal().token()) : Set.of()).asSet();
     }
 
     interface WBFrame extends Frame, DStruct1<WBUniverse> {

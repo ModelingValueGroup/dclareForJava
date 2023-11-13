@@ -31,7 +31,7 @@ public interface Piano extends Instrument {
 
     @Property(containment)
     default Set<PianoKey> keys() {
-        return Collection.range(0, size()).map(i -> dclare(PianoKey.class, this, i)).toSet();
+        return Collection.range(0, size()).map(i -> dclare(PianoKey.class, this, i)).asSet();
     }
 
 }

@@ -15,8 +15,8 @@
 
 package org.modelingvalue.jdclare;
 
-import static org.modelingvalue.dclare.SetableModifier.containment;
-import static org.modelingvalue.dclare.SetableModifier.mandatory;
+import static org.modelingvalue.dclare.CoreSetableModifier.containment;
+import static org.modelingvalue.dclare.CoreSetableModifier.mandatory;
 import static org.modelingvalue.jdclare.PropertyQualifier.constant;
 
 import java.lang.annotation.Annotation;
@@ -399,7 +399,7 @@ public final class DClare<U extends DUniverse> extends UniverseTransaction {
     }
 
     public static <O extends DObject, D extends DObject, V> Set<D> opposite(O dObject, Class<D> cls, SerializableFunction<D, V> property) {
-        return (Set) getable(dProperty(method(cls, property)).opposite()).getCollection(dObject).toSet();
+        return (Set) getable(dProperty(method(cls, property)).opposite()).getCollection(dObject).asSet();
     }
 
     public static <O extends DStruct, V> Collection<V> getCollection(O dObject, SerializableFunction<O, V> property) {
@@ -936,14 +936,14 @@ public final class DClare<U extends DUniverse> extends UniverseTransaction {
     }
 
     private static Set<Class> supers(Set<Class> subs) {
-        subs = subs.filter(DStruct.class::isAssignableFrom).toSet();
-        return !subs.isEmpty() ? subs.addAll(supers(subs.flatMap(s -> Collection.of(s.getInterfaces())).toSet())) : subs;
+        subs = subs.filter(DStruct.class::isAssignableFrom).asSet();
+        return !subs.isEmpty() ? subs.addAll(supers(subs.flatMap(s -> Collection.of(s.getInterfaces())).asSet())) : subs;
     }
 
     public static Set<DStructClass> dSupers(Class cls) {
         Set<Class> supers = Set.of(cls.getInterfaces());
         Class s = cls.getSuperclass();
-        return (s != null ? supers.add(s) : supers).map((Function<Class, DStructClass>) DClare::dClass).notNull().toSet();
+        return (s != null ? supers.add(s) : supers).map((Function<Class, DStructClass>) DClare::dClass).notNull().asSet();
     }
 
     public static Set<DStructClass<?>> dInnerClasses(Class cls) {
@@ -1133,7 +1133,7 @@ public final class DClare<U extends DUniverse> extends UniverseTransaction {
     }
 
     private void checkFatals() {
-        Set<DProblem> fatals = universe().dAllProblems().filter(p -> p.severity() == DSeverity.fatal).toSet();
+        Set<DProblem> fatals = universe().dAllProblems().filter(p -> p.severity() == DSeverity.fatal).asSet();
         if (!fatals.isEmpty()) {
             throw new Error("Fatal problems: " + fatals.toString().substring(3));
         }

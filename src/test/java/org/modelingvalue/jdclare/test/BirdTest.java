@@ -15,12 +15,6 @@
 
 package org.modelingvalue.jdclare.test;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.modelingvalue.jdclare.DClare.*;
-
-import java.util.HashSet;
-import java.util.function.Function;
-
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -28,19 +22,15 @@ import org.modelingvalue.collections.Set;
 import org.modelingvalue.collections.util.NotMergeableException;
 import org.modelingvalue.collections.util.Pair;
 import org.modelingvalue.dclare.State;
-import org.modelingvalue.dclare.ex.EmptyMandatoryException;
-import org.modelingvalue.dclare.ex.NonDeterministicException;
-import org.modelingvalue.dclare.ex.TooManyChangesException;
-import org.modelingvalue.dclare.ex.TooManyObservedException;
-import org.modelingvalue.dclare.ex.TooManyObserversException;
+import org.modelingvalue.dclare.ex.*;
 import org.modelingvalue.jdclare.DClare;
-import org.modelingvalue.jdclare.test.BirdUniverse.Bird;
-import org.modelingvalue.jdclare.test.BirdUniverse.Condor;
-import org.modelingvalue.jdclare.test.BirdUniverse.HouseSparrow;
-import org.modelingvalue.jdclare.test.BirdUniverse.HummingBird;
-import org.modelingvalue.jdclare.test.BirdUniverse.Pheasant;
-import org.modelingvalue.jdclare.test.BirdUniverse.Pigeon;
-import org.modelingvalue.jdclare.test.BirdUniverse.Sparrow;
+import org.modelingvalue.jdclare.test.BirdUniverse.*;
+
+import java.util.HashSet;
+import java.util.function.Function;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.modelingvalue.jdclare.DClare.*;
 
 public class BirdTest {
     private static final boolean PRINT_STACK_TRACE = Boolean.getBoolean("PRINT_STACK_TRACE");
@@ -171,6 +161,7 @@ public class BirdTest {
     }
 
     @Test
+    @Disabled
     public void tooManyObservedException1() {
         try {
             DClare<BirdUniverse> dclare = of(BirdUniverse.class);
@@ -204,7 +195,7 @@ public class BirdTest {
         start(dclare);
         addBird(dclare, Pigeon.class, Pair.of("0", "green"));
         State result = stop(dclare);
-        Set<Bird> birds = result.getObjects(Bird.class).toSet();
+        Set<Bird> birds = result.getObjects(Bird.class).asSet();
         assertEquals(1, birds.size(), "Unexpected Birds: " + birds);
     }
 

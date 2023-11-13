@@ -35,7 +35,7 @@ public interface PropertiesTable extends Table<DProperty<DObject, ?>, Properties
     default List<DProperty<DObject, ?>> rowObjects() {
         DObject object = object();
         return object == null ? List.of() : object.dClass().allNonContainments().//
-                filter(DProperty::visible).sorted().toList();
+                filter(DProperty::visible).sorted().asList();
     }
 
     @Override
@@ -75,7 +75,7 @@ public interface PropertiesTable extends Table<DProperty<DObject, ?>, Properties
     @Override
     default List<Object> scope(DProperty<DObject, ?> p, PropertiesTableColumn ct) {
         DProperty<DObject, Set<?>> scopeProperty = p.scopeProperty();
-        return scopeProperty == null ? null : (List<Object>) scopeProperty.get(object()).sorted().toList();
+        return scopeProperty == null ? null : (List<Object>) scopeProperty.get(object()).sorted().asList();
     }
 
     @SuppressWarnings({"unchecked"})
