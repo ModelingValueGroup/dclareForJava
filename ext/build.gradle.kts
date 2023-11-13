@@ -19,12 +19,12 @@ plugins {
 }
 dependencies {
     implementation(rootProject)
-    implementation("org.modelingvalue:immutable-collections:3.1.0-BRANCHED")
-    implementation("org.modelingvalue:dclare:3.1.0-BRANCHED")
+    implementation("org.modelingvalue:immutable-collections:4.0.0-BRANCHED")
+    implementation("org.modelingvalue:dclare:4.0.0-BRANCHED")
 
     testFixturesImplementation(rootProject)
-    testFixturesImplementation("org.modelingvalue:immutable-collections:3.1.0-BRANCHED")
-    testFixturesImplementation("org.modelingvalue:dclare:3.1.0-BRANCHED")
+    testFixturesImplementation("org.modelingvalue:immutable-collections:4.0.0-BRANCHED")
+    testFixturesImplementation("org.modelingvalue:dclare:4.0.0-BRANCHED")
 }
 tasks.withType(JavaCompile::class) {
     options.compilerArgs.add("-Xlint:unchecked")
