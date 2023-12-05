@@ -15,9 +15,15 @@
 
 package org.modelingvalue.jdclare;
 
-import static org.modelingvalue.dclare.CoreSetableModifier.containment;
-import static org.modelingvalue.dclare.CoreSetableModifier.mandatory;
-import static org.modelingvalue.jdclare.PropertyQualifier.constant;
+import org.modelingvalue.collections.Collection;
+import org.modelingvalue.collections.List;
+import org.modelingvalue.collections.Map;
+import org.modelingvalue.collections.Set;
+import org.modelingvalue.collections.*;
+import org.modelingvalue.collections.util.*;
+import org.modelingvalue.dclare.*;
+import org.modelingvalue.jdclare.DNative.ChangeHandler;
+import org.modelingvalue.jdclare.meta.*;
 
 import java.lang.annotation.Annotation;
 import java.lang.invoke.MethodHandle;
@@ -25,23 +31,15 @@ import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodHandles.Lookup;
 import java.lang.reflect.*;
 import java.time.Clock;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.Scanner;
-import java.util.Timer;
-import java.util.TimerTask;
-import java.util.UUID;
+import java.util.*;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-import org.modelingvalue.collections.*;
-import org.modelingvalue.collections.util.*;
-import org.modelingvalue.collections.util.ContextThread.ContextPool;
-import org.modelingvalue.dclare.*;
-import org.modelingvalue.jdclare.DNative.ChangeHandler;
-import org.modelingvalue.jdclare.meta.*;
+import static org.modelingvalue.dclare.CoreSetableModifier.containment;
+import static org.modelingvalue.dclare.CoreSetableModifier.mandatory;
+import static org.modelingvalue.jdclare.PropertyQualifier.constant;
 
 @SuppressWarnings({"unchecked", "rawtypes", "unused"})
 public final class DClare<U extends DUniverse> extends UniverseTransaction {
