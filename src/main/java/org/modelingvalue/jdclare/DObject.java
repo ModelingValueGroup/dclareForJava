@@ -93,8 +93,8 @@ public interface DObject extends DStruct, Mutable {
     }
 
     @Override
-    default void dActivate() {
-        Mutable.super.dActivate(); // do not remove this! it seems unneccesarry but it is not; this has to do with how Proxy handles calls.
+    default void dActivate(LeafTransaction tx) {
+        Mutable.super.dActivate(tx); // do not remove this! it seems unneccesarry but it is not; this has to do with how Proxy handles calls.
     }
 
     @Override

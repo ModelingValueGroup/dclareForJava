@@ -20,11 +20,17 @@
 
 package org.modelingvalue.jdclare.test;
 
-import org.modelingvalue.collections.*;
-import org.modelingvalue.jdclare.*;
+import static org.modelingvalue.jdclare.DClare.dclare;
+import static org.modelingvalue.jdclare.DClare.set;
+import static org.modelingvalue.jdclare.PropertyQualifier.containment;
 
-import static org.modelingvalue.jdclare.DClare.*;
-import static org.modelingvalue.jdclare.PropertyQualifier.*;
+import org.modelingvalue.collections.Collection;
+import org.modelingvalue.collections.Set;
+import org.modelingvalue.jdclare.DObject;
+import org.modelingvalue.jdclare.DStruct1;
+import org.modelingvalue.jdclare.DUniverse;
+import org.modelingvalue.jdclare.Property;
+import org.modelingvalue.jdclare.Rule;
 
 public interface Reparents extends DUniverse {
 
