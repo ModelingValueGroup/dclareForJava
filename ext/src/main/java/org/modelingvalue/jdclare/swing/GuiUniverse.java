@@ -30,6 +30,7 @@ import java.awt.event.KeyEvent;
 import javax.swing.SwingUtilities;
 
 import org.modelingvalue.collections.Set;
+import org.modelingvalue.dclare.CoreLeafModifier;
 import org.modelingvalue.dclare.ImperativeTransaction;
 import org.modelingvalue.dclare.LeafTransaction;
 import org.modelingvalue.jdclare.DUniverse;
@@ -50,7 +51,7 @@ public interface GuiUniverse extends DUniverse {
     @Override
     default void init() {
         DUniverse.super.init();
-        ImperativeTransaction itx = dClare().addImperative("SWING", callNativesOfClass(DVisible.class), SwingUtilities::invokeLater, true, false);
+        ImperativeTransaction itx = dClare().addImperative("SWING", callNativesOfClass(DVisible.class), SwingUtilities::invokeLater, CoreLeafModifier.keep);
         SwingUtilities.invokeLater(() -> LeafTransaction.getContext().setOnThread(itx));
         KeyboardFocusManager kfm = KeyboardFocusManager.getCurrentKeyboardFocusManager();
         kfm.addKeyEventDispatcher(e -> {
