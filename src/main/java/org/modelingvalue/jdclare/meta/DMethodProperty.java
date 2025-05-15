@@ -123,7 +123,7 @@ public interface DMethodProperty<O extends DStruct, T> extends DProperty<O, T>, 
         Method method = method();
         State constraints = getConstraints(method);
         Method opposite = constraints != null ? overridden(null, method, (o, m) -> {
-            Method oppos = constraints.get(m, OPPOSITE);
+            Method oppos = constraints.getRaw(m, OPPOSITE);
             return oppos != null ? oppos : o;
         }) : null;
         if (opposite != null) {
@@ -139,7 +139,7 @@ public interface DMethodProperty<O extends DStruct, T> extends DProperty<O, T>, 
         Method method = method();
         State constraints = getConstraints(method);
         Method opposite = constraints != null ? overridden(null, method, (o, m) -> {
-            Method oppos = constraints.get(m, OPPOSITE);
+            Method oppos = constraints.getRaw(m, OPPOSITE);
             return oppos != null ? oppos : o;
         }) : null;
         if (opposite == null && !D_OBJECT_CLASS.equals(method) && !containment() && !constant() && //
@@ -211,7 +211,7 @@ public interface DMethodProperty<O extends DStruct, T> extends DProperty<O, T>, 
         Method method = method();
         State constraints = getConstraints(method);
         Method scopeProperty = constraints != null ? overridden(null, method, (s, m) -> {
-            Method scope = constraints.get(m, SCOPE);
+            Method scope = constraints.getRaw(m, SCOPE);
             return scope != null ? scope : s;
         }) : null;
         if (scopeProperty != null) {

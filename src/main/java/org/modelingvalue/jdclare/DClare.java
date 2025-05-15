@@ -1277,7 +1277,7 @@ public final class DClare<U extends DUniverse> extends UniverseTransaction {
 
     @Override
     public boolean isStopped(State state) {
-        return stopSetable != null && state.get(universe(), stopSetable);
+        return stopSetable != null && state.getRaw(universe(), stopSetable);
     }
 
     @Override
