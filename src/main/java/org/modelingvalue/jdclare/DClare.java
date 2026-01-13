@@ -20,15 +20,9 @@
 
 package org.modelingvalue.jdclare;
 
-import org.modelingvalue.collections.Collection;
-import org.modelingvalue.collections.List;
-import org.modelingvalue.collections.Map;
-import org.modelingvalue.collections.Set;
-import org.modelingvalue.collections.*;
-import org.modelingvalue.collections.util.*;
-import org.modelingvalue.dclare.*;
-import org.modelingvalue.jdclare.DNative.ChangeHandler;
-import org.modelingvalue.jdclare.meta.*;
+import static org.modelingvalue.dclare.CoreSetableModifier.containment;
+import static org.modelingvalue.dclare.CoreSetableModifier.mandatory;
+import static org.modelingvalue.jdclare.PropertyQualifier.constant;
 
 import java.lang.annotation.Annotation;
 import java.lang.invoke.MethodHandle;
@@ -36,15 +30,22 @@ import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodHandles.Lookup;
 import java.lang.reflect.*;
 import java.time.Clock;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.Scanner;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.UUID;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-import static org.modelingvalue.dclare.CoreSetableModifier.containment;
-import static org.modelingvalue.dclare.CoreSetableModifier.mandatory;
-import static org.modelingvalue.jdclare.PropertyQualifier.constant;
+import org.modelingvalue.collections.*;
+import org.modelingvalue.collections.util.*;
+import org.modelingvalue.dclare.*;
+import org.modelingvalue.jdclare.DNative.ChangeHandler;
+import org.modelingvalue.jdclare.meta.*;
 
 @SuppressWarnings({"unchecked", "rawtypes", "unused"})
 public final class DClare<U extends DUniverse> extends UniverseTransaction {
@@ -137,7 +138,7 @@ public final class DClare<U extends DUniverse> extends UniverseTransaction {
                                                                                                                  !m.isAnnotationPresent(Default.class) && !qual(m, constant)) {
                                                                                                              return dclare(extend(m, DMethodRule.class), m);
                                                                                                          } else {
-                                                                                                             return null;
+                                                                                                             return (DMethodRule) null;
                                                                                                          }
                                                                                                      });
     private static final Constant<String, DPackage>                               PACKAGE            = Constant.<String, DPackage> of("dPackage", (String n) -> {
