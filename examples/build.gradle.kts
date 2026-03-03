@@ -32,3 +32,6 @@ tasks.withType(JavaCompile::class) {
     options.compilerArgs.add("-Xlint:unchecked")
     options.compilerArgs.add("-Xlint:deprecation")
 }
+tasks.test {
+    failOnNoDiscoveredTests = false
+}
