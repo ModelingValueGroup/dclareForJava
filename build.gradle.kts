@@ -26,8 +26,8 @@ plugins {
     id("org.modelingvalue.gradle.mvgplugin") version "3.0.0"
 }
 dependencies {
-    implementation("org.modelingvalue:dclare:6.0.1-BRANCHED")
-    implementation("org.modelingvalue:immutable-collections:6.0.2-BRANCHED")
+    implementation("org.modelingvalue:dclare:6.0.2-BRANCHED")
+    implementation("org.modelingvalue:immutable-collections:6.0.3-BRANCHED")
 }
 publishing {
     publications {
